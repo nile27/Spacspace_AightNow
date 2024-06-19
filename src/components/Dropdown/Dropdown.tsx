@@ -1,6 +1,6 @@
 "use client";
 
-export default function Withdrawal() {
+export default function Dropdown() {
   return (
     <>
       <div className="w-96 h-20 flex-col justify-start items-start gap-1 inline-flex">

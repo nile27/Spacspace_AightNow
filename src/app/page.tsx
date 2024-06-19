@@ -1,11 +1,10 @@
-import LargeCard from "@/components/Card/LargeCard";
-import Withdrawal from "@/components/Register/Withdrawal";
+import Toggle from "@/components/Toggle/Toggle";
 
 export default function Home() {
   return (
     <>
       <div className="flex flex-col">
-        <Withdrawal />
+        <Toggle />
       </div>
     </>
   );

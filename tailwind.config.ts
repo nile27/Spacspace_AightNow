@@ -1,80 +1,76 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
-const config = {
-  darkMode: ["class"],
+const config: Config = {
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
-  prefix: "",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)"],
+      },
+      fontSize: {
+        h1: "60px",
+        h2: "48px",
+        h3: "40px",
+        h4: "36px",
+        body1: "32px",
+        body2: "28px",
+        body3: "28px",
+        body4: "24px",
+        body5: "20px",
+        caption: "16px",
+        button: "24px",
+      },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        mainNavy: {
+          50: "#E6E9EF",
+          100: "#C0CBD9",
+          200: "#98A5BF",
+          300: "#7282A5",
+          400: "#546894",
+          500: "#364F84",
+          600: "#30487C",
+          700: "#283E70",
+          800: "#213564",
+          900: "#18254C",
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+        secondBlue: {
+          50: "#E1F5FD",
+          100: "#B2E6FA",
+          200: "#80D5F7",
+          300: "#4CC5F4",
+          400: "#1CB8F3",
+          500: "#00ACF2",
+          600: "#009EE3",
+          700: "#008BD0",
+          800: "#0079BC",
+          900: "#005A9B",
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        scaleGray: {
+          0: "#E1F5FD",
+          100: "#B2E6FA",
+          200: "#80D5F7",
+          300: "#4CC5F4",
+          400: "#1CB8F3",
+          500: "#00ACF2",
+          600: "#009EE3",
+          700: "#008BD0",
+          800: "#0079BC",
+          900: "#005A9B",
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
+        background: "#F1F3F8",
+        warning: "#FF294F",
+        success: "#1FCE65",
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config
-
-export default config
+  plugins: [],
+};
+export default config;

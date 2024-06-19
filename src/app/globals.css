@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "SUIT", sans-serif;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -71,13 +75,4 @@
   padding: 0;
   margin: 0;
   border: 0;
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }

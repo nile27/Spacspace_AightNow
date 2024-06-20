@@ -1,7 +1,7 @@
-import CheckIcon from "@/icons/CheckIcon";
+import { CheckIcon } from "../btnUi/Svg";
 
 type TCheckboxProps = {
-  id: string;
+  id?: string;
   children?: React.ReactNode;
   checked?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;

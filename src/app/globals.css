@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -66,18 +77,9 @@
   }
 }
 
-* {
+body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   border: 0;
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }

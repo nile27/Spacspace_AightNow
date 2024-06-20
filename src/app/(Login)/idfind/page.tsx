@@ -6,7 +6,7 @@ export default function IdFind() {
   return (
     <>
       <h1 className="  text-h3 font-extrabold">아이디 찾기</h1>
-      {0 ? (
+      {1 ? (
         <form className="mt-10 w-full h-auto flex flex-col gap-4 mb-10">
           <div className="w-full h-auto flex flex-col gap-4 mb-[56px]">
             <InputExtends

@@ -17,7 +17,7 @@ export default function GuestHome() {
         </div>
         <div className="relative z-10 flex flex-col justify-between h-full">
           <GuestHeader />
-          <div className="mx-auto max-w-2xl pt-2 sm:pt-18 lg:pt-26 pb-8 sm:pb-12 lg:pb-16 text-center">
+          <div className="mx-auto max-w-2xl pb-8 sm:pb-6 lg:pb-12 text-center">
             <h1 className="text-white sm:text-6xl">
               해외주식은 <span className="font-bold">아잇나우</span>와 함께!
             </h1>
@@ -30,7 +30,7 @@ export default function GuestHome() {
             </div>
           </div>
           <div
-            className="w-full h-[200px] lg:mt-[-40px] lg:h-[380px] relative"
+            className="relative w-full h-[200px] lg:mt-[-40px] lg:h-[450px]"
             style={{
               backgroundImage: "url('/hero-bg2.png')",
               backgroundRepeat: "no-repeat",

@@ -1,3 +1,5 @@
+import ListIcon from "/public/ListIcon.svg";
+
 export default function Stock() {
   return (
     <>
@@ -6,7 +8,7 @@ export default function Stock() {
           <div className="w-64 py-2 justify-between items-center flex">
             <div className="justify-start items-center gap-4 flex">
               <div className="w-12 h-12">
-                <img src="" alt="로고" className="w-12 h-12" />
+                <img src="ListIcon" alt="로고" className="w-12 h-12" />
               </div>
               <div className="flex flex-col justify-start items-start ">
                 <div className="text-neutral-900 text-base font-bold font-['Pretendard'] leading-normal">

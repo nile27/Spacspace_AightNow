@@ -1,4 +1,4 @@
-export default function ListUp() {
+export default function ListStockUp() {
   return (
     <>
       <div className="w-96 h-20 py-2 justify-between items-center inline-flex">

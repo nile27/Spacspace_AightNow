@@ -483,16 +483,16 @@ export const CheckIcon = ({
       xmlns="http://www.w3.org/2000/svg"
     >
       <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill={color} />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
-      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fill-opacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
+      <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" fill="black" fillOpacity="0.2" />
       <rect x="4.5" y="4.95337" width="15" height="15" rx="1.5" stroke="#18254C" />
       <rect
         x="4.5"
@@ -501,7 +501,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -510,7 +510,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -519,7 +519,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -528,7 +528,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -537,7 +537,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -546,7 +546,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -555,7 +555,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -564,7 +564,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -573,7 +573,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <rect
         x="4.5"
@@ -582,7 +582,7 @@ export const CheckIcon = ({
         height="15"
         rx="1.5"
         stroke="black"
-        stroke-opacity="0.2"
+        strokeOpacity="0.2"
       />
       <path
         d="M10.106 15.8874L7.234 13.0154C6.922 12.7034 6.922 12.1994 7.234 11.8874C7.546 11.5754 8.05 11.5754 8.362 11.8874L10.674 14.1914L16.178 8.68737C16.49 8.37537 16.994 8.37537 17.306 8.68737C17.618 8.99937 17.618 9.50337 17.306 9.81537L11.234 15.8874C10.93 16.1994 10.418 16.1994 10.106 15.8874Z"

@@ -6,7 +6,7 @@ import { TextRenderIcon } from "./TextRenderIcon";
 
 type TTextButton = React.ComponentProps<"button"> & {
   children: string;
-  size?: "sm" | "md" | "custom";
+  size?: "sm" | "md" | "custom" | "full";
   color?: "disable" | "grayScale" | "warning" | "success" | "outline" | "secondary";
   icon?:
     | "AI"
@@ -37,6 +37,7 @@ export default function TextButton(props: TTextButton) {
         sm: `w-[386px] h-9 px-2.5 py-2`,
         md: `w-[386px] h-14 px-2.5 py-4`,
         custom: `w-[${width}] h-[${height}]  px-2.5 py-2 `,
+        full: `w-full h-full min-h-[64px] px-2.5 py-2 `,
       },
       color: {
         default: "bg-scaleGray-900",
@@ -60,7 +61,8 @@ export default function TextButton(props: TTextButton) {
         default: `font-body3`,
         sm: `font-body5`,
         md: `font-body4`,
-        custom: `w-[386px] bg-scaleGray-900 h-16 px-2.5 py-[18px] `,
+        custom: `font-body3 `,
+        full: "font-body3",
       },
       color: {
         default: "text-white ",

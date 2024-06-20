@@ -47,7 +47,7 @@ type TIcon =
 export const TextRenderIcon = (
   icon: TIcon,
   color?: keyof typeof svgVariants,
-  size?: "sm" | "md" | "custom",
+  size?: "sm" | "md" | "custom" | "full",
 ) => {
   const iconProps = {
     color: color ? svgVariants[color] : "white",

@@ -1,14 +1,14 @@
-import Header from "@/components/Header";
+import Popup from "@/components/Popup/Popup";
+import PopupButton from "@/components/Popup/PopupButton";
+import PopupContent from "@/components/Popup/PopupContent";
 import IconButton from "@/components/btnUi/IconButton";
-import LanguageButton from "@/components/btnUi/LanguageButton";
-import TextButton from "@/components/btnUi/TextButton";
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <IconButton color="outline" icon="Time" />
-      <LanguageButton style="jp" />
+      <Popup />
+      <PopupButton buttonLeft="ddd" buttonRight="asdasd" />
+      <PopupContent subTitle="asdasd" content="asdasd" />
     </>
   );
 }

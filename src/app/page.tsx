@@ -1,7 +1,14 @@
+import Header from "@/components/Header";
+import IconButton from "@/components/btnUi/IconButton";
+import LanguageButton from "@/components/btnUi/LanguageButton";
+import TextButton from "@/components/btnUi/TextButton";
+
 export default function Home() {
   return (
     <>
-      <h1 className=" text-navy-500 text-[60px] font-md">H1 / Pretendard Medium</h1>
+      <Header />
+      <IconButton color="outline" icon="Time" />
+      <LanguageButton style="jp" />
     </>
   );
 }

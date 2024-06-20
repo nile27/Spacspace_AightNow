@@ -1,4 +1,4 @@
-export default function ListDown() {
+export default function ListStockDown() {
   return (
     <>
       <div className="w-96 h-20 py-2 justify-between items-center inline-flex">

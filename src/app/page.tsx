@@ -1,12 +1,14 @@
-import Badge from "@/components/Badge/Badge";
-import Checkbox from "@/components/Checkbox/Checkbox";
-import { BadgeBlack, BadgeBlue, BadgeGray } from "@/components/Badge/Badge";
+import Popup from "@/components/Popup/Popup";
+import PopupButton from "@/components/Popup/PopupButton";
+import PopupContent from "@/components/Popup/PopupContent";
+import IconButton from "@/components/btnUi/IconButton";
 
 export default function Home() {
   return (
     <>
-      <BadgeBlue />
-      <Checkbox />
+      <Popup />
+      <PopupButton buttonLeft="ddd" buttonRight="asdasd" />
+      <PopupContent subTitle="asdasd" content="asdasd" />
     </>
   );
 }

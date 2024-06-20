@@ -1,15 +1,12 @@
-import Header from "@/components/Header";
-import IconButton from "@/components/btnUi/IconButton";
-import LanguageButton from "@/components/btnUi/LanguageButton";
-import TextButton from "@/components/btnUi/TextButton";
+import Badge from "@/components/Badge/Badge";
+import Checkbox from "@/components/Checkbox/Checkbox";
+import { BadgeBlack, BadgeBlue, BadgeGray } from "@/components/Badge/Badge";
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <IconButton color="outline" icon="Time" />
-      <LanguageButton style="jp" />
-      <div className=""></div>
+      <BadgeBlue />
+      <Checkbox />
     </>
   );
 }

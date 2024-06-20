@@ -13,7 +13,7 @@ function Checkbox(props: TCheckboxProps) {
   return (
     <div className="flex items-center">
       <div className="inline-flex items-center">
-        <label className="relative flex items-center p-3 rounded-full cursor-pointer" htmlFor={id}>
+        <label className="relative flex items-center  rounded-full cursor-pointer" htmlFor={id}>
           <input
             type="checkbox"
             className="before:content[''] peer relative h-5 w-5  appearance-none rounded border before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-mainNavy-500 before:opacity-0 checked:border-mainNavy-500 checked:bg-mainNavy-500 checked:before:bg-mainNavy-500"

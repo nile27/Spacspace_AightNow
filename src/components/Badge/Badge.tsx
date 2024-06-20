@@ -3,15 +3,12 @@ export default function Badge({ background, color }: { background?: string; colo
   return (
     <>
       <div
-        className={`w-[55px] h-8 px-2 py-1 bg-${background} rounded justify-start items-center gap-1 inline-flex`}
+        className={`w-[55px] h-8 ${background} rounded flex justify-center items-center p-1 gap-1.5`}
       >
-        <div className="w-6 h-5 relative">
+        <div className="w-5 h-5 flex items-center justify-center">
           <AI color={`${color}`} />
-          <div className="w-[13.75px] h-[13.72px] left-[3.75px] top-[2.50px] absolute"></div>
         </div>
-        <div
-          className={`text-center text-${color} text-base  font-semibold font-['Pretendard'] leading-normal`}
-        >
+        <div className={`text-${color} text-base font-medium font-['Pretendard'] leading-normal`}>
           AI
         </div>
       </div>
@@ -23,15 +20,12 @@ function BadgeReverse({ background, color }: { background: string; color: string
   return (
     <>
       <div
-        className={`w-[55px] h-8 px-2 py-1 bg-${background} rounded justify-start items-center gap-1 inline-flex`}
+        className={`w-[55px] h-8 ${background} rounded flex justify-center items-center p-1 gap-1.5`}
       >
-        <div
-          className={`text-center text-${color} text-base font-semibold font-['Pretendard'] leading-normal`}
-        >
+        <div className={`text-${color} text-base font-medium font-['Pretendard'] leading-normal`}>
           AI
         </div>
-        <div className="w-[13.75px] h-[13.72px] left-[3.75px] top-[2.50px] absolute"></div>
-        <div className="w-6 h-5 relative">
+        <div className="w-5 h-5 flex items-center justify-center">
           <AI color={`${color}`} />
         </div>
       </div>
@@ -42,7 +36,7 @@ function BadgeReverse({ background, color }: { background: string; color: string
 function BadgeBlack() {
   return (
     <>
-      <Badge background="black" color="white" />
+      <Badge background="bg-black" color="white" />
     </>
   );
 }
@@ -50,7 +44,7 @@ function BadgeBlack() {
 function BadgeGray() {
   return (
     <>
-      <Badge background="mainNavy-50" color="#18254C" />
+      <Badge background="bg-mainNavy-50" color="#18254C" />
     </>
   );
 }
@@ -58,7 +52,7 @@ function BadgeGray() {
 function BadgeBlue() {
   return (
     <>
-      <Badge background="secondBlue-50" color="#005A9B" />
+      <Badge background="bg-secondBlue-50" color="#005A9B" />
     </>
   );
 }

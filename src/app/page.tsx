@@ -9,6 +9,7 @@ export default function Home() {
       <Header />
       <IconButton color="outline" icon="Time" />
       <LanguageButton style="jp" />
+      <div className=""></div>
     </>
   );
 }

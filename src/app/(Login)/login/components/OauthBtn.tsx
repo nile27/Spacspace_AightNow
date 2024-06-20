@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import KakaoTalk from "../../../../public/icons/KakaoTalk.svg";
-import Apple from "../../../../public/icons/Apple.svg";
-import Naver from "../../../../public/icons/Naver.svg";
-import Google from "../../../../public/icons/Google.svg";
+import KakaoTalk from "../../../../../public/icons/KakaoTalk.svg";
+import Apple from "../../../../../public/icons/Apple.svg";
+import Naver from "../../../../../public/icons/Naver.svg";
+import Google from "../../../../../public/icons/Google.svg";
 
 type TStyleBtn = React.ComponentProps<"button"> & {
   style?: "kakao" | "apple" | "naver" | "google";
@@ -13,13 +13,13 @@ export default function OauthBtn({ style }: TStyleBtn) {
   const IconRenderIcon = (icon: string) => {
     switch (icon) {
       case "kakao":
-        return <KakaoTalk />;
+        return <KakaoTalk width="40" height="40" />;
       case "apple":
-        return <Apple />;
+        return <Apple width="32" height="32" />;
       case "naver":
-        return <Naver />;
+        return <Naver width="32" height="32" />;
       case "google":
-        return <Google />;
+        return <Google width="40" height="40" />;
 
       default:
         return null;

@@ -1,7 +1,5 @@
-import localFont from "next/font/local";
-
 export const metadata = {
-  title: "Login",
+  title: "IdFind",
 };
 
 export default function RootLayout({
@@ -9,5 +7,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className={`font-pretendard`}>{children}</div>;
+  return <>{children}</>;
 }

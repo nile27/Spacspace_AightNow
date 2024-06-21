@@ -1,7 +1,7 @@
 export default function CardTitle() {
   return (
     <>
-      <div className="w-[592px] h-[168px] p-6 left-0 top-[252px] absolute bg-gradient-to-t from-neutral-700 to-neutral-700 rounded-bl-2xl rounded-br-2xl flex-col justify-start items-start gap-3.5 inline-flex opacity-70">
+      <div className="w-[592px] h-[168px] p-6  bg-gradient-to-t from-neutral-700 to-neutral-700 rounded-bl-2xl rounded-br-2xl flex-col justify-start items-start gap-3.5 inline-flex opacity-70">
         <div className="w-[542px] text-white text-2xl font-bold font-['Pretendard'] leading-loose">
           엔비디아 또 신고가… 시총 2위 애플과 962억달러 차이
         </div>

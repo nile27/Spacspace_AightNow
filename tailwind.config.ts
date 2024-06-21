@@ -17,12 +17,12 @@ const config: Config = {
         h3: "40px",
         h4: "36px",
         body1: "32px",
-        body2: "28px",
-        body3: "28px",
-        body4: "24px",
-        body5: "20px",
-        caption: "16px",
-        button: "24px",
+        body2: "20px",
+        body3: "18px",
+        body4: "16px",
+        body5: "14px",
+        caption: "12px",
+        button: "16px",
       },
       colors: {
         mainNavy: {

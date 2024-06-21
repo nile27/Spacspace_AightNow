@@ -6,9 +6,16 @@ export default function IdFind() {
   return (
     <>
       <h1 className="  text-h3 font-extrabold">아이디 찾기</h1>
-      {1 ? (
+      {0 ? (
         <form className="mt-10 w-full h-auto flex flex-col gap-4 mb-10">
           <div className="w-full h-auto flex flex-col gap-4 mb-[56px]">
+            <InputExtends
+              id="username"
+              placeholder="이름을 입력해주세요"
+              label="이름"
+              required
+              autoComplete="username"
+            />
             <InputExtends
               id="id"
               type="email"
@@ -16,7 +23,7 @@ export default function IdFind() {
               label="아이디"
               required
               autoComplete="username"
-            ></InputExtends>
+            />
             <InputExtends
               type="tel"
               id="tel"

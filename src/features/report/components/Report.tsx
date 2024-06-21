@@ -33,7 +33,7 @@ export default function Report() {
       <div className="w-96 text-neutral-900 text-base font-normal font-['Pretendard'] leading-normal">
         애플은 스마트폰, 개인용 컴퓨터, 태블릿, 웨어러블 및 액세서리를 설계, 제조 및 판매하고 다양한
         관련 서비스를 판매한다. 제품 카테고리는 iPhone, MAc, iPad, Wearables, Home 및 Accessories로
-        나뉜다.{" "}
+        나뉜다.라고하네요
       </div>
     </>
   );

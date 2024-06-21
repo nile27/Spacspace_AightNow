@@ -24,10 +24,10 @@ const news = [
 export default function News() {
   return (
     <>
-      <div className="w-full p-12 bg-white rounded-3xl flex-col justify-start items-start inline-flex mt-6">
-        <div className="w-full">
+      <div className="w-full p-4 sm:p-8 md:p-12 bg-white rounded-3xl flex flex-col justify-start items-start mt-6">
+        <div className="w-full mb-8">
           <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">관심 종목</div>
-          <div className="grid grid-cols-3 gap-5 rounded-3xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 rounded-3xl">
             {lists.slice(0, 3).map((data, index) => (
               <div key={index} className="rounded-lg">
                 <WatchCard />
@@ -35,18 +35,19 @@ export default function News() {
             ))}
           </div>
         </div>
-        <div className="py-12 w-full">
+
+        <div className="w-full mb-8">
           <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">주요 뉴스</div>
-          <div className="w-full border border-mainNavy-100 rounded-3xl p-12">
+          <div className="w-full border border-mainNavy-100 rounded-3xl p-4 sm:p-8">
             {news.slice(0, 1).map((data, index) => (
-              <div key={index} className="flex gap-5">
-                <img className="w-80 h-60 rounded-3xl" src={data.img} alt="News" />
+              <div key={index} className="flex flex-col sm:flex-row gap-5">
+                <img className="w-full sm:w-80 h-60 rounded-3xl" src={data.img} alt="News" />
                 <div className="flex flex-col justify-start items-start w-full gap-2">
                   <div className="self-stretch text-black text-2xl font-medium leading-loose">
                     {data.title}
                   </div>
                   <hr className="w-full border-1 border-mainNavy-900" />
-                  <div className="w-[750px] text-zinc-700 text-lg font-normal leading-7 line-clamp-5">
+                  <div className="w-full max-w-full sm:max-w-[750px] text-zinc-700 text-lg font-normal leading-7 line-clamp-5">
                     {data.content}
                   </div>
                 </div>

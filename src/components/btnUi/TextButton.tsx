@@ -23,8 +23,8 @@ type TTextButton = React.ComponentProps<"button"> & {
     | "Time"
     | "Translate";
 
-  width?: number;
-  height?: number;
+  width?: string;
+  height?: string;
 };
 
 export default function TextButton(props: TTextButton) {

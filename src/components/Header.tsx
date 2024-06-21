@@ -3,8 +3,8 @@ export default function Header({
   background = "white",
   isLogin = false,
 }: {
-  background: string;
-  isLogin: boolean;
+  background?: string;
+  isLogin?: boolean;
 }) {
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
   return (

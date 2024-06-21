@@ -5,6 +5,7 @@ import Summary from "./Summary";
 import Chart from "./Chart";
 import AIReport from "./AIReport";
 import Analysis from "./Analysis";
+import FavoriteNews from "./FavoriteNews";
 
 export default function Report() {
   return (
@@ -24,6 +25,7 @@ export default function Report() {
         <AIReport />
         <Analysis />
       </div>
+      <FavoriteNews />
     </>
   );
 }

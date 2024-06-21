@@ -20,28 +20,15 @@ const news = [
     content: "ddd",
     img: "https://via.placeholder.com/338x240",
   },
-  {
-    title: "올해 자연재해 채권 발행액",
-    content: "ddd",
-    img: "https://via.placeholder.com/338x240",
-  },
 ];
 export default function News() {
-  // 주요뉴스 랜덤으로 가져오기
-  const getRandomNews = (newsArray: any) => {
-    const randomIndex = Math.floor(Math.random() * newsArray.length);
-    return newsArray[randomIndex];
-  };
-
-  const randomNews = getRandomNews(lists);
-
   return (
     <>
       <div className="w-full p-12 bg-white rounded-3xl flex-col justify-start items-start inline-flex mt-6">
         <div className="w-full">
           <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">관심 종목</div>
           <div className="grid grid-cols-3 gap-5 rounded-3xl">
-            {lists.splice(0, 3).map((data, index) => (
+            {lists.slice(0, 3).map((data, index) => (
               <div key={index} className="rounded-lg">
                 <WatchCard />
               </div>
@@ -50,27 +37,33 @@ export default function News() {
         </div>
         <div className="py-12 w-full">
           <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">주요 뉴스</div>
-          <div className="w-full border border-mainNavy-100 rounded-3xl flex flex-col justify-start items-start gap-2.5 p-8">
-            {news.slice(0, 1).map((news, index) => (
-              <div key={index} className="flex justify-start items-start gap-5 w-full">
-                <img className="w-80 h-60 rounded-3xl" src={news.img} alt="News" />
-                <div className="w-full flex flex-col justify-start items-start gap-2">
+          <div className="w-full border border-mainNavy-100 rounded-3xl p-12">
+            {news.slice(0, 1).map((data, index) => (
+              <div key={index} className="flex gap-5">
+                <img className="w-80 h-60 rounded-3xl" src={data.img} alt="News" />
+                <div className="flex flex-col justify-start items-start w-full gap-2">
                   <div className="self-stretch text-black text-2xl font-medium leading-loose">
-                    dd
+                    {data.title}
                   </div>
                   <hr className="w-full border-1 border-mainNavy-900" />
-                  <div className="text-zinc-700 text-lg font-normal leading-7 line-clamp-5">dd</div>
+                  <div className="w-[750px] text-zinc-700 text-lg font-normal leading-7 line-clamp-5">
+                    {data.content}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
         <div className="w-full">
           <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">최신 뉴스</div>
-          <div className=" border border-mainNavy-100 rounded-3xl">
-            {lists.splice(0, 3).map((data, index) => (
-              <div key={index} className="flex rounded-lg p-8">
-                <ListNews key={index} />
+          <div className="border border-mainNavy-100 rounded-3xl">
+            {lists.slice(0, 3).map((data, index) => (
+              <div key={index}>
+                <div className="flex rounded-lg p-12">
+                  <ListNews />
+                </div>
+                {index < 2 && <hr className="border-t border-slate-300 mx-8" />}
               </div>
             ))}
           </div>

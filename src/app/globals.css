@@ -7,6 +7,10 @@ body {
   padding: 0;
   margin: 0;
   border: 0;
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
 @layer base {

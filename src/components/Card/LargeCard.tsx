@@ -9,7 +9,7 @@ export default function LargeCard() {
             className="w-[592px] h-[420px]  rounded-2xl"
             src="https://via.placeholder.com/590x420"
           />
-          <CardTitle />
+          <CardTitle image="/news.png" />
         </div>
       </div>
     </>

@@ -10,22 +10,24 @@ import FavoriteNews from "./FavoriteNews";
 export default function Report() {
   return (
     <>
-      <div className="w-[1200px] h-16  flex justify-between items-center    shadow-sm">
-        <div className="w-[388px] h-16 flex items-center gap-3">
-          <Icon name="apple" size={40} />
-          <span className="text-lg font-medium">애플 · APPL</span>
+      <div className="flex flex-col gap-4">
+        <div className="w-[1200px] h-16  flex justify-between items-center  ">
+          <div className="w-[388px] h-16 flex items-center gap-2">
+            <Icon name="apple" size={50} />
+            <span className="text-lg font-medium">애플 · APPL</span>
+          </div>
+          <TextButton size="sm">관심종목 추가</TextButton>
         </div>
-        <TextButton size="sm">관심종목 추가</TextButton>
+        <div className="w-[1200px] flex gap-4">
+          <Summary />
+          <Chart />
+        </div>
+        <div className="w-[1200px] flex gap-4 ">
+          <AIReport />
+          <Analysis />
+        </div>
+        <FavoriteNews />
       </div>
-      <div className="w-[1200px] flex justify-between">
-        <Summary />
-        <Chart />
-      </div>
-      <div className="flex justify-between ">
-        <AIReport />
-        <Analysis />
-      </div>
-      <FavoriteNews />
     </>
   );
 }

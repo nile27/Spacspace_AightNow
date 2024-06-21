@@ -3,7 +3,7 @@ import Toggle from "@/components/Toggle/Toggle";
 export default function Summary() {
   return (
     <>
-      <div className="w-[424px] h-64 flex flex-wrap justify-between items-start border bg-white">
+      <div className="w-[488px] h-64 flex flex-wrap justify-between items-start border bg-white rounded-2xl p-4">
         <div className="flex flex-col">
           <div className="text-black/opacity-20 text-2xl font-bold font-['Pretendard'] leading-loose">
             $00.00 ∙ AAPL

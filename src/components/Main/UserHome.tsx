@@ -1,8 +1,7 @@
 import { BadgeBlack } from "../Badge/Badge";
 import Header from "../Header";
-import ListNews from "../List/ListNews";
 import ListStockDown from "../List/ListStockDown";
-import IconButton from "../btnUi/IconButton";
+import News from "./News";
 import Report from "./Report";
 
 const datas = [
@@ -62,6 +61,12 @@ export default function UserHome() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="text-scaleGray-900 text-body3 font-bold leading-9">
+                {"Next"}님을 위한 주식뉴스
+              </div>
+              <News />
             </div>
           </div>
         </div>

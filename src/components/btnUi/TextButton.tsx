@@ -30,7 +30,7 @@ type TTextButton = React.ComponentProps<"button"> & {
 export default function TextButton(props: TTextButton) {
   const { children, size, color, width, height, icon, ...restBtnProps } = props;
   // 버튼 스타일링
-  const buttonVariants = cva(`rounded-lg`, {
+  const buttonVariants = cva(`rounded-lg whitespace-nowrap`, {
     variants: {
       size: {
         default: `w-[386px] bg-scaleGray-900 h-16 px-2.5 py-[18px] `,

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import InputExtends from "@/components/Input/Input";
+import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
 import IdFetch from "./component/IdFetch";
 
@@ -14,7 +14,7 @@ export default function IdFind() {
       {1 ? (
         <form className="mt-10 w-full h-auto flex flex-col gap-4 mb-10">
           <div className="w-full h-auto flex flex-col gap-4 mb-[56px]">
-            <InputExtends
+            <NewInput
               id="username"
               placeholder="이름을 입력해주세요"
               label="이름"
@@ -22,7 +22,7 @@ export default function IdFind() {
               autoComplete="username"
               onChange={e => setName(e.target.value)}
             />
-            <InputExtends
+            <NewInput
               id="id"
               type="text"
               placeholder="아이디를 입력해주세요"
@@ -31,7 +31,7 @@ export default function IdFind() {
               autoComplete="username"
               onChange={e => setId(e.target.value)}
             />
-            <InputExtends
+            <NewInput
               type="tel"
               id="tel"
               label="전화번호"

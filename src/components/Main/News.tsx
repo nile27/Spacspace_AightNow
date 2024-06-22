@@ -42,12 +42,12 @@ export default function News() {
             {news.slice(0, 1).map((data, index) => (
               <div key={index} className="flex flex-col sm:flex-row gap-5">
                 <img className="w-full sm:w-80 h-60 rounded-3xl" src={data.img} alt="News" />
-                <div className="flex flex-col justify-start items-start w-full gap-2">
+                <div className="flex flex-col justify-start items-start w-full ">
                   <div className="self-stretch text-black text-2xl font-medium leading-loose">
                     {data.title}
                   </div>
-                  <hr className="w-full border-1 border-mainNavy-900" />
-                  <div className="w-full max-w-full sm:max-w-[750px] text-zinc-700 text-lg font-normal leading-7 line-clamp-5">
+                  <hr className="w-full border-t border-scaleGray-400 my-6" />
+                  <div className="w-full max-w-full text-zinc-700 text-lg font-normal leading-7 line-clamp-5 text-justify">
                     {data.content}
                   </div>
                 </div>
@@ -64,7 +64,7 @@ export default function News() {
                 <div className="flex rounded-lg p-12">
                   <ListNews />
                 </div>
-                {index < 2 && <hr className="border-t border-slate-300 mx-8" />}
+                {index < 2 && <hr className="border-t border-scaleGray-400 mx-8" />}
               </div>
             ))}
           </div>

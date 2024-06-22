@@ -63,7 +63,7 @@ export default function Login() {
 
         <div className=" w-full flex justify-between items-center py-1">
           <span className="text-center">아직 회원이 아니신가요?</span>
-          <Link href={"/"} className=" text-secondBlue-600 border-b-2 border-secondBlue-600">
+          <Link href={"/auth"} className=" text-secondBlue-600 border-b-2 border-secondBlue-600">
             아잇나우 회원가입
           </Link>
         </div>

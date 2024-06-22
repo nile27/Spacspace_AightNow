@@ -1,4 +1,5 @@
 import TextButton from "@/components/btnUi/TextButton";
+import Link from "next/link";
 
 export default function AuthModal() {
   return (
@@ -11,9 +12,11 @@ export default function AuthModal() {
           <span className=" text-center whitespace-wrap ">이메일을 확인하여 임시 비밀번호로</span>
           <span> 재로그인 후 비밀번호를 변경해주세요.</span>
         </div>
-        <TextButton size="custom" width={"100%"} height={"100%"}>
-          로그인
-        </TextButton>
+        <Link href={"/login"} className="w-full h-auto">
+          <TextButton size="custom" width={"100%"} height={"100%"}>
+            로그인
+          </TextButton>
+        </Link>
       </div>
     </div>
   );

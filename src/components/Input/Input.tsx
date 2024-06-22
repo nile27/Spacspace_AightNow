@@ -25,7 +25,7 @@ export default function Input(props: TInputProps) {
             {label}
           </label>
         )}
-        <div className=" has-[:focus]:border-secondBlue-500 w-full min-w-[386px] px-4 py-2.5 bg-white rounded-lg border-[1px] border-stone-300 group-focus:border-secondBlue-500  justify-start items-center gap-4 inline-flex">
+        <div className=" has-[:focus]:border-secondBlue-500 w-full min-h-[56px] min-w-[386px] px-4 py-2.5 bg-white rounded-lg border-[1px] border-stone-300 group-focus:border-secondBlue-500  justify-start items-center gap-4 inline-flex">
           <input
             id={id}
             className=" min-w-[314px] w-full text-neutral-900 text-base font-normal leading-normal focus:outline-none "
@@ -57,7 +57,7 @@ function InputExtends(props: TInputProps) {
   const successColor = "text-[#1FCE65]";
 
   return (
-    <div className="w-[386px]  h-[104px]  flex-col justify-start items-start gap-1 inline-flex">
+    <div className="w-[386px]  h-[104px]   flex-col justify-start items-start gap-1 inline-flex">
       {id && (
         <label
           htmlFor={id}

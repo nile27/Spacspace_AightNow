@@ -52,7 +52,7 @@ export default function NewInput(props: TInputProps) {
         >
           <input
             id={id}
-            className=" w-[100%] text-neutral-900 text-base font-normal leading-normal focus:outline-none "
+            className=" text-start w-[100%] text-neutral-900 text-base font-normal leading-normal focus:outline-none "
             onChange={onChange}
             {...restProps}
           />

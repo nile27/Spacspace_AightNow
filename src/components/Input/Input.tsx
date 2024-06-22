@@ -28,7 +28,7 @@ export default function Input(props: TInputProps) {
         <div className=" has-[:focus]:border-secondBlue-500 w-full min-h-[56px] min-w-[386px] px-4 py-2.5 bg-white rounded-lg border-[1px] border-stone-300 group-focus:border-secondBlue-500  justify-start items-center gap-4 inline-flex">
           <input
             id={id}
-            className=" min-w-[314px] w-full text-neutral-900 text-base font-normal leading-normal focus:outline-none "
+            className=" max-w-[314px]  w-full text-neutral-900 text-base font-normal leading-normal focus:outline-none "
             onChange={onChange}
             {...restProps}
           />
@@ -37,7 +37,7 @@ export default function Input(props: TInputProps) {
         {id && (
           <label
             htmlFor={id}
-            className="min-w-[386px] w-full text-zinc-700 text-xs font-caption font-['Pretendard'] leading-none"
+            className="min-w-[386px] mt-1 w-full text-zinc-700 text-xs font-caption font-['Pretendard'] leading-none"
           >
             {caption}
           </label>
@@ -75,7 +75,7 @@ function InputExtends(props: TInputProps) {
       >
         <input
           id={id}
-          className={`w-[314px]  text-base font-normal leading-normal focus:outline-none focus:placeholder-secondBlue-500 ${
+          className={`max-w-[314px]  text-base font-normal leading-normal focus:outline-none focus:placeholder-secondBlue-500 ${
             disabled ? "cursor-not-allowed bg-neutral-100" : ""
           }`}
           onChange={onChange}
@@ -89,7 +89,7 @@ function InputExtends(props: TInputProps) {
       {id && (
         <label
           htmlFor={id}
-          className={`w-[386px] text-xs font-medium font-['Pretendard'] leading-none ${textColor}`}
+          className={`w-[386px]  text-xs font-medium font-['Pretendard'] leading-none ${textColor}`}
         >
           {caption}
         </label>

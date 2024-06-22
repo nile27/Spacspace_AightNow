@@ -40,13 +40,13 @@ export default function TextButton(props: TTextButton) {
         full: `w-full  min-h-[64px] px-2.5 py-2 `,
       },
       color: {
-        default: "bg-scaleGray-900",
+        default: "bg-mainNavy-900 hover:bg-[#213564]",
         disable: "bg-scaleGray-200 cursor-default ",
         grayScale: "bg-scaleGray-200",
-        warning: "bg-warning",
-        success: "bg-success",
-        outline: "bg-white border-[1px] border-scaleGray-900",
-        secondary: "bg-secondBlue-500",
+        warning: "bg-warning hover:bg-[#FF5271]",
+        success: "bg-success hover:bg-[#33E078]",
+        outline: "bg-white border-[1px] border-scaleGray-900 hover:border-scaleGray-800",
+        secondary: "bg-secondBlue-500 hover:border-secondBlue-300",
       },
     },
     defaultVariants: {
@@ -84,6 +84,7 @@ export default function TextButton(props: TTextButton) {
     <>
       <button
         {...restBtnProps}
+        type="button"
         className={cn(
           buttonVariants({ size, color }),
           `justify-center items-center gap-1 inline-flex`,

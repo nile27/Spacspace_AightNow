@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import InputExtends from "@/components/Input/Input";
+import NewInput from "@/components/Input/NewInput";
 import { EyeSVG } from "@/components/btnUi/Svg";
 import { EyeNotSVG } from "@/components/btnUi/Svg";
 import Checkbox from "@/components/Checkbox/Checkbox";
@@ -17,7 +17,7 @@ export default function Login() {
     <>
       <h1 className=" mb-10 text-h3 font-extrabold">회원가입</h1>
       <form className=" w-full h-auto flex flex-col gap-4 mb-7">
-        <InputExtends
+        <NewInput
           type="text"
           placeholder="아이디를 입력해주세요"
           autoComplete="off"
@@ -27,11 +27,11 @@ export default function Login() {
           value={idText}
           onChange={e => setId(e.target.value)}
         >
-          <TextButton size="custom" width="400px" height="auto">
-            asdasd
+          <TextButton size="custom" width="120px" height="auto">
+            중복 확인
           </TextButton>
-        </InputExtends>
-        <InputExtends
+        </NewInput>
+        <NewInput
           type="password"
           placeholder="비밀번호를 입력해주세요"
           autoComplete="current-password"
@@ -41,7 +41,7 @@ export default function Login() {
           value={pwText}
           onChange={e => setPw(e.target.value)}
         />
-        <InputExtends
+        <NewInput
           type="password"
           placeholder="비밀번호를 다시 입력해주세요"
           autoComplete="current-password"
@@ -51,7 +51,7 @@ export default function Login() {
           onChange={e => setPw(e.target.value)}
         />
 
-        <InputExtends
+        <NewInput
           type="tel"
           placeholder="-를 제외한 휴대폰번호를 입력해주세요."
           autoComplete="current-password"
@@ -60,7 +60,7 @@ export default function Login() {
           value={pwText}
           onChange={e => setPw(e.target.value)}
         />
-        <InputExtends
+        <NewInput
           type="number"
           placeholder="생년월일 6자리를 입력해주세요.(예시: 991231)"
           autoComplete="current-password"

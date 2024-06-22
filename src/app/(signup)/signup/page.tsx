@@ -6,9 +6,6 @@ import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 
 export default function Login() {
-  const [pwHide, setpwHide] = useState(false);
-  const [idText, setId] = useState("");
-  const [pwText, setPw] = useState("");
   const [inputText, setInput] = useState({
     id: "",
     pw: "",

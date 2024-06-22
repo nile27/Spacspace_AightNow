@@ -32,9 +32,15 @@ export default function Login() {
           style={"success"}
           onChange={handleInputValue("id")}
         >
-          <TextButton size="custom" width="120px" height="auto">
-            중복 확인
-          </TextButton>
+          {inputText.id ? (
+            <TextButton size="custom" width="120px" height="auto">
+              중복 확인
+            </TextButton>
+          ) : (
+            <TextButton color="disable" size="custom" width="120px" height="auto">
+              중복 확인
+            </TextButton>
+          )}
         </NewInput>
         <NewInput
           type="password"
@@ -81,7 +87,7 @@ export default function Login() {
           inputText.phone &&
           inputText.pw &&
           inputText.pwCheck ? (
-            <Link href={"/signup/profile"}>
+            <Link href={"/profile"}>
               <TextButton size="full">다음</TextButton>
             </Link>
           ) : (

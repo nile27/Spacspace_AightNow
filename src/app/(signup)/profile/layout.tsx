@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "IdFind",
+  title: "Signup",
 };
 
 export default function RootLayout({

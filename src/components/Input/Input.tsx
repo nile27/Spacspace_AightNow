@@ -16,7 +16,7 @@ export default function Input(props: TInputProps) {
   const { id, label, caption, children, onChange, ...restProps } = props;
   return (
     <>
-      <div className="min-w-[386px] w-full h-auto min-h-[56px] flex-col justify-start items-start gap-1 inline-flex">
+      <div className="w-[386px] h-[104px] flex-col justify-start items-start gap-1 inline-flex">
         {id && (
           <label
             htmlFor={id}
@@ -25,10 +25,10 @@ export default function Input(props: TInputProps) {
             {label}
           </label>
         )}
-        <div className=" has-[:focus]:border-secondBlue-500 w-full min-h-[56px] min-w-[386px] px-4 py-2.5 bg-white rounded-lg border-[1px] border-stone-300 group-focus:border-secondBlue-500  justify-start items-center gap-4 inline-flex">
+        <div className="w-[386px] px-4 py-2.5 bg-white rounded-lg border border-stone-300 justify-start items-center gap-4 inline-flex">
           <input
             id={id}
-            className=" min-w-[314px] w-full text-neutral-900 text-base font-normal leading-normal focus:outline-none "
+            className="w-[314px] text-neutral-900 text-base font-normal leading-normal focus:outline-none"
             onChange={onChange}
             {...restProps}
           />
@@ -37,7 +37,7 @@ export default function Input(props: TInputProps) {
         {id && (
           <label
             htmlFor={id}
-            className="min-w-[386px] w-full text-zinc-700 text-xs font-caption font-['Pretendard'] leading-none"
+            className="w-[386px] text-zinc-700 text-xs font-caption font-['Pretendard'] leading-none"
           >
             {caption}
           </label>
@@ -57,7 +57,7 @@ function InputExtends(props: TInputProps) {
   const successColor = "text-[#1FCE65]";
 
   return (
-    <div className="w-[386px]  h-[104px]   flex-col justify-start items-start gap-1 inline-flex">
+    <div className="w-[386px] h-[104px] flex-col justify-start items-start gap-1 inline-flex">
       {id && (
         <label
           htmlFor={id}
@@ -69,13 +69,13 @@ function InputExtends(props: TInputProps) {
         </label>
       )}
       <div
-        className={`w-[386px]  px-4 py-2.5 ${
+        className={`w-[386px] px-4 py-2.5 ${
           disabled ? " bg-neutral-100" : "bg-white"
         }  rounded-lg border ${borderColor} justify-start items-center gap-4 inline-flex`}
       >
         <input
           id={id}
-          className={`w-[314px]  text-base font-normal leading-normal focus:outline-none focus:placeholder-secondBlue-500 ${
+          className={`w-[314px] text-base font-normal leading-normal focus:outline-none focus:placeholder-secondBlue-500 ${
             disabled ? "cursor-not-allowed bg-neutral-100" : ""
           }`}
           onChange={onChange}

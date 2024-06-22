@@ -11,7 +11,6 @@ export default function IdFind() {
 
   const handlerAuth = () => {
     setIsModal(!isModal);
-    console.log(isModal);
   };
 
   return (

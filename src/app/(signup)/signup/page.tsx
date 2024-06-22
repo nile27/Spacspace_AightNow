@@ -20,68 +20,66 @@ export default function Login() {
         <InputExtends
           type="text"
           placeholder="아이디를 입력해주세요"
-          autoComplete="username"
+          autoComplete="off"
+          label="아이디"
+          id="id"
+          caption="* 6~12자의 영문, 숫자, _을 이용한 조합"
           value={idText}
           onChange={e => setId(e.target.value)}
-        ></InputExtends>
+        >
+          <TextButton size="custom" width="400px" height="auto">
+            asdasd
+          </TextButton>
+        </InputExtends>
         <InputExtends
-          type={pwHide ? "text" : "password"}
+          type="password"
           placeholder="비밀번호를 입력해주세요"
           autoComplete="current-password"
+          label="비밀번호 입력"
+          id="password"
+          caption="* 8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합"
           value={pwText}
           onChange={e => setPw(e.target.value)}
-        >
-          {!pwHide ? (
-            <button type="button" onClick={() => setpwHide(true)}>
-              <EyeSVG color="#C5C5C5" width={25} height={25} />
-            </button>
+        />
+        <InputExtends
+          type="password"
+          placeholder="비밀번호를 다시 입력해주세요"
+          autoComplete="current-password"
+          label="비밀번호 확인"
+          id="password"
+          value={pwText}
+          onChange={e => setPw(e.target.value)}
+        />
+
+        <InputExtends
+          type="tel"
+          placeholder="-를 제외한 휴대폰번호를 입력해주세요."
+          autoComplete="current-password"
+          label="휴대폰번호"
+          id="tel"
+          value={pwText}
+          onChange={e => setPw(e.target.value)}
+        />
+        <InputExtends
+          type="number"
+          placeholder="생년월일 6자리를 입력해주세요.(예시: 991231)"
+          autoComplete="current-password"
+          label="생년월일"
+          id="number"
+          value={pwText}
+          onChange={e => setPw(e.target.value)}
+        />
+
+        <div className="w-full h-auto mt-6">
+          {idText && pwText ? (
+            <TextButton size="full">다음</TextButton>
           ) : (
-            <button type="button" onClick={() => setpwHide(false)}>
-              <EyeNotSVG color="#C5C5C5" width={25} height={25} />
-            </button>
+            <TextButton size="full" color="disable">
+              다음
+            </TextButton>
           )}
-        </InputExtends>
-
-        <div className="w-full h-auto mb-4 flex justify-between items-center">
-          <div className="flex gap-2 items-center">
-            <Checkbox /> <span>자동 로그인</span>
-          </div>
-          <div className="flex gap-2 items-center">
-            <Link href="/idfind">아이디 찾기</Link>
-            <span>|</span>
-            <Link href="/pwfind">비밀번호 찾기</Link>
-          </div>
-        </div>
-
-        {idText && pwText ? (
-          <TextButton size="full">로그인</TextButton>
-        ) : (
-          <TextButton size="full" color="disable">
-            로그인
-          </TextButton>
-        )}
-
-        <div className=" w-full flex justify-between items-center py-1">
-          <span className="text-center">아직 회원이 아니신가요?</span>
-          <Link href={"/"} className=" text-secondBlue-600 border-b-2 border-secondBlue-600">
-            아잇나우 회원가입
-          </Link>
         </div>
       </form>
-
-      <div className=" w-full flex flex-col items-center gap-6">
-        <div className="w-full h-auto flex items-center gap-5">
-          <div className="border-b-[1px] h-1 w-full border-scaleGray-400"></div>
-          <span className=" whitespace-nowrap">또는</span>
-          <div className="border-b-[1px] h-1 w-full border-scaleGray-400"></div>
-        </div>
-        <div className="w-full  flex gap-4  justify-center items-center">
-          <OauthBtn style={"kakao"} />
-          <OauthBtn style={"naver"} />
-
-          <OauthBtn style={"google"} />
-        </div>
-      </div>
     </>
   );
 }

@@ -5,6 +5,7 @@ import Select from "./components/Select";
 import { useState, useRef, useEffect } from "react";
 import { Edit } from "@/components/btnUi/Svg";
 import SelectInput from "./components/SelectInput";
+import Link from "next/link";
 
 export default function Profile() {
   const [inputText, setInput] = useState({
@@ -97,10 +98,10 @@ export default function Profile() {
         </div>
 
         <div className="w-full h-auto mt-6">
-          {inputText.id && inputText.pw ? (
-            <a href="/signup/profile">
+          {inputText.id && inputText.pw !== "관심 종목을 선택해주세요." ? (
+            <Link href="/profile">
               <TextButton size="full">다음</TextButton>
-            </a>
+            </Link>
           ) : (
             <TextButton size="full" color="disable">
               다음

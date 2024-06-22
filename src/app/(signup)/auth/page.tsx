@@ -36,7 +36,7 @@ export default function IdFind() {
           />
         </div>
 
-        {email && nameText ? (
+        {email && email.includes("@") && nameText ? (
           <TextButton onClick={handlerAuth} size="full">
             인증링크 전송
           </TextButton>

@@ -41,7 +41,7 @@ export default function TextButton(props: TTextButton) {
       },
       color: {
         default: "bg-scaleGray-900",
-        disable: "bg-scaleGray-200",
+        disable: "bg-scaleGray-200 cursor-default ",
         grayScale: "bg-scaleGray-200",
         warning: "bg-warning",
         success: "bg-success",

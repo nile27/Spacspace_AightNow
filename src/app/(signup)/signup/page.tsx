@@ -15,7 +15,7 @@ export default function Login() {
 
   return (
     <>
-      <h1 className=" mb-10 text-h3 font-extrabold">로그인</h1>
+      <h1 className=" mb-10 text-h3 font-extrabold">회원가입</h1>
       <form className=" w-full h-auto flex flex-col gap-4 mb-7">
         <InputExtends
           type="text"
@@ -63,7 +63,7 @@ export default function Login() {
 
         <div className=" w-full flex justify-between items-center py-1">
           <span className="text-center">아직 회원이 아니신가요?</span>
-          <Link href={"/auth"} className=" text-secondBlue-600 border-b-2 border-secondBlue-600">
+          <Link href={"/"} className=" text-secondBlue-600 border-b-2 border-secondBlue-600">
             아잇나우 회원가입
           </Link>
         </div>

@@ -8,6 +8,7 @@ export default function IdFind() {
   const [nameText, setName] = useState("");
   const [idText, setId] = useState("");
   const [email, setEmail] = useState("");
+  const [ismodal, setModal] = useState(false);
   return (
     <>
       <h1 className="  text-h3 font-extrabold">비밀번호 찾기</h1>
@@ -32,7 +33,7 @@ export default function IdFind() {
             autoComplete="username"
           />
           <InputExtends
-            type="email"
+            type="text"
             id="email"
             label="이메일주소"
             placeholder="가입 시 입력한 이메일주소를 입력해주세요."
@@ -41,15 +42,17 @@ export default function IdFind() {
           />
         </div>
 
-        {idText && email && nameText ? (
-          <TextButton size="full"> 임시 비밀번호 발급</TextButton>
+        {idText && email && email.includes("@") && nameText ? (
+          <TextButton onClick={() => setModal(!ismodal)} size="full">
+            임시 비밀번호 발급
+          </TextButton>
         ) : (
           <TextButton size="full" color="disable">
             임시 비밀번호 발급
           </TextButton>
         )}
       </form>
-      {false && <AuthModal />}
+      {ismodal && <AuthModal />}
     </>
   );
 }

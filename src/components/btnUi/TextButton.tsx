@@ -84,6 +84,7 @@ export default function TextButton(props: TTextButton) {
     <>
       <button
         {...restBtnProps}
+        type="button"
         className={cn(
           buttonVariants({ size, color }),
           `justify-center items-center gap-1 inline-flex`,

@@ -9,7 +9,7 @@ export default function Header({
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
   return (
     <header
-      className={` w-full h-[80px] py-[8px] bg-${background} flex flex-row justify-between items-center px-[5vw] `}
+      className={`fixed top-0 w-full h-[80px] py-[8px] bg-${background} flex flex-row justify-between items-center px-[5vw] `}
     >
       <div className=" w-[65%] flex flex-row justify-between items-center pr-5 ">
         <button>

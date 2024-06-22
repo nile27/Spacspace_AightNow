@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import InputExtends from "@/components/Input/Input";
+import NewInput from "@/components/Input/NewInput";
 import { EyeSVG } from "@/components/btnUi/Svg";
 import { EyeNotSVG } from "@/components/btnUi/Svg";
 import Checkbox from "@/components/Checkbox/Checkbox";
@@ -17,14 +17,14 @@ export default function Login() {
     <>
       <h1 className=" mb-10 text-h3 font-extrabold">로그인</h1>
       <form className=" w-full h-auto flex flex-col gap-4 mb-7">
-        <InputExtends
+        <NewInput
           type="text"
           placeholder="아이디를 입력해주세요"
           autoComplete="username"
           value={idText}
           onChange={e => setId(e.target.value)}
-        ></InputExtends>
-        <InputExtends
+        ></NewInput>
+        <NewInput
           type={pwHide ? "text" : "password"}
           placeholder="비밀번호를 입력해주세요"
           autoComplete="current-password"
@@ -40,7 +40,7 @@ export default function Login() {
               <EyeNotSVG color="#C5C5C5" width={25} height={25} />
             </button>
           )}
-        </InputExtends>
+        </NewInput>
 
         <div className="w-full h-auto mb-4 flex justify-between items-center">
           <div className="flex gap-2 items-center">

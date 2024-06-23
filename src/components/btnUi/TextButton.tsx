@@ -36,7 +36,7 @@ export default function TextButton(props: TTextButton) {
         default: `w-[386px] bg-scaleGray-900 h-16 px-2.5 py-[18px] `,
         sm: `w-[386px] h-9 px-2.5 py-2`,
         md: `w-[386px] h-14 px-2.5 py-4`,
-        custom: `w-[${width}] h-[${height}]  px-2.5 py-2 `,
+        custom: ` px-2.5 py-2 `,
         full: `w-full  min-h-[64px] px-2.5 py-2 `,
       },
       color: {
@@ -87,7 +87,9 @@ export default function TextButton(props: TTextButton) {
         type="button"
         className={cn(
           buttonVariants({ size, color }),
-          `justify-center items-center gap-1 inline-flex`,
+          ` ${
+            size === "custom" && width && height && `w-[${width}] h-[${height}]`
+          } justify-center items-center flex`,
         )}
       >
         {icon && TextRenderIcon(icon, color, size)}

@@ -1,11 +1,19 @@
+import Link from "next/link";
 import SideBarBtn from "./SideBarBtn";
 
-export default function SideBar() {
+export default function SideBar({ index }: { index: number }) {
+  const sidebarArr = ["개인정보 수정", "언어 설정", "서비스 이용약관"];
+  const urlArr = ["/mypage", "/language", "/"];
+
   return (
     <aside className="bg-white rounded-2xl w-[285px] min-h-[720px] py-10 flex flex-col items-start justify-start gap-2">
-      <SideBarBtn>개인정보 수정</SideBarBtn>
-      <SideBarBtn>언어 설정</SideBarBtn>
-      <SideBarBtn>서비스 이용약관</SideBarBtn>
+      {sidebarArr.map((item, idx) => (
+        <Link href={urlArr[idx]}>
+          <SideBarBtn key={idx} idx={index === idx}>
+            {item}
+          </SideBarBtn>
+        </Link>
+      ))}
     </aside>
   );
 }

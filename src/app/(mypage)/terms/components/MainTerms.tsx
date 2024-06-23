@@ -6,7 +6,7 @@ export default function MainTerms() {
   const [authBtn, setAuthBtn] = useState(false);
 
   return (
-    <main className="w-full h-auto rounded-2xl p-[32px] min-h-[720px] bg-white ">
+    <main className="w-full h-auto rounded-2xl p-[32px] min-h-[700px] bg-white ">
       <div className="w-full h-auto flex justify-between items-center mb-[24px] ">
         <div className="w-auto h-auto  ">
           <h2 className=" text-body2  text-mainNavy-900 font-bold mb-3">서비스 이용약관</h2>
@@ -22,8 +22,8 @@ export default function MainTerms() {
 
       <div
         className={` w-full border border-scaleGray-200 rounded-2xl p-[24px] mb-10 ${
-          !serviceBtn ? "h-[25vh] overflow-y-scroll" : "h-auto"
-        }  h-auto`}
+          serviceBtn ? "h-auto" : "h-[230px] overflow-y-scroll"
+        }  `}
       >
         <h1 className="mb-5">서비스 이용약관</h1>
         <p className="mb-5">스팩AI애널리스트 서비스 이용약관</p>
@@ -130,8 +130,8 @@ export default function MainTerms() {
 
       <div
         className={` w-full border border-scaleGray-200 rounded-2xl p-[24px]  ${
-          !authBtn ? "h-[25vh] overflow-y-scroll" : "h-auto"
-        }  h-auto`}
+          !authBtn ? "h-[230px] overflow-y-scroll" : "h-auto"
+        }  `}
       >
         <p className="mb-5">개인정보 처리방침</p>
         <p className="mb-5">스팩AI애널리스트 개인정보 처리방침</p>

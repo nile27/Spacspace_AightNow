@@ -4,7 +4,7 @@ import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
 import AuthModal from "./component/AuthModal";
 
-export default function IdFind() {
+export default function Auth() {
   const [nameText, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isModal, setIsModal] = useState(false);

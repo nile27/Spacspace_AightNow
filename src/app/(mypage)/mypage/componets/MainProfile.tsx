@@ -1,8 +1,13 @@
+"use client";
+import { useState } from "react";
 import TextButton from "@/components/btnUi/TextButton";
+import ModalContainer from "../../components/ModalContainer";
 
 export default function MainProfile() {
+  const [isModal, setModal] = useState(false);
+  const [modalIdx, setIdx] = useState(0);
   return (
-    <main className="w-full h-auto rounded-2xl p-[32px] min-h-[720px] bg-white ">
+    <main className="w-full h-auto rounded-2xl p-[32px] min-h-[720px]  bg-white ">
       <figure className="w-full h-auto mb-10">
         <div className="w-full h-auto flex justify-between items-center">
           <div className="w-auto h-auto">
@@ -12,7 +17,15 @@ export default function MainProfile() {
             </span>
           </div>
 
-          <TextButton size="custom" width="200px" height="36px">
+          <TextButton
+            onClick={() => {
+              setModal(!isModal);
+              setIdx(0);
+            }}
+            size="custom"
+            width="200px"
+            height="36px"
+          >
             프로필 설정
           </TextButton>
         </div>
@@ -34,7 +47,15 @@ export default function MainProfile() {
             </span>
           </div>
 
-          <TextButton size="custom" width="200px" height="36px">
+          <TextButton
+            size="custom"
+            width="200px"
+            height="36px"
+            onClick={() => {
+              setModal(!isModal);
+              setIdx(1);
+            }}
+          >
             계정정보 수정
           </TextButton>
         </div>
@@ -57,6 +78,9 @@ export default function MainProfile() {
           </div>
         </div>
       </figure>
+      {isModal && (
+        <ModalContainer isModal={isModal} setIsModal={setModal} setIdx={setIdx} idx={modalIdx} />
+      )}
     </main>
   );
 }

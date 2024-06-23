@@ -99,7 +99,7 @@ export default function Profile() {
 
         <div className="w-full h-auto mt-6">
           {inputText.id && inputText.pw !== "관심 종목을 선택해주세요." ? (
-            <Link href="/profile">
+            <Link href="/success">
               <TextButton size="full">다음</TextButton>
             </Link>
           ) : (

@@ -16,10 +16,8 @@ export default function RootLayout({
   return (
     <div className={`font-pretendard w-[100vw] h-[100vh] flex flex-col relative`}>
       <Header />
-      <section className="bg-background w-full h-full flex justify-center items-center flex-col ">
-        <div className=" mt-20 rounded-3xl w-[590px] min-h-[544px]  px-[102px] py-[80px] bg-white flex flex-col justify-start items-center">
-          {children}
-        </div>
+      <section className="bg-background w-full h-full flex justify-start items-start flex-col pt-[150px]  px-[140px] ">
+        {children}
       </section>
     </div>
   );

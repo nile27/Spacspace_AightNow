@@ -2,7 +2,7 @@ import IconLight from "../../../public/icons/IconLight.svg";
 
 type TBotProps = {};
 
-export default function Bot({ content }: { content: string }) {
+export default function Bot({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex items-start gap-2 mb-4">
@@ -12,10 +12,10 @@ export default function Bot({ content }: { content: string }) {
           </div>
         </div>
         <div
-          className="p-3 bg-mainNavy-50 rounded-md justify-center items-center gap-2 inline-flex max-w-80"
-          style={{ maxWidth: "320px" }}
+          className="p-3 bg-mainNavy-200 rounded-md justify-center items-center gap-2 inline-flex max-w-80"
+          style={{ maxWidth: "320px", backgroundColor: "#E6E9EF" }}
         >
-          <div className="grow shrink basis-0 text-black text-sm font-normal">{content}</div>
+          <div className="grow shrink basis-0 text-black text-sm font-normal">{children}</div>
         </div>
       </div>
     </>

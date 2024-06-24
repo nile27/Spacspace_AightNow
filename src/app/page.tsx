@@ -1,9 +1,11 @@
-import Icons from "@/components/Icon/Icons";
+import News from "@/features/News/components/News";
 
 export default function Home() {
   return (
     <>
-      <Icons name="KakaoTalk" size={50} />
+      <div className="h-full flex flex-col">
+        <News />
+      </div>
     </>
   );
 }

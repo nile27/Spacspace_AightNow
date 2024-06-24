@@ -1,14 +1,18 @@
-import ListIcon from "/public/ListIcon.svg";
+import Icon from "./Icon";
 
-export default function Stock() {
+type TStock = {
+  logo: string;
+};
+
+export default function Stock({ logo }: TStock) {
   return (
     <>
       <div className=" w-64 h-16 flex flex-col  justify-start items-start ">
         <div className="flex-col justify-start items-center flex">
           <div className="w-64 py-2 justify-between items-center flex">
             <div className="justify-start items-center gap-4 flex">
-              <div className="w-12 h-12">
-                <img src="ListIcon" alt="로고" className="w-12 h-12" />
+              <div className="w-24 h-12 flex items-center">
+                <Icon name={logo} size={50} />
               </div>
               <div className="flex flex-col justify-start items-start ">
                 <div className="text-neutral-900 text-base font-bold font-['Pretendard'] leading-normal">

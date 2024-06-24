@@ -6,6 +6,7 @@ import { cva } from "class-variance-authority";
 
 type TIconButton = React.ComponentProps<"button"> & {
   size?: "sm" | "md" | "chatBot" | "auto";
+
   color?: "disable" | "grayScale" | "warning" | "success" | "outline";
   icon?:
     | "AI"
@@ -38,10 +39,11 @@ export default function IconButton(props: TIconButton) {
         chatBot: "w-[80px] h-[80px] ",
         md: `w-[56px] h-[56px] p-[16px]`,
         sm: `w-[36px] h-[36px] p-[9px]`,
+
         auto: "w-auto h-auto p-[4px]",
       },
       color: {
-        default: "bg-scaleGray-900",
+        default: "bg-mainNavy-900",
         disable: "bg-scaleGray-200",
         grayScale: "bg-scaleGray-200",
         warning: "bg-warning",
@@ -70,7 +72,7 @@ export default function IconButton(props: TIconButton) {
     auto: 24,
   };
 
-  const { size, color, icon, ...restBtnProps } = props;
+  const { children, size, color, icon, ...restBtnProps } = props;
 
   return (
     <>
@@ -82,9 +84,8 @@ export default function IconButton(props: TIconButton) {
         )}
       >
         {icon && IconRenderIcon(icon, color, size)}
+        {children}
       </button>
-
-      <div className="w-8 h-8 relative" />
     </>
   );
 }

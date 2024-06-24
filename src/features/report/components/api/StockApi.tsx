@@ -2,6 +2,17 @@ export default async function StockApi() {
   const res = await fetch("https://api.stock.naver.com/stock/AAPL.O/basic");
   const data = await res.json();
 
+  const TStockApiData = {
+    compareToPreviousClosePrice: 0,
+    fluctuationsRatio: 0,
+    stockExchangeType: {
+      code: "",
+    },
+    compareToPreviousPrice: {
+      text: "",
+    },
+  };
+
   const {
     compareToPreviousClosePrice,
     fluctuationsRatio,

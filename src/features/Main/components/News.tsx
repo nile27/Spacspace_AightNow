@@ -24,9 +24,9 @@ const news = [
 export default function News() {
   return (
     <>
-      <div className="w-full p-4 sm:p-8 md:p-12 bg-white rounded-3xl flex flex-col justify-start items-start mt-6">
-        <div className="w-full mb-8">
-          <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">관심 종목</div>
+      <div className="w-full p-4 gap-12 sm:p-8 md:p-12 bg-white rounded-3xl flex flex-col justify-start items-start mt-6">
+        <div className="w-full">
+          <div className="text-mainNavy-900 text-2xl font-semibold leading-9 pb-4">관심 종목</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 rounded-3xl">
             {lists.slice(0, 3).map((data, index) => (
               <div key={index} className="rounded-lg">
@@ -36,8 +36,8 @@ export default function News() {
           </div>
         </div>
 
-        <div className="w-full mb-8">
-          <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">주요 뉴스</div>
+        <div className="w-full">
+          <div className="text-mainNavy-900 text-2xl font-semibold leading-9 pb-4">주요 뉴스</div>
           <div className="w-full border border-mainNavy-100 rounded-3xl p-4 sm:p-8">
             {news.slice(0, 1).map((data, index) => (
               <div key={index} className="flex flex-col sm:flex-row gap-5">
@@ -57,7 +57,7 @@ export default function News() {
         </div>
 
         <div className="w-full">
-          <div className="text-mainNavy-900 text-body4 font-semibold leading-9 pb-4">최신 뉴스</div>
+          <div className="text-mainNavy-900 text-2xl font-semibold leading-9 pb-4">최신 뉴스</div>
           <div className="border border-mainNavy-100 rounded-3xl">
             {lists.slice(0, 3).map((data, index) => (
               <div key={index}>

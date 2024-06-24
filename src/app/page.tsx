@@ -1,12 +1,6 @@
-import Badge from "@/components/Badge/Badge";
-import Checkbox from "@/components/Checkbox/Checkbox";
-import { BadgeBlack, BadgeBlue, BadgeGray } from "@/components/Badge/Badge";
-
+import BasicIcon from "@/components/Icon/BasicIcons";
 export default function Home() {
-  return (
-    <>
-      <BadgeBlue />
-      <Checkbox />
-    </>
-  );
+  return <BasicIcon name="Downarrow" size={60} color="red" />;
 }
+
+// Eye , Eyehide,Translate,Calender,Edit,AI,Refresh,Rightarrow,Search,Time,Close,Plus,Downarrow

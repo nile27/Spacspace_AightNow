@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
+import Icons from "@/components/Icon/Icons";
 import KakaoTalk from "../../../../../public/icons/KakaoTalk.svg";
 import Apple from "../../../../../public/icons/Apple.svg";
 import Naver from "../../../../../public/icons/Naver.svg";
@@ -13,13 +14,12 @@ export default function OauthBtn({ style }: TStyleBtn) {
   const IconRenderIcon = (icon: string) => {
     switch (icon) {
       case "kakao":
-        return <KakaoTalk width="40" height="40" />;
-      case "apple":
-        return <Apple width="32" height="32" />;
+        return <Icons name="KakaoTalk" width="40" height="40" />;
+
       case "naver":
-        return <Naver width="32" height="32" />;
+        return <Icons name="Naver" width="32" height="32" />;
       case "google":
-        return <Google width="40" height="40" />;
+        return <Icons name="Google" width="40" height="40" />;
 
       default:
         return null;

@@ -1,8 +1,6 @@
 "use client";
 import { Dispatch, SetStateAction, useState } from "react";
 import NewInput from "@/components/Input/NewInput";
-
-import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 
 export default function AuthModal({

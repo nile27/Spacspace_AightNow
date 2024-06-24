@@ -72,6 +72,7 @@ export const IconRenderIcon = (icon: string, color?: string, size?: string) => {
       return <Time {...iconProps} />;
     case "Translate":
       return <Translate {...iconProps} />;
+
     default:
       return null;
   }

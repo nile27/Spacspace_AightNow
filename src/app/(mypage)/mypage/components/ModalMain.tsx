@@ -3,9 +3,9 @@ import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
 import Select from "./Select";
 import { useState, useRef, useEffect, SetStateAction, Dispatch } from "react";
-import { Edit } from "@/components/btnUi/Svg";
+
+import BasicIcon from "@/components/Icon/BasicIcons";
 import SelectInput from "./SelectInput";
-import Link from "next/link";
 
 export default function ModalMain({
   isModal,
@@ -56,7 +56,7 @@ export default function ModalMain({
           className={` relative w-[140px] h-[140px] bg-cover bg-center cursor-pointer rounded-full`}
         >
           <div className="bg-[#9F9F9F] rounded-full absolute bottom-0 right-0">
-            <Edit width={40} height={40} color="white" />
+            <BasicIcon size={40} name="Edit" color="white" />
           </div>
         </label>
 

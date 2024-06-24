@@ -1,12 +1,6 @@
-import GuestHeader from "@/components/Main/GuestHeder";
-import Report from "../features/report/components/Report";
-import StockApi from "@/features/report/components/api/StockApi";
-import Icons from "@/components/Icon/Icons";
-
+import BasicIcon from "@/components/Icon/BasicIcons";
 export default function Home() {
-  return (
-    <>
-      <Icons name="KakaoTalk" size={50} />
-    </>
-  );
+  return <BasicIcon name="Downarrow" size={60} color="red" />;
 }
+
+// Eye , Eyehide,Translate,Calender,Edit,AI,Refresh,Rightarrow,Search,Time,Close,Plus,Downarrow

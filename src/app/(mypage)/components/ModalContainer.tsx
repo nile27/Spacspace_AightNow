@@ -31,21 +31,31 @@ export default function ModalContainer({
         return;
     }
   };
-
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsModal(false);
+      }
+    };
+
     if (isModal) {
       document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "auto";
     }
 
     return () => {
       document.body.style.overflow = "auto";
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isModal]);
+  }, [isModal, setIsModal]);
 
   return (
-    <div className="fixed z-30 backdrop-blur-md bg-[rgba(0,0,0,0.5)] w-full h-[100vh] pb-[60px] flex justify-center items-center  inset-0 overflow-y-hidden">
+    <div
+      onClick={() => setIsModal(false)}
+      className="fixed z-30 backdrop-blur-md bg-[rgba(0,0,0,0.5)] w-full h-[100vh] pb-[60px] flex justify-center items-center  inset-0 overflow-y-hidden"
+    >
       <div className=" mt-20 rounded-3xl w-[590px] min-h-[450px]  px-[102px] pt-[80px] pb-[10px] bg-white flex flex-col justify-start items-center relative">
         <div className="w-full h-auto absolute top-5 flex justify-end items-cetner pr-4">
           <button onClick={() => setIsModal(false)}>

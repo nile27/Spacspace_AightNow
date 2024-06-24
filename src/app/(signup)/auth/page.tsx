@@ -2,17 +2,21 @@
 import { useState } from "react";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import Link from "next/link";
+import AuthModal from "./component/AuthModal";
 
 export default function IdFind() {
   const [nameText, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [isModal, setIsModal] = useState(false);
+
+  const handlerAuth = () => {
+    setIsModal(!isModal);
+  };
 
   return (
     <>
-      <h1 className="  text-h3 font-extrabold">아이디 찾기</h1>
-
-      <form className="mt-10 w-full h-auto flex flex-col gap-4 mb-10">
+      <h1 className="  text-h3 font-extrabold">본인인증</h1>
+      <form className="mt-10 w-full h-auto flex flex-col gap-[24px] mb-10">
         <div className="w-full h-auto flex flex-col gap-4 mb-[30px]">
           <NewInput
             id="username"
@@ -22,27 +26,27 @@ export default function IdFind() {
             autoComplete="username"
             onChange={e => setName(e.target.value)}
           />
-
           <NewInput
             type="tel"
             id="tel"
-            label="전화번호"
-            value={phone}
-            placeholder="-를 제외한 휴대폰번호를 입력해주세요."
-            onChange={e => setPhone(e.target.value)}
+            label="이메일주소"
+            value={email}
+            placeholder="이메일 주소를 입력해주세요."
+            onChange={e => setEmail(e.target.value)}
           />
         </div>
 
-        {phone && nameText ? (
-          <Link className="w-full h-auto" href={"/idfind/idshow"}>
-            <TextButton size="full">아이디 찾기</TextButton>
-          </Link>
+        {email && email.includes("@") && nameText ? (
+          <TextButton onClick={handlerAuth} size="full">
+            인증링크 전송
+          </TextButton>
         ) : (
           <TextButton size="full" color="disable">
-            아이디 찾기
+            인증링크 전송
           </TextButton>
         )}
       </form>
+      {isModal && <AuthModal />}
     </>
   );
 }

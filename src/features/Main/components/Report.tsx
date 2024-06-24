@@ -15,8 +15,8 @@ export default function Report({ data }: { data: TReportdata }) {
       <div className="w-[400px] p-8 bg-white rounded-2xl flex-col justify-start items-start gap-4 inline-flex">
         <div className="self-stretch h-14 flex-col justify-start items-start flex">
           <div className="justify-start items-center gap-2 inline-flex">
-            <div className="relative">
-              {/* 기업 아이콘 */}
+            {/* 기업 아이콘 */}
+            <div>
               <Icon name={data.reutersCode} size={50} />
             </div>
             <div className="justify-start items-center gap-2 flex">

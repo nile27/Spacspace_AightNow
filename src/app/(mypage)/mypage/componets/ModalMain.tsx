@@ -1,13 +1,19 @@
 "use client";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import Select from "./components/Select";
-import { useState, useRef, useEffect } from "react";
+import Select from "./Select";
+import { useState, useRef, useEffect, SetStateAction, Dispatch } from "react";
 import { Edit } from "@/components/btnUi/Svg";
-import SelectInput from "./components/SelectInput";
+import SelectInput from "./SelectInput";
 import Link from "next/link";
 
-export default function Profile() {
+export default function ModalMain({
+  isModal,
+  setIsModal,
+}: {
+  isModal: boolean;
+  setIsModal: Dispatch<SetStateAction<boolean>>;
+}) {
   const [inputText, setInput] = useState({
     id: "",
     pw: "관심 종목을 선택해주세요.",
@@ -98,15 +104,9 @@ export default function Profile() {
         </div>
 
         <div className="w-full h-auto mt-6">
-          {inputText.id && inputText.pw !== "관심 종목을 선택해주세요." ? (
-            <Link href="/success">
-              <TextButton size="full">다음</TextButton>
-            </Link>
-          ) : (
-            <TextButton size="full" color="disable">
-              다음
-            </TextButton>
-          )}
+          <TextButton size="full" onClick={() => setIsModal(false)}>
+            수정하기
+          </TextButton>
         </div>
       </form>
     </>

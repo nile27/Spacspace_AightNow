@@ -13,10 +13,12 @@ export default function Report() {
       <div className="flex flex-col gap-4">
         <div className="w-[1200px] h-16  flex justify-between items-center  ">
           <div className="w-[388px] h-16 flex items-center gap-2">
-            <Icon name="apple" size={50} />
+            <Icon name="google" size={50} />
             <span className="text-lg font-medium">애플 · APPL</span>
           </div>
-          <TextButton size="sm">관심종목 추가</TextButton>
+          <TextButton size="custom" width={"167"} height={"56"}>
+            관심종목 추가
+          </TextButton>
         </div>
         <div className="w-[1200px] flex gap-4">
           <Summary />

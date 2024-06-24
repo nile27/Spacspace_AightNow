@@ -1,11 +1,17 @@
 "use client";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import NewInput from "@/components/Input/NewInput";
 
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 
-export default function SignUp() {
+export default function AuthModal({
+  setIdx,
+  setIsModal,
+}: {
+  setIdx: Dispatch<SetStateAction<number>>;
+  setIsModal: Dispatch<SetStateAction<boolean>>;
+}) {
   const [inputText, setInput] = useState({
     id: "",
     pw: "",
@@ -19,8 +25,8 @@ export default function SignUp() {
 
   return (
     <>
-      <h1 className=" mb-10 text-h3 font-extrabold">회원가입</h1>
-      <form className=" w-full h-auto flex flex-col gap-4 mb-7">
+      <h1 className=" mb-4 text-h3 font-extrabold">정보 수정</h1>
+      <form className=" w-full h-auto flex flex-col gap-3 mb-5">
         <NewInput
           type="text"
           placeholder="아이디를 입력해주세요"
@@ -87,14 +93,23 @@ export default function SignUp() {
           inputText.phone &&
           inputText.pw &&
           inputText.pwCheck ? (
-            <Link href={"/profile"}>
-              <TextButton size="full">다음</TextButton>
-            </Link>
+            <TextButton size="full" onClick={() => setIsModal(false)}>
+              수정하기
+            </TextButton>
           ) : (
             <TextButton size="full" color="disable">
-              다음
+              수정하기
             </TextButton>
           )}
+        </div>
+        <div className="w-full flex justify-center items-center">
+          <button
+            onClick={() => setIdx(3)}
+            type="button"
+            className=" w-auto h-auto border-b-[1px] border-warning text-warning"
+          >
+            회원 탈퇴
+          </button>
         </div>
       </form>
     </>

@@ -1,6 +1,6 @@
-import Card from "../Card/Card";
-import WatchCard from "../Card/WatchCard";
-import ListNews from "../List/ListNews";
+import Card from "../../../components/Card/Card";
+import WatchCard from "../../../components/Card/WatchCard";
+import ListNews from "../../../components/List/ListNews";
 
 const lists = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0 },

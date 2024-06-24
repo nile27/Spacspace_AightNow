@@ -1,5 +1,6 @@
 import TextButton from "@/components/btnUi/TextButton";
 import GuestHeader from "./components/GuestHeder";
+import Link from "next/link";
 
 export default function GuestHome() {
   return (
@@ -26,7 +27,9 @@ export default function GuestHome() {
               AI 애널리스트가 알려주는 어려운 해외주식 리포트
             </p>
             <div>
-              <TextButton>로그인</TextButton>
+              <Link href="/login">
+                <TextButton>로그인</TextButton>
+              </Link>
             </div>
           </div>
           <div

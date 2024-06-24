@@ -1,4 +1,4 @@
-import MainProfile from "./componets/MainProfile";
+import MainProfile from "./components/MainProfile";
 import SideBar from "../components/SideBar";
 
 export default function Mypage() {

@@ -1,11 +1,6 @@
-import Report from "@/features/report/components/Report";
-
+import BasicIcon from "@/components/Icon/BasicIcons";
 export default function Home() {
-  return (
-    <>
-      <div className="h-full flex flex-col">
-        <Report />
-      </div>
-    </>
-  );
+  return <BasicIcon name="Downarrow" size={60} color="red" />;
 }
+
+// Eye , Eyehide,Translate,Calender,Edit,AI,Refresh,Rightarrow,Search,Time,Close,Plus,Downarrow

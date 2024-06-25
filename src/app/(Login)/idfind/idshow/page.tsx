@@ -1,28 +1,24 @@
 import TextButton from "@/components/btnUi/TextButton";
-import Google from "@/../public/icons/Google.svg";
-import Kakao from "@/../public/icons/KakaoTalk.svg";
-import Apple from "@/../public/icons/Apple.svg";
-import Naver from "@/../public/icons/Naver.svg";
+import Icon from "@/components/Icon/Icons";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 
 type TLogotype = {
-  style?: "apple" | "kakao" | "naver" | "google" | undefined;
+  style?: "kakao" | "naver" | "google" | undefined;
 };
 
 export default function IdShow({ style }: TLogotype) {
-  const IconRenderIcon = (icon: "apple" | "kakao" | "naver" | "google" | undefined) => {
+  const IconRenderIcon = (icon: "kakao" | "naver" | "google" | undefined) => {
     switch (icon) {
       case "kakao":
-        return <Kakao width="15" height="15" />;
-      case "apple":
-        return <Apple width="15" height="15" />;
+        return <Icon name="KakaoTalk" size={15} />;
+
       case "naver":
-        return <Naver width="12" height="12" />;
+        return <Icon name="Naver" size={10} />;
       case "google":
-        return <Google width="15" height="15" />;
+        return <Icon name="Google" size={15} />;
 
       default:
         return null;

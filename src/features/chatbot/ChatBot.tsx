@@ -4,35 +4,23 @@ import TextButton from "@/components/btnUi/TextButton";
 import Bot from "./Bot";
 import User from "./User";
 import IconButton from "@/components/btnUi/IconButton";
-import NewInput from "@/components/Input/Input";
-import { useState } from "react";
+import React, { useState } from "react";
+import Input from "@/components/Input/Input";
 
-export default function ChatBot() {
+export default function ChatBot({ onClick }: { onClick: () => void }) {
   const [message, setMessage] = useState("");
   return (
     <>
-      <div
-        className="w-[512px] h-[656px] bg-white rounded-t-3xl"
-        style={{
-          position: "fixed",
-          bottom: "0px",
-          right: "0px",
-          borderRadius: "3rem 3rem 0 0",
-        }}
-      >
-        <div className="relative flex flex-col">
-          <div
-            className="w-full h-20 bg-mainNavy-900 rounded-t-3xl flex items-center justify-between px-4 fixed top-0"
-            style={{ paddingLeft: "29px", borderRadius: "3rem 3rem 0 0" }}
-          >
+      <div className="w-[480px] h-[640px] bg-white shadow-2xl rounded-t-3xl fixed bottom-0 right-0">
+        <div className="flex flex-col h-full">
+          <div className="w-full h-[64px] bg-mainNavy-900 rounded-t-3xl flex items-center justify-between px-4 pl-[29px]">
             <div className="text-scaleGray-0 text-xl font-bold leading-loose">나우챗봇</div>
             <div className="w-8 h-8 relative">
-              <IconButton icon="Close" size="auto" style={{ border: "0" }} />
+              <IconButton icon="Close" size="auto" style={{ border: "0" }} onClick={onClick} />
             </div>
           </div>
-
-          <div className="h-[488px] overflow-y-scroll">
-            <div className="flex flex-col p-4 gap-3 ">
+          <div className="overflow-y-scroll h-[488px]">
+            <div className="flex flex-col p-4 gap-3">
               <Bot>
                 안녕하세요 아잇나우 챗봇입니다. <br />
                 해외주식 관련해서 궁금하신 점이 있으면
@@ -54,15 +42,13 @@ export default function ChatBot() {
               </Bot>
             </div>
           </div>
+          <form className="border-t border-gray-200 flex gap-2 p-4">
+            <Input value={message} onChange={e => setMessage(e.target.value)} />
+            <TextButton size="custom" height="56px" width="56px">
+              전송
+            </TextButton>
+          </form>
         </div>
-        <form className="border-t  border-gray-200 flex items-center gap-2 p-4">
-          <div className="flex-grow">
-            <NewInput value={message} onChange={e => setMessage(e.target.value)} />
-          </div>
-          <TextButton size="custom" height="58px" width="64px">
-            전송
-          </TextButton>
-        </form>
       </div>
     </>
   );

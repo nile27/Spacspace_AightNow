@@ -18,7 +18,7 @@ export default function News() {
             <Card />
           </div>
         </div>
-        <h2 className="font-bold text-2xl py-4">최신뉴스</h2>
+        <h2 className="font-bold text-2xl py-4">최신뉴스 테스트</h2>
         <div className="w-[1200px] h-[940px] bg-white rounded-2xl p-12">
           <div className="w-[1200px] h-[940px] flex flex-col gap-8 ">
             <ListNews />

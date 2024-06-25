@@ -1,7 +1,11 @@
+"use client";
 import Stock from "@/components/Stock/Stock";
 import { BadgeBlack } from "../../components/Badge/Badge";
 import News from "./components/News";
 import Report from "./components/Report";
+import IconButton from "@/components/btnUi/IconButton";
+import { useState } from "react";
+import ChatBot from "../chatbot/ChatBot";
 
 const datas = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },
@@ -17,6 +21,7 @@ const lists = [
 ];
 
 export default function UserHome() {
+  const [isShow, setIsShow] = useState(false);
   return (
     <>
       <div className="flex justify-center items-start w-full mt-[139px]">
@@ -30,7 +35,6 @@ export default function UserHome() {
                 <BadgeBlack />
               </div>
             </div>
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4"> */}
             <div className="flex justify-between mt-4">
               {datas.slice(0, 3).map((data, index) => (
                 <div key={index} className="">
@@ -75,6 +79,13 @@ export default function UserHome() {
               </div>
             </div>
           </div>
+        </div>
+        <div className="fixed bottom-4 right-4 py-2 px-4">
+          {isShow ? (
+            <ChatBot onClick={() => setIsShow(false)} />
+          ) : (
+            <IconButton size="chatBot" icon="ChatBot" onClick={() => setIsShow(true)} />
+          )}
         </div>
       </div>
     </>

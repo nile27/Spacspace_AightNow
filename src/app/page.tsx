@@ -1,10 +1,10 @@
-import News from "@/features/News/components/News";
+import Report from "@/features/report/components/Report";
 
 export default function Home() {
   return (
     <>
       <div className="h-full flex flex-col">
-        <News />
+        <Report />
       </div>
     </>
   );

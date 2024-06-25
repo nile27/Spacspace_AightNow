@@ -19,7 +19,6 @@ export default function CardNews({
         fill
         className={`object-cover opacity-80 ${cardHeight === height ? "" : "rounded-3xl"}`}
       />
-      {/* fill prop 사용, layout prop 제거 */}
       <div
         className={`absolute bottom-0 left-0 w-full h-[114px] p-4 bg-black bg-opacity-30 ${
           cardHeight === height ? "rounded-2xl" : "rounded-3xl"

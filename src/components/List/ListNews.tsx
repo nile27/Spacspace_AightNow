@@ -1,8 +1,11 @@
 export default function ListNews() {
   return (
     <>
-      <div className="w-96 h-24 justify-start items-start gap-5 inline-flex">
-        <img className="w-64 h-36 rounded-2xl" src="https://via.placeholder.com/172x100" />
+      <div className="w-[1104px] h-[212px] justify-start items-start gap-5 inline-flex">
+        <img
+          className="w-[252px] h-[148px] rounded-2xl"
+          src="https://via.placeholder.com/172x100"
+        />
         <div className="flex-col justify-start items-start gap-4 inline-flex">
           <div className="w-[832px] h-7 self-stretch justify-start items-center gap-4 inline-flex">
             <div className="w-[82px] h-14 flex justify-between items-center grow shrink basis-0 text-neutral-900 text-lg font-bold font-['Pretendard'] leading-7">

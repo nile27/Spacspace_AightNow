@@ -51,7 +51,7 @@ export default function UserHome() {
                   <div className="w-full">
                     {lists.map((data, index) => (
                       <div key={index} className="flex justify-between items-center rounded-lg">
-                        <Stock key={index} logo={data.reutersCode} />
+                        <Stock key={index} logo={data.reutersCode} gap="gap-80" />
                       </div>
                     ))}
                   </div>
@@ -63,7 +63,7 @@ export default function UserHome() {
                   <div className="w-full">
                     {lists.map((data, index) => (
                       <div key={index} className="flex justify-between items-center rounded-lg">
-                        <Stock key={index} logo={data.reutersCode} />
+                        <Stock key={index} logo={data.reutersCode} gap="gap-80" />
                       </div>
                     ))}
                   </div>

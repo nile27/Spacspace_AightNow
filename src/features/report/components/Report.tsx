@@ -1,5 +1,6 @@
+"use client";
+
 import Icon from "@/components/Stock/Icon";
-import Toggle from "@/components/Toggle/Toggle";
 import TextButton from "@/components/btnUi/TextButton";
 import Summary from "./Summary";
 import Chart from "./Chart";
@@ -7,7 +8,17 @@ import AIReport from "./AIReport";
 import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
 
+import { addDoc, collection } from "firebase/firestore";
+import fireStore from "@/firebase/firestore";
+
 export default function Report() {
+  const onClickBtn = async () => {
+    await addDoc(collection(fireStore, "temp"), {
+      name: "test",
+      age: 20,
+    });
+  };
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -29,6 +40,9 @@ export default function Report() {
           <Analysis />
         </div>
         <FavoriteNews />
+        <div>
+          <button onClick={onClickBtn}>테스트용</button>
+        </div>
       </div>
     </>
   );

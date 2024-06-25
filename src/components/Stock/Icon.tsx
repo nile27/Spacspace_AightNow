@@ -1,6 +1,7 @@
-type TIconProps = {
+export type TIconProps = {
   name: string;
   size?: number | string;
+  fill?: string;
 };
 
 const stockNameMap: { [key: string]: string } = {

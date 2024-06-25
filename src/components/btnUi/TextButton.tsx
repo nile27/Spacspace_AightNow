@@ -23,30 +23,30 @@ type TTextButton = React.ComponentProps<"button"> & {
     | "Time"
     | "Translate";
 
-  width?: number;
-  height?: number;
+  width?: string;
+  height?: string;
 };
 
 export default function TextButton(props: TTextButton) {
   const { children, size, color, width, height, icon, ...restBtnProps } = props;
   // 버튼 스타일링
-  const buttonVariants = cva(`rounded-lg`, {
+  const buttonVariants = cva(`rounded-lg whitespace-nowrap`, {
     variants: {
       size: {
         default: `w-[386px] bg-scaleGray-900 h-16 px-2.5 py-[18px] `,
         sm: `w-[386px] h-9 px-2.5 py-2`,
         md: `w-[386px] h-14 px-2.5 py-4`,
-        custom: `w-[${width}] h-[${height}]  px-2.5 py-2 `,
+        custom: ` px-2.5 py-2 `,
         full: `w-full  min-h-[64px] px-2.5 py-2 `,
       },
       color: {
-        default: "bg-scaleGray-900",
-        disable: "bg-scaleGray-200",
+        default: "bg-mainNavy-900 hover:bg-[#213564]",
+        disable: "bg-scaleGray-200 cursor-default ",
         grayScale: "bg-scaleGray-200",
-        warning: "bg-warning",
-        success: "bg-success",
-        outline: "bg-white border-[1px] border-scaleGray-900",
-        secondary: "bg-secondBlue-500",
+        warning: "bg-warning hover:bg-[#FF5271]",
+        success: "bg-success hover:bg-[#33E078]",
+        outline: "bg-white border-[1px] border-scaleGray-900 hover:border-scaleGray-800",
+        secondary: "bg-secondBlue-500 hover:border-secondBlue-300",
       },
     },
     defaultVariants: {
@@ -84,10 +84,9 @@ export default function TextButton(props: TTextButton) {
     <>
       <button
         {...restBtnProps}
-        className={cn(
-          buttonVariants({ size, color }),
-          `justify-center items-center gap-1 inline-flex`,
-        )}
+        type="button"
+        style={{ width: width, height: height }}
+        className={cn(buttonVariants({ size, color }), `  justify-center items-center flex`)}
       >
         {icon && TextRenderIcon(icon, color, size)}
         <span className={cn(textVariants({ size, color }), " text-center")}>{children}</span>

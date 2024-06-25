@@ -43,7 +43,7 @@ export default function IconButton(props: TIconButton) {
         auto: "w-auto h-auto p-[4px]",
       },
       color: {
-        default: "bg-scaleGray-900",
+        default: "bg-mainNavy-900",
         disable: "bg-scaleGray-200",
         grayScale: "bg-scaleGray-200",
         warning: "bg-warning",

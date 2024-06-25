@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import NewInput from "@/components/Input/NewInput";
-import { EyeSVG } from "@/components/btnUi/Svg";
-import { EyeNotSVG } from "@/components/btnUi/Svg";
+import BasicIcon from "@/components/Icon/BasicIcons";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
@@ -32,12 +31,12 @@ export default function Login() {
           onChange={e => setPw(e.target.value)}
         >
           {!pwHide ? (
-            <button type="button" onClick={() => setpwHide(true)}>
-              <EyeSVG color="#C5C5C5" width={25} height={25} />
+            <button className="w-auto h-auto" type="button" onClick={() => setpwHide(true)}>
+              <BasicIcon name="Eye" size={24} color="#C5C5C5" />
             </button>
           ) : (
             <button type="button" onClick={() => setpwHide(false)}>
-              <EyeNotSVG color="#C5C5C5" width={25} height={25} />
+              <BasicIcon name="Eyehide" size={24} color="#C5C5C5" />
             </button>
           )}
         </NewInput>

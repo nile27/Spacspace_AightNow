@@ -61,7 +61,7 @@ export default function News() {
           <div className="border border-mainNavy-100 rounded-3xl">
             {lists.slice(0, 3).map((data, index) => (
               <div key={index}>
-                <div className="flex rounded-lg p-12">
+                <div className="flex rounded-lg pt-12 px-12">
                   <ListNews />
                 </div>
                 {index < 2 && <hr className="border-t border-scaleGray-400 mx-8" />}

@@ -73,7 +73,7 @@ export default function SearchPanel() {
   };
   return (
     <>
-      <div className="flex-col justify-start items-start gap-8 flex w-[590px]">
+      <div className="flex-col justify-start items-start gap-8 flex w-[615px]">
         <div className="w-full flex-col justify-start items-center gap-2 flex">
           <div className="items-center gap-2 inline-flex w-full">
             <div className="text-blue-950 text-2xl font-bold font-['Pretendard'] leading-loose">

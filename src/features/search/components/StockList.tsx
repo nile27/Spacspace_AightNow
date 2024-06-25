@@ -16,14 +16,14 @@ export default function StockList({ items }: { items: any[] }) {
               <div className="flex-col justify-start items-start gap-4 inline-flex w-1/2">
                 {items.slice(i * 6, i * 6 + 3).map((data, index) => (
                   <div key={index} className="flex justify-between items-center rounded-lg">
-                    <Stock key={index} logo={"apple"} />
+                    <Stock key={index} logo={"apple"} gap="gap-[64px]" />
                   </div>
                 ))}
               </div>
               <div className="flex-col justify-start items-start gap-4 inline-flex w-1/2">
                 {items.slice(i * 6 + 3, i * 6 + 6).map((data, index) => (
                   <div key={index} className="flex justify-between items-center rounded-lg">
-                    <Stock key={index} logo={"apple"} />
+                    <Stock key={index} logo={"apple"} gap="gap-[64px]" />
                   </div>
                 ))}
               </div>

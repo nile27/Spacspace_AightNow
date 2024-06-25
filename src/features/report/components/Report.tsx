@@ -8,7 +8,7 @@ import AIReport from "./AIReport";
 import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
 
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
 
 export default function Report() {
@@ -37,7 +37,7 @@ export default function Report() {
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport />
-          <Analysis />
+          <Analysis />₩
         </div>
         <FavoriteNews />
         <div>

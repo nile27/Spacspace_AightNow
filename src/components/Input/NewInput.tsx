@@ -6,9 +6,9 @@ import { cva } from "class-variance-authority";
 type TInputProps = {
   id?: string;
   label?: string;
-  caption?: string;
+  caption?: string | undefined;
   children?: React.ReactNode;
-  style?: "error" | "success";
+  style?: "error" | "success" | undefined;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 } & React.ComponentProps<"input">;
 
@@ -33,7 +33,7 @@ export default function NewInput(props: TInputProps) {
   return (
     <>
       <div className="min-w-[386px] w-full h-auto min-h-[56px] flex-col justify-start items-start gap-1 inline-flex">
-        {id && (
+        {id && label && (
           <label
             htmlFor={id}
             className={cn(
@@ -58,12 +58,12 @@ export default function NewInput(props: TInputProps) {
           />
           {children}
         </div>
-        {id && (
+        {caption && (
           <label
             htmlFor={id}
             className={cn(
               inputVariants({ text: style, border: style }),
-              "min-w-[386px] mt-1 w-full text-xs font-caption font-['Pretendard'] leading-none",
+              "min-w-[386px] mt-1 ml-2 w-full text-[12px] text-warning  font-caption font-['Pretendard'] leading-none",
             )}
           >
             {caption}

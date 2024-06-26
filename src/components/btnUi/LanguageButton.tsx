@@ -3,9 +3,9 @@ import English from "../../../public/icons/English.svg";
 import China from "../../../public/icons/China.svg";
 import France from "../../../public/icons/France.svg";
 import Japan from "../../../public/icons/Japan.svg";
-
+import Korea from "../../../public/icons/Korea.svg";
 type TIconButton = React.ComponentProps<"button"> & {
-  style: "en" | "ch" | "fr" | "jp";
+  style: "en" | "ch" | "fr" | "jp" | "kr";
 };
 
 export default function LanguageButton(props: TIconButton) {
@@ -14,6 +14,8 @@ export default function LanguageButton(props: TIconButton) {
   // 국기 조건 스타일링
   const renderIcon = (style: TIconButton["style"]) => {
     switch (style) {
+      case "kr":
+        return <Korea width="72" height="72" />;
       case "en":
         return <English width="72" height="72" />;
       case "ch":
@@ -30,6 +32,8 @@ export default function LanguageButton(props: TIconButton) {
   // 텍스트 조건 스타일링
   const renderButtonText = (style: TIconButton["style"]) => {
     switch (style) {
+      case "kr":
+        return "한국어";
       case "en":
         return "영어";
       case "ch":

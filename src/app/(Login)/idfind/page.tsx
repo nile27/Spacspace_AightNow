@@ -2,11 +2,23 @@
 import { useState } from "react";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function IdFind() {
   const [nameText, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [err, serErr] = useState(true);
+  const navigation = useRouter();
+
+  const handlerOnClick = () => {
+    if (nameText.length < 5) {
+      serErr(false);
+      return;
+    }
+    if (err) {
+      navigation.push(`/idfind/idshow`);
+    }
+  };
 
   return (
     <>
@@ -20,6 +32,7 @@ export default function IdFind() {
             label="이름"
             value={nameText}
             autoComplete="username"
+            style={!err ? "error" : undefined}
             onChange={e => setName(e.target.value)}
           />
 
@@ -30,13 +43,15 @@ export default function IdFind() {
             value={phone}
             placeholder="-를 제외한 휴대폰번호를 입력해주세요."
             onChange={e => setPhone(e.target.value)}
+            style={!err ? "error" : undefined}
+            caption={!err ? "*  등록되지 않은 회원이거나 잘못된 회원정보입니다." : undefined}
           />
         </div>
 
         {phone && nameText ? (
-          <Link className="w-full h-auto" href={"/idfind/idshow"}>
-            <TextButton size="full">아이디 찾기</TextButton>
-          </Link>
+          <TextButton size="full" onClick={handlerOnClick}>
+            아이디 찾기
+          </TextButton>
         ) : (
           <TextButton size="full" color="disable">
             아이디 찾기

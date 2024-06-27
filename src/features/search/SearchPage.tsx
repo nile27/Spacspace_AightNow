@@ -23,7 +23,7 @@ export default function SearchPage() {
                 />
               </div>
             </div>
-            {search === "" ? <SearchEmpty /> : <SearchPanel />}
+            {search === "" ? <SearchEmpty /> : <SearchPanel searchTerm={search} />}
           </div>
         </div>
       </div>

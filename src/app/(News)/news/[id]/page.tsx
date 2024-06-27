@@ -70,7 +70,8 @@ export default function NewsDetail() {
           </div>
           <div className="w-[388px] h-[488px] p-8 bg-white rounded-2xl font-pretendard">
             <h2 className="font-bold text-xl">관련기사</h2>
-            <div className="flex flex-col gap-y-2 mt-[10px]">
+            <div className=" flex flex-col gap-y-5 mt-[10px]">
+              <CardSmallNews />
               <CardSmallNews />
               <CardSmallNews />
               <CardSmallNews />

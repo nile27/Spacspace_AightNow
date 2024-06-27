@@ -1,3 +1,4 @@
+import CardSmallNews from "@/components/Card/CardSmallNews";
 import BasicIcon from "@/components/Icon/BasicIcons";
 import ListStockUp from "@/components/List/ListStockUp";
 import TextButton from "@/components/btnUi/TextButton";
@@ -9,17 +10,16 @@ export default function NewsDetail() {
       <div className="w-[1200px] h-full flex justify-between  ">
         <div className="w-[792px] h-full flex flex-col bg-white p-8 font-pretendard rounded-2xl">
           <h1 className="text-3xl">삼성·TSMC 중국 접근 막을 수도" 美 새 반도체 제한 전망</h1>
-          <div className="w-[728px] h-9 flex justify-between items-start ">
-            <div className=" flex  mt-4 gap-4  text-zinc-600 text-sm font-medium  leading-tight">
+          <div className="w-[728px] h-9 flex  items-start ">
+            <div className="w-[728px] flex  mt-4 gap-2  text-zinc-600 text-sm font-medium  leading-tight">
               <div className="">한국경제</div>
               <div className="text-right">∙</div>
               <div className="">2024년 6월 5일 오전 11:23</div>
               <div className="text-right">∙</div>
               <div className="text-right">조회수 12,038회</div>
             </div>
-            <div className="w-[200px] h-9 flex items-center mt-4">
-              <BasicIcon name="Translate" width={24} color="black" />
-              <TextButton size="custom" width="176">
+            <div className="mt-3">
+              <TextButton size="custom" width="176px" height="36px" icon="Translate">
                 번역하기
               </TextButton>
             </div>
@@ -69,7 +69,13 @@ export default function NewsDetail() {
             </div>
           </div>
           <div className="w-[388px] h-[488px] p-8 bg-white rounded-2xl font-pretendard">
-            <h2>관련기사</h2>
+            <h2 className="font-bold text-xl">관련기사</h2>
+            <div className=" flex flex-col gap-y-5 mt-[10px]">
+              <CardSmallNews />
+              <CardSmallNews />
+              <CardSmallNews />
+              <CardSmallNews />
+            </div>
           </div>
         </div>
       </div>

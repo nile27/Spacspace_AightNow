@@ -24,7 +24,11 @@ export default function Section(props: TSectionProps) {
       </div>
       <div className="p-6 bg-white rounded-2xl flex-col justify-start items-start flex w-full">
         <div className="flex flex-col justify-start items-center gap-4 w-full">
-          {isNews ? (
+          {count === 0 ? (
+            <div className="text-scaleGray-400 text-base font-medium font-['Pretendard'] leading-normal">
+              검색 결과가 없습니다.
+            </div>
+          ) : isNews ? (
             <div className="flex flex-col w-full">
               {items.slice(0, visibleItems).map((data, index) => (
                 <div key={index} className="flex rounded-lg gap-4 pb-4">

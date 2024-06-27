@@ -5,8 +5,9 @@ import SearchEmpty from "./components/SearchEmpty";
 import { useState } from "react";
 import SearchPanel from "./components/SearchPanel";
 
-export default function SearchPage() {
+function SearchPage() {
   const [search, setSearch] = useState("");
+  console.log("searchPage");
   return (
     <>
       <div className="flex justify-center items-start w-full h-full mt-[59px]">
@@ -23,10 +24,12 @@ export default function SearchPage() {
                 />
               </div>
             </div>
-            {search === "" ? <SearchEmpty /> : <SearchPanel searchTerm={search} />}
+            {search.trim() === "" ? <SearchEmpty /> : <SearchPanel searchTerm={search} />}
           </div>
         </div>
       </div>
     </>
   );
 }
+
+export default SearchPage;

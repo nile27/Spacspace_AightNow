@@ -1,10 +1,9 @@
 "use client";
 
-import Stock from "@/components/Stock/Stock";
-import { useState } from "react";
-import FindNews from "./FindNews";
+import React, { useMemo, useState } from "react";
+import Section from "./Section";
 
-const items = [
+const fetchSearchResults = [
   {
     reutersCode: "AAPL.O",
     stockName: "애플",
@@ -83,95 +82,58 @@ const news = [
   },
 ];
 
-export default function SearchPanel(props: any) {
+function SearchPanel(props: any) {
   const { searchTerm } = props;
   const [visibleItems, setVisibleItems] = useState(6);
   const [visibleNews, setVisibleNews] = useState(5);
 
   const handleLoadMoreItems = () => {
-    setVisibleItems(prevVisibleItems => Math.min(prevVisibleItems + 6, items.length));
+    setVisibleItems(prevVisibleItems => Math.min(prevVisibleItems + 6, fetchSearchResults.length));
   };
 
   const handleLoadMoreNews = () => {
     setVisibleNews(visibleNews + 5);
   };
+
+  const filteredItems = useMemo(() => {
+    if (!searchTerm) return fetchSearchResults;
+    return fetchSearchResults.filter(
+      item =>
+        item.stockName.toLowerCase().includes(searchTerm) || item.symbolCode.includes(searchTerm),
+    );
+  }, [searchTerm]);
+
+  const filteredNews = useMemo(() => {
+    if (!searchTerm) return news;
+    return news.filter(item => item.title.toLowerCase().includes(searchTerm));
+  }, [searchTerm]);
+
+  console.log("SearchPanel");
   return (
     <>
-      <div className="flex-col justify-start items-start gap-8 flex w-[615px]">
-        <div className="w-full flex-col justify-start items-center gap-2 flex">
-          <div className="items-center gap-2 inline-flex w-full">
-            <div className="text-blue-950 text-2xl font-bold font-['Pretendard'] leading-loose">
-              주식
-            </div>
-            <div className="text-zinc-600 text-sm font-medium font-['Pretendard'] underline leading-tight">
-              {`(${items.length})`}
-            </div>
-          </div>
-          <div className="p-6 bg-white rounded-2xl flex-col justify-start items-start flex w-full">
-            <div className="flex flex-col justify-start items-center gap-4 w-full">
-              <div className="grid grid-cols-2 gap-4 w-full">
-                {items
-                  .filter(
-                    item =>
-                      item.stockName.toLowerCase().includes(searchTerm) ||
-                      item.symbolCode.includes(searchTerm),
-                  )
-                  .slice(0, visibleItems)
-                  .map((data, index) => (
-                    <div key={index} className="flex justify-between items-center rounded-lg">
-                      <Stock key={index} data={data} logo={"apple"} gap="gap-[64px]" />
-                    </div>
-                  ))}
-              </div>
-              {visibleItems < items.length && (
-                <div className="h-12 pt-2 flex justify-center items-center gap-2.5 w-full border-t-2">
-                  <button
-                    onClick={handleLoadMoreItems}
-                    className="text-neutral-400 text-base font-medium font-['Pretendard'] leading-normal"
-                  >
-                    더보기
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex-col justify-start items-start gap-2 flex w-full">
-          <div className="items-center gap-4 inline-flex w-full">
-            <div className="text-blue-950 text-2xl font-bold font-['Pretendard'] leading-loose">
-              뉴스
-            </div>
-            <div className="text-zinc-600 text-sm font-medium underline leading-tight">
-              {`(${news.length})`}
-            </div>
-          </div>
-          <div className="p-6 bg-white rounded-2xl flex-col justify-start items-start flex w-full">
-            <div className="flex flex-col">
-              {news
-                .filter(item => item.title.toLowerCase().includes(searchTerm))
-                .slice(0, visibleNews)
-                .map((data, index) => (
-                  <div key={index}>
-                    <div className="flex rounded-lg gap-4 pb-4">
-                      <FindNews data={data} />
-                    </div>
-                  </div>
-                ))}
-            </div>
-            {visibleNews < news.length && (
-              <div className="h-12 pt-2 flex justify-center items-center gap-2.5 w-full border-t-2">
-                <button
-                  onClick={handleLoadMoreNews}
-                  className="text-neutral-400 text-base font-medium font-['Pretendard'] leading-normal"
-                >
-                  더보기
-                </button>
-              </div>
-            )}
+      <div className="flex justify-center items-start w-full h-full">
+        <div className="flex flex-col gap-12 w-full max-w-7xl">
+          <div className="flex-col justify-start items-start gap-8 flex w-[615px]">
+            <Section
+              title="주식"
+              count={filteredItems.length}
+              items={filteredItems}
+              visibleItems={visibleItems}
+              handleLoadMore={handleLoadMoreItems}
+            />
+            <Section
+              title="뉴스"
+              count={filteredNews.length}
+              items={filteredNews}
+              visibleItems={visibleNews}
+              handleLoadMore={handleLoadMoreNews}
+              isNews
+            />
           </div>
         </div>
       </div>
     </>
   );
 }
+
+export default SearchPanel;

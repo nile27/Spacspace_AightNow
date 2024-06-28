@@ -16,7 +16,6 @@ export default function RootLayout({
   return (
     <>
       <div className={`font-pretendard w-full h-full flex justify-center items-center`}>
-        <Header />
         {children}
       </div>
     </>

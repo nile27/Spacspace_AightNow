@@ -21,15 +21,16 @@ const rankings = [
 ];
 
 export default function SearchEmpty() {
+  console.log("SearchEmpty");
   return (
     <>
       <div className="flex-col justify-start items-start gap-8 flex">
         <div className="flex-col justify-start items-center gap-2 flex">
           <div className="items-center gap-[431px] inline-flex w-full">
-            <div className="text-blue-950 text-2xl font-bold font-['Pretendard'] leading-loose">
+            <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
               최근 검색어
             </div>
-            <button className="text-zinc-600 text-sm font-medium font-['Pretendard'] underline leading-tight">
+            <button className="text-scaleGray-600 text-sm font-medium font-['Pretendard'] underline leading-tight">
               전체삭제
             </button>
           </div>
@@ -43,10 +44,10 @@ export default function SearchEmpty() {
         </div>
         <div className="flex-col justify-start items-start gap-2 flex w-full">
           <div className="items-center gap-4 inline-flex w-full">
-            <div className="text-blue-950 text-2xl font-bold font-['Pretendard'] leading-loose">
+            <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
               인기 검색어
             </div>
-            <div className="text-zinc-600 text-sm font-medium underline leading-tight">
+            <div className="text-scaleGray-600 text-sm font-medium underline leading-tight">
               00:00 기준
             </div>
           </div>

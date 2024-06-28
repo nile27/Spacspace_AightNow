@@ -1,3 +1,4 @@
+import { useShow } from "@/Store/store";
 import Icon from "@/components/Stock/Icon";
 import Stock from "@/components/Stock/Stock";
 import TextButton from "@/components/btnUi/TextButton";
@@ -6,7 +7,7 @@ import Image from "next/image";
 export default function WatchListCard() {
   return (
     <>
-      <div className="w-[392px] h-[360px]  bg-white rounded-2xl p-4 font-pretendard">
+      <div className={`w-[392px] h-[360px]   bg-white rounded-2xl p-4 font-pretendard`}>
         <div className="w-[328px] h-14 flex flex-col">
           <div className="flex items-center gap-2 ">
             <Icon name="apple" size={32} />

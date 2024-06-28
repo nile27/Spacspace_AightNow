@@ -10,7 +10,7 @@ function SearchPage() {
   console.log("searchPage");
   return (
     <>
-      <div className="flex justify-center items-start w-full h-full mt-[59px]">
+      <div className="flex justify-center items-start w-full h-full mt-[136px]">
         <div className="flex flex-col gap-12 w-full max-w-7xl">
           <div className="flex-col justify-start items-start gap-8 inline-flex">
             <div className="w-full h-14 flex-col justify-start items-start gap-1 flex">

@@ -4,7 +4,7 @@ import WatchInput from "./WatchInput";
 export default function Watchlist() {
   return (
     <>
-      <div className="w-[794px] h-[735px] bg-white font-pretendard p-10 rounded-[32px]">
+      <div className="w-[794px] h-[735px] bg-white font-pretendard p-10 rounded-[32px] overflow-y-scroll scroll-smooth scrollbar-hide">
         <div className="font-bold text-2xl text-mainNavy-900 text-center">관심종목 추가</div>
         <div>
           <WatchInput />

@@ -13,7 +13,7 @@ import fireStore from "@/firebase/firestore";
 
 export default function Report() {
   const onClickBtn = async () => {
-    await addDoc(collection(fireStore, "temp"), {
+    await addDoc(collection(fireStore, "table"), {
       name: "test",
       age: 20,
     });

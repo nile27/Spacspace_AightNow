@@ -33,7 +33,7 @@ export default function Stock(props: TStock) {
 
   return (
     <>
-      <div className="flex flex-col  justify-start items-start ">
+      <button className="flex flex-col  justify-start items-start ">
         <div className="flex-col justify-start items-center flex">
           <div className={`w-full ${gap} py-2 flex justify-between items-center`}>
             <div className="flex justify-start items-center gap-4">
@@ -56,7 +56,7 @@ export default function Stock(props: TStock) {
               <div className="flex justify-end items-start gap-2">
                 <div
                   className={`text-right ${
-                    compareToPreviousPrice.text === "하락" ? "text-sky-500" : "text-warning"
+                    compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
                   } text-xs font-normal font-['Pretendard'] leading-none`}
                 >
                   {compareToPreviousPrice.text === "하락" ? "▼" : "▲"}
@@ -64,7 +64,7 @@ export default function Stock(props: TStock) {
                 </div>
                 <div
                   className={`text-right ${
-                    compareToPreviousPrice.text === "하락" ? "text-sky-500" : "text-warning"
+                    compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
                   } text-xs font-normal font-['Pretendard'] leading-none`}
                 >
                   {compareToPreviousPrice.text === "하락" ? "-" : "+"}
@@ -74,7 +74,7 @@ export default function Stock(props: TStock) {
             </div>
           </div>
         </div>
-      </div>
+      </button>
     </>
   );
 }

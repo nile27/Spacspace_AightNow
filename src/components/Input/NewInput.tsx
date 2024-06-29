@@ -23,13 +23,22 @@ export default function NewInput(props: TInputProps) {
         success: `text-success`,
       },
       border: {
-        default: `border-scaleGray-200`,
-        error: `border-warning`,
-        success: "border-sucess",
+        default: `border-scaleGray-200 group-focus:border-secondBlue-500 has-[:focus]:border-secondBlue-500`,
+        error: `border-warning group-focus:border-warning has-[:focus]:border-warning`,
+        success:
+          "border-scaleGray-200 group-focus:border-secondBlue-500 has-[:focus]:border-secondBlue-500",
       },
     },
   });
-
+  const labelVariants = cva(``, {
+    variants: {
+      text: {
+        default: `text-scaleGray-900 `,
+        error: `text-warning`,
+        success: `text-scaleGray-900`,
+      },
+    },
+  });
   return (
     <>
       <div className="min-w-[386px] w-full h-auto min-h-[56px] flex-col justify-start items-start gap-1 inline-flex">
@@ -37,7 +46,7 @@ export default function NewInput(props: TInputProps) {
           <label
             htmlFor={id}
             className={cn(
-              inputVariants({ text: style, border: style }),
+              labelVariants({ text: style }),
               `text-base font-medium font-['Pretendard'] mb-1 leading-normal`,
             )}
           >
@@ -47,7 +56,7 @@ export default function NewInput(props: TInputProps) {
         <div
           className={cn(
             inputVariants({ text: style, border: style }),
-            `has-[:focus]:border-secondBlue-500  min-h-[56px] w-full px-4 py-2.5 bg-white rounded-lg border-[1px]  group-focus:border-secondBlue-500  justify-start items-center gap-4 inline-flex`,
+            `  min-h-[56px] w-full px-4 py-2.5 bg-white rounded-lg border-[1px]    justify-start items-center gap-4 inline-flex`,
           )}
         >
           <input
@@ -63,7 +72,7 @@ export default function NewInput(props: TInputProps) {
             htmlFor={id}
             className={cn(
               inputVariants({ text: style, border: style }),
-              "min-w-[386px] mt-1 ml-2 w-full text-[12px] text-warning  font-caption font-['Pretendard'] leading-none",
+              "min-w-[386px] mt-1 ml-2 w-full text-[12px]  font-caption font-['Pretendard'] leading-none",
             )}
           >
             {caption}

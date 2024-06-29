@@ -6,7 +6,7 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
-import { loginRegExp } from "./utills/utill";
+import { loginRegExp } from "../utills/utill";
 import { error } from "console";
 
 export default function Login() {

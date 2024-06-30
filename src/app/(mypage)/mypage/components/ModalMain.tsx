@@ -1,29 +1,28 @@
 "use client";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import Select from "./Select";
-import { useState, useRef, useEffect, SetStateAction, Dispatch } from "react";
-
+import { useState, useRef, useEffect } from "react";
 import BasicIcon from "@/components/Icon/BasicIcons";
-import SelectInput from "./SelectInput";
+import Link from "next/link";
+import Autocomplete from "./Autocomplete";
 
-export default function ModalMain({
-  isModal,
-  setIsModal,
-}: {
-  isModal: boolean;
-  setIsModal: Dispatch<SetStateAction<boolean>>;
-}) {
-  const [inputText, setInput] = useState({
-    id: "",
-    pw: "관심 종목을 선택해주세요.",
+export default function ModalMain() {
+  const [inputText, setInput] = useState<{ nickname: string; stock: string[] }>({
+    nickname: "",
+    stock: [],
   });
-  const [isSelect, setSelect] = useState(false);
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+  const [nickNameErr, setNickNameErr] = useState(false);
   const [imgFile, setImgFile] = useState<string | null>(null);
   const imgRef = useRef<HTMLInputElement>(null);
 
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...inputText, [key]: e.target.value });
+  };
+
+  const handleNickNameCheck = () => {
+    setNickNameCheck(false);
+    setNickNameErr(true);
   };
 
   const saveImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +55,7 @@ export default function ModalMain({
           className={` relative w-[140px] h-[140px] bg-cover bg-center cursor-pointer rounded-full`}
         >
           <div className="bg-[#9F9F9F] rounded-full absolute bottom-0 right-0">
-            <BasicIcon size={40} name="Edit" color="white" />
+            <BasicIcon name="Edit" size={40} color="white" />
           </div>
         </label>
 
@@ -76,11 +75,19 @@ export default function ModalMain({
           autoComplete="off"
           label="닉네임"
           id="id"
-          value={inputText.id}
-          onChange={handleInputValue("id")}
+          value={inputText.nickname}
+          style={nickNameErr ? (nickNameCheck ? "success" : "error") : undefined}
+          caption={
+            nickNameErr
+              ? !nickNameCheck
+                ? "중복된 닉네임 입니다."
+                : "사용 가능한 닉네임입니다."
+              : undefined
+          }
+          onChange={handleInputValue("nickname")}
         >
-          {inputText.id ? (
-            <TextButton size="custom" width="120px" height="auto">
+          {inputText.nickname ? (
+            <TextButton onClick={handleNickNameCheck} size="custom" width="120px" height="auto">
               중복 확인
             </TextButton>
           ) : (
@@ -90,23 +97,19 @@ export default function ModalMain({
           )}
         </NewInput>
         <div className="w-full h-auto relative">
-          <SelectInput
-            type="button"
-            autoComplete="off"
-            value={inputText.pw}
-            onClick={() => setSelect(!isSelect)}
-            style={
-              inputText.pw === "관심 종목을 선택해주세요." ? "text-scaleGray-400" : "text-black"
-            }
-          />
-
-          {isSelect && <Select inputText={inputText} setSelect={setSelect} setInput={setInput} />}
+          <Autocomplete inputText={inputText} setInput={setInput} />
         </div>
 
         <div className="w-full h-auto mt-6">
-          <TextButton size="full" onClick={() => setIsModal(false)}>
-            수정하기
-          </TextButton>
+          {inputText.nickname && inputText.stock.length ? (
+            <Link href="/success">
+              <TextButton size="full">수정하기</TextButton>
+            </Link>
+          ) : (
+            <TextButton size="full" color="disable">
+              수정하기
+            </TextButton>
+          )}
         </div>
       </form>
     </>

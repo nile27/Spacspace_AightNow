@@ -11,13 +11,10 @@ export default function Agree() {
 
     const copy = [...disabled];
     copy[idx] = true;
-    console.log(checked);
+
     setDisabled(copy);
   };
 
-  useEffect(() => {
-    console.log(disabled);
-  }, []);
   return (
     <>
       <h1 className="mb-5 text-h3 font-bold">약관동의</h1>

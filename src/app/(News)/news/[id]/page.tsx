@@ -8,9 +8,9 @@ import Image from "next/image";
 export default function NewsDetail() {
   return (
     <>
-      <div className="w-[1200px] h-full flex justify-between  ">
-        <Header />
-        <div className="w-[792px] h-full flex flex-col bg-white p-8 font-pretendard rounded-2xl">
+      <Header />
+      <div className="w-[1200px] h-full flex justify-between  mt-52">
+        <div className="w-[792px] h-[1200px] flex flex-col bg-white p-8 font-pretendard rounded-2xl">
           <h1 className="text-3xl">삼성·TSMC 중국 접근 막을 수도" 美 새 반도체 제한 전망</h1>
           <div className="w-[728px] h-9 flex  items-start ">
             <div className="w-[728px] flex  mt-4 gap-2  text-zinc-600 text-sm font-medium  leading-tight">
@@ -31,7 +31,7 @@ export default function NewsDetail() {
             <div>아이낫우 AI 요약</div>
           </div>
 
-          <div className="h-[900px] flex flex-col">
+          <div className=" flex flex-col">
             <div>
               바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성 바이오 연구의 첨단,인공
               유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생

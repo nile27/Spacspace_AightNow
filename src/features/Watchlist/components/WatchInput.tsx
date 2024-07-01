@@ -1,4 +1,5 @@
 "use client";
+import { useShow } from "@/Store/store";
 import BasicIcon from "@/components/Icon/BasicIcons";
 import { useEffect, useRef, useState } from "react";
 
@@ -10,6 +11,7 @@ export default function WatchInput() {
   const [filteredStocks, setFilteredStocks] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { watchList, setWatchList } = useShow();
 
   useEffect(() => {
     const searchStock = stockName.filter(stock => stock.includes(search));
@@ -37,8 +39,11 @@ export default function WatchInput() {
   const handleItemClick = (stock: string) => {
     setSearch(stock);
     setIsShow(false);
+    setWatchList([search, ...filteredStocks]);
     inputRef.current?.focus();
   };
+
+  console.log(watchList.length);
   return (
     <>
       <form action="">

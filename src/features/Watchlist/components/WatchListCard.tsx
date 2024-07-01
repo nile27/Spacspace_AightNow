@@ -3,6 +3,7 @@ import Icon from "@/components/Stock/Icon";
 import Stock from "@/components/Stock/Stock";
 import TextButton from "@/components/btnUi/TextButton";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function WatchListCard() {
   return (
@@ -34,9 +35,11 @@ export default function WatchListCard() {
           <TextButton size="custom" color="grayScale" width={"160px"} height={"56px"}>
             삭제하기
           </TextButton>
-          <TextButton size="custom" width={"160px"} height={"56px"}>
-            자세히 보기
-          </TextButton>
+          <Link href={"/report"}>
+            <TextButton size="custom" width={"160px"} height={"56px"}>
+              자세히 보기
+            </TextButton>
+          </Link>
         </div>
       </div>
     </>

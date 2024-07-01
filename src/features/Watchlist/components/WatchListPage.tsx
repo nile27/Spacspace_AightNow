@@ -1,11 +1,12 @@
 "use client";
-import WatchCard from "@/components/Card/WatchCard";
+
 import WatchList from "./WatchList";
-import { useShow } from "@/Store/store";
+import { useClose, useShow } from "@/Store/store";
+import WatchListAdd from "./WatchListAdd";
 
 export default function WatchListPage() {
   const { watchList } = useShow();
-  console.log(watchList.length === 0 ? "WatchList" : "WatchCard");
+  const { isClose } = useClose();
 
-  return <>{watchList.length === 0 ? <WatchList /> : <WatchCard />}</>;
+  return <>{watchList.length > 0 || isClose ? <WatchList /> : <WatchListAdd />}</>;
 }

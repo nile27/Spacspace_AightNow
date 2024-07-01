@@ -10,6 +10,10 @@ export default function WatchList() {
 
   const testArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+  const handleDelete = () => {
+    testArr.filter((item, idx) => item === testArr[idx]);
+  };
+
   return (
     <>
       <div className={`w-full relative`}>
@@ -41,9 +45,11 @@ export default function WatchList() {
                 관심종목을 삭제하시겠습니까?
               </div>
               <div className="w-full flex items-center justify-between  mt-4 ">
-                <TextButton size="custom" color="grayScale" width={"160px"} height={"56px"}>
-                  삭제하기
-                </TextButton>
+                <button onClick={handleDelete}>
+                  <TextButton size="custom" color="grayScale" width={"160px"} height={"56px"}>
+                    삭제하기
+                  </TextButton>
+                </button>
 
                 <TextButton
                   size="custom"

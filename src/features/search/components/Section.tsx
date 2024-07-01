@@ -36,7 +36,7 @@ export default function Section(props: TSectionProps) {
             <div className="grid grid-cols-2 gap-4 w-full">
               {items.slice(0, visibleItems).map((data, index) => (
                 <div key={index} className="flex justify-between items-center rounded-lg">
-                  <Stock data={data} logo={"apple"} gap="gap-[64px]" />
+                  <Stock data={data} logo={data.logo} gap="gap-[64px]" />
                 </div>
               ))}
             </div>

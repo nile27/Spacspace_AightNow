@@ -1,9 +1,9 @@
-import Report from "@/features/report/components/Report";
+import Main from "@/features/Main/Main";
 
 export default function Home() {
   return (
     <>
-      <div className=" h-full"></div>
+      <Main />
     </>
   );
 }

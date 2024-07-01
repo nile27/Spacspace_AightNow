@@ -9,11 +9,11 @@ export default function Toggle() {
 
   return (
     <>
-      <div className="w-20 h-10 p-1 bg-gray-200 rounded justify-start items-start gap-1 inline-flex">
-        <div
-          className="w-8 h-8 px-1 rounded flex-col justify-center items-center gap-2.5 inline-flex"
-          onClick={handleToggle}
-        >
+      <div
+        className="w-20 h-10 p-1 bg-gray-200 rounded justify-start items-start gap-1 inline-flex"
+        onClick={handleToggle}
+      >
+        <div className="w-8 h-8 px-1 rounded flex-col justify-center items-center gap-2.5 inline-flex">
           <button
             className={`${
               toggle

@@ -12,6 +12,7 @@ export default function MainLanguage() {
         </div>
       </div>
       <div className="w-full h-auto flex gap-[20px]">
+        <LanguageButton style={"kr"} />
         <LanguageButton style={"en"} />
         <LanguageButton style={"ch"} />
         <LanguageButton style={"jp"} />

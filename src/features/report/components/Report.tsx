@@ -13,7 +13,7 @@ import fireStore from "@/firebase/firestore";
 
 export default function Report() {
   const onClickBtn = async () => {
-    await addDoc(collection(fireStore, "temp"), {
+    await addDoc(collection(fireStore, "table"), {
       name: "test",
       age: 20,
     });
@@ -37,7 +37,7 @@ export default function Report() {
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport />
-          <Analysis />₩
+          <Analysis />
         </div>
         <FavoriteNews />
         <div>

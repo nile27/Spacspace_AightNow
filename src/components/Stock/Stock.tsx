@@ -4,6 +4,24 @@ type TStock = {
   logo: string;
 };
 
+export const STOCK_NAMES: { [key: string]: string } = {
+  tesla: "테슬라",
+  google: "구글",
+  apple: "애플",
+  microsoft: "마이크로소프트",
+  amazon: "아마존",
+  unity: "유니티",
+};
+
+export const STOCK_CODE: { [key: string]: string } = {
+  tesla: "TSLA",
+  google: "GOOGL",
+  apple: "AAPL",
+  microsoft: "MSFT",
+  amazon: "AMZN",
+  unity: "U",
+};
+
 export default function Stock({ logo, gap }: { logo: string; gap?: string }) {
   return (
     <>
@@ -16,10 +34,10 @@ export default function Stock({ logo, gap }: { logo: string; gap?: string }) {
               </div>
               <div className="flex flex-col justify-start items-start">
                 <div className="text-neutral-900 text-base font-bold font-['Pretendard'] leading-normal">
-                  애플
+                  {STOCK_NAMES[logo]}
                 </div>
                 <div className="text-neutral-900 text-sm font-normal font-['Pretendard'] leading-tight">
-                  AAPL
+                  {STOCK_CODE[logo]}
                 </div>
               </div>
             </div>

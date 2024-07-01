@@ -27,7 +27,7 @@ export default function Report() {
             <Icon name="google" size={50} />
             <span className="text-lg font-medium">애플 · APPL</span>
           </div>
-          <TextButton size="custom" width={"167"} height={"56"}>
+          <TextButton size="custom" width={"167px"} height={"56px"}>
             관심종목 추가
           </TextButton>
         </div>

@@ -10,10 +10,11 @@ const fetchSearchResults = [
     symbolCode: "AAPL",
     closePrice: "145.86",
     compareToPreviousPrice: {
-      text: "상승",
+      text: "하락",
     },
     compareToPreviousClosePrice: "0.86",
     fluctuationsRatio: "2.00",
+    logo: "apple",
   },
   {
     reutersCode: "GOOGL.O",
@@ -25,6 +26,7 @@ const fetchSearchResults = [
     },
     compareToPreviousClosePrice: "0.86",
     fluctuationsRatio: "2.00",
+    logo: "google",
   },
   {
     reutersCode: "AMZN.O",
@@ -32,10 +34,23 @@ const fetchSearchResults = [
     symbolCode: "AMZN",
     closePrice: "3,599.92",
     compareToPreviousPrice: {
+      text: "하락",
+    },
+    compareToPreviousClosePrice: "0.86",
+    fluctuationsRatio: "2.00",
+    logo: "amazon",
+  },
+  {
+    reutersCode: "MSFT.O",
+    stockName: "마이크로소프트",
+    symbolCode: "MSFT",
+    closePrice: "304.80",
+    compareToPreviousPrice: {
       text: "상승",
     },
     compareToPreviousClosePrice: "0.86",
     fluctuationsRatio: "2.00",
+    logo: "microsoft",
   },
 ];
 

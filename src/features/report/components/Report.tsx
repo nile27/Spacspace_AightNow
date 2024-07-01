@@ -8,12 +8,12 @@ import AIReport from "./AIReport";
 import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
 
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
 
 export default function Report() {
   const onClickBtn = async () => {
-    await addDoc(collection(fireStore, "temp"), {
+    await addDoc(collection(fireStore, "table"), {
       name: "test",
       age: 20,
     });

@@ -15,7 +15,7 @@ export default function WatchListAdd() {
 
           <div className="w-[714px] h-[332px] mt-12">
             <h2 className="text-lg text-mainNavy-900">인기검색어</h2>
-            <div className="w-[714px] h-[288px] flex justify-center items-center gap-6  border border-scaleGray-400 rounded-2xl s ">
+            <div className="w-[714px] h-[288px] flex justify-center items-center gap-6   border border-scaleGray-400 rounded-2xl s ">
               <div>
                 <StockList name={"apple"} size={32} />
                 <StockList name={"google"} size={32} />

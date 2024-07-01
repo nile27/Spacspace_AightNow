@@ -10,6 +10,7 @@ import FavoriteNews from "./FavoriteNews";
 
 import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
+import Header from "@/components/Header";
 
 export default function Report() {
   const onClickBtn = async () => {

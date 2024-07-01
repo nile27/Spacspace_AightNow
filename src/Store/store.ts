@@ -7,6 +7,11 @@ type TShoStore = {
   setWatchList: (watchList: string[]) => void;
 };
 
+type TLoginStore = {
+  isLoggedIn: boolean;
+  setLogin: () => void;
+};
+
 type TCloseStore = {
   isClose: boolean;
   setIsClose: (isClose: boolean) => void;
@@ -26,4 +31,10 @@ export const useShow = create<TShoStore>()(set => ({
 export const useClose = create<TCloseStore>()(set => ({
   isClose: false,
   setIsClose: isClose => set({ isClose }),
+}));
+
+export const useLoginStore = create<TLoginStore>(set => ({
+  isLoggedIn: false,
+  setLogin: () => set({ isLoggedIn: true }),
+  // logout: () => set({ isLoggedIn: false }),
 }));

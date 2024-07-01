@@ -104,7 +104,17 @@ export default function UserHome() {
                     ) : (
                       lists.map((data, index) => (
                         <div key={index} className="flex justify-between items-center rounded-lg">
-                          <Stock data={data} logo={data.logo} gap="gap-[274px]" />
+                          <Stock
+                            data={data}
+                            logo={data.logo}
+                            gap={`${
+                              data.stockName.length < 3 && data.symbolCode.length < 5
+                                ? "gap-[291px]"
+                                : data.stockName.length < 4
+                                ? "gap-[274px]"
+                                : "gap-[210px]"
+                            }`}
+                          />
                         </div>
                       ))
                     )}
@@ -117,7 +127,17 @@ export default function UserHome() {
                   <div className="w-full min-h-[300px] flex flex-col justify-center items-center gap-4">
                     {lists.map((data, index) => (
                       <div key={index} className="flex justify-between items-center rounded-lg">
-                        <Stock data={data} logo={data.logo} gap="gap-[274px]" />
+                        <Stock
+                          data={data}
+                          logo={data.logo}
+                          gap={`${
+                            data.stockName.length < 3 && data.symbolCode.length < 5
+                              ? "gap-[291px]"
+                              : data.stockName.length < 4
+                              ? "gap-[274px]"
+                              : "gap-[210px]"
+                          }`}
+                        />
                       </div>
                     ))}
                   </div>

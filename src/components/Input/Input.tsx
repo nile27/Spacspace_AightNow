@@ -13,35 +13,18 @@ type TInputProps = {
 } & React.ComponentProps<"input">;
 
 export default function Input(props: TInputProps) {
-  const { id, label, caption, children, onChange, ...restProps } = props;
+  const { children, onChange, ...restProps } = props;
   return (
     <>
-      <div className="w-[386px] h-[104px] flex-col justify-start items-start gap-1 inline-flex">
-        {id && (
-          <label
-            htmlFor={id}
-            className="text-scaleGray-900/opacity-20 text-base font-medium font-['Pretendard'] leading-normal"
-          >
-            {label}
-          </label>
-        )}
+      <div className=" gap-1 inline-flex">
         <div className="w-[386px] px-4 py-2.5 bg-white rounded-lg border border-stone-300 justify-start items-center gap-4 inline-flex">
           <input
-            id={id}
             className="w-[314px] text-neutral-900 text-base font-normal leading-normal focus:outline-none"
             onChange={onChange}
             {...restProps}
           />
           {children}
         </div>
-        {id && (
-          <label
-            htmlFor={id}
-            className="w-[386px] text-zinc-700 text-xs font-caption font-['Pretendard'] leading-none"
-          >
-            {caption}
-          </label>
-        )}
       </div>
     </>
   );

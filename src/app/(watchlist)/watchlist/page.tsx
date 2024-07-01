@@ -1,9 +1,9 @@
-import WatchListAdd from "@/features/Watchlist/components/WatchListAdd";
+import WatchListPage from "@/features/Watchlist/components/WatchListPage";
 
 export default function page() {
   return (
     <>
-      <WatchListAdd />
+      <WatchListPage />
     </>
   );
 }

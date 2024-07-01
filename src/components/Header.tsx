@@ -8,7 +8,7 @@ export default function Header({
   isLogin?: boolean;
 }) {
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
-  const addressItem = ["/", "/news", "/watchlist", "/mypage"];
+  const addressItem = ["/find", "/news", "/watchlist", "/mypage"];
   return (
     <header
       className={`fixed top-0 w-full h-[80px] py-[8px] bg-${background} flex flex-row justify-between items-center px-[5vw] `}

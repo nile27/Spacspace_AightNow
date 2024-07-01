@@ -12,5 +12,3 @@ export default function Home() {
     </>
   );
 }
-
-// Eye , Eyehide,Translate,Calender,Edit,AI,Refresh,Rightarrow,Search,Time,Close,Plus,Downarrow

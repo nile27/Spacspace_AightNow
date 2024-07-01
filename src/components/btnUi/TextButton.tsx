@@ -85,8 +85,8 @@ export default function TextButton(props: TTextButton) {
       <button
         {...restBtnProps}
         type="button"
-        style={{ width: width, height: height }}
-        className={cn(buttonVariants({ size, color }), `  justify-center items-center flex`)}
+        style={{ width: width, height: height, minWidth: width }}
+        className={cn(buttonVariants({ size, color }), ` justify-center items-center flex`)}
       >
         {icon && TextRenderIcon(icon, color, size)}
         <span className={cn(textVariants({ size, color }), " text-center")}>{children}</span>

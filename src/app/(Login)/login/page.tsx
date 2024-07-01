@@ -6,11 +6,24 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
+import { loginRegExp } from "../utills/utill";
+import { error } from "console";
 
 export default function Login() {
   const [pwHide, setpwHide] = useState(false);
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
+  const [regExpArr, setRegExpArr] = useState([true, true]);
+  const errMessage = {
+    id: "*  6~12자의 영문, 숫자, ,_을 이용한 조합",
+    pw: "*  8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합",
+  };
+
+  const handleOnClick = () => {
+    const ok = loginRegExp(idText, pwText);
+    setRegExpArr(ok.bool);
+    console.log(ok);
+  };
 
   return (
     <>
@@ -21,6 +34,8 @@ export default function Login() {
           placeholder="아이디를 입력해주세요"
           autoComplete="username"
           value={idText}
+          style={!regExpArr[0] ? "error" : undefined}
+          caption={!regExpArr[0] ? errMessage.id : undefined}
           onChange={e => setId(e.target.value)}
         ></NewInput>
         <NewInput
@@ -28,6 +43,8 @@ export default function Login() {
           placeholder="비밀번호를 입력해주세요"
           autoComplete="current-password"
           value={pwText}
+          style={!regExpArr[0] ? "error" : undefined}
+          caption={!regExpArr[0] ? errMessage.id : undefined}
           onChange={e => setPw(e.target.value)}
         >
           {!pwHide ? (
@@ -53,9 +70,11 @@ export default function Login() {
         </div>
 
         {idText && pwText ? (
-          <TextButton size="full">로그인</TextButton>
+          <TextButton onClick={handleOnClick} size="full">
+            로그인
+          </TextButton>
         ) : (
-          <TextButton size="full" color="disable">
+          <TextButton onClick={handleOnClick} size="full" color="disable">
             로그인
           </TextButton>
         )}

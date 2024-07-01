@@ -20,7 +20,7 @@ export default function Header({
         {headerItem.map((item, key) => {
           return (
             <Link href={addressItem[key]} key={key}>
-              <button className="w-auto p-[10px]  h-full flex justify-center items-center gap-1 hover:border-b-[1px] hover:border-scaleGray-800">
+              <button className="p-[10px] w-[160px] h-full flex justify-center items-center gap-1 hover:border-b-[1px] hover:border-scaleGray-800">
                 {item}
               </button>
             </Link>

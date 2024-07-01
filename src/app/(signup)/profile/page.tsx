@@ -1,23 +1,28 @@
 "use client";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import Select from "./components/Select";
 import { useState, useRef, useEffect } from "react";
 import BasicIcon from "@/components/Icon/BasicIcons";
-import SelectInput from "./components/SelectInput";
 import Link from "next/link";
+import Autocomplete from "./components/Autocomplete";
 
 export default function Profile() {
-  const [inputText, setInput] = useState({
-    id: "",
-    pw: "관심 종목을 선택해주세요.",
+  const [inputText, setInput] = useState<{ nickname: string; stock: string[] }>({
+    nickname: "",
+    stock: [],
   });
-  const [isSelect, setSelect] = useState(false);
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+  const [nickNameErr, setNickNameErr] = useState(false);
   const [imgFile, setImgFile] = useState<string | null>(null);
   const imgRef = useRef<HTMLInputElement>(null);
 
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...inputText, [key]: e.target.value });
+  };
+
+  const handleNickNameCheck = () => {
+    setNickNameCheck(false);
+    setNickNameErr(true);
   };
 
   const saveImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,11 +75,19 @@ export default function Profile() {
           autoComplete="off"
           label="닉네임"
           id="id"
-          value={inputText.id}
-          onChange={handleInputValue("id")}
+          value={inputText.nickname}
+          style={nickNameErr ? (nickNameCheck ? "success" : "error") : undefined}
+          caption={
+            nickNameErr
+              ? !nickNameCheck
+                ? "중복된 닉네임 입니다."
+                : "사용 가능한 닉네임입니다."
+              : undefined
+          }
+          onChange={handleInputValue("nickname")}
         >
-          {inputText.id ? (
-            <TextButton size="custom" width="120px" height="auto">
+          {inputText.nickname ? (
+            <TextButton onClick={handleNickNameCheck} size="custom" width="120px" height="auto">
               중복 확인
             </TextButton>
           ) : (
@@ -84,21 +97,11 @@ export default function Profile() {
           )}
         </NewInput>
         <div className="w-full h-auto relative">
-          <SelectInput
-            type="button"
-            autoComplete="off"
-            value={inputText.pw}
-            onClick={() => setSelect(!isSelect)}
-            style={
-              inputText.pw === "관심 종목을 선택해주세요." ? "text-scaleGray-400" : "text-black"
-            }
-          />
-
-          {isSelect && <Select inputText={inputText} setSelect={setSelect} setInput={setInput} />}
+          <Autocomplete inputText={inputText} setInput={setInput} />
         </div>
 
         <div className="w-full h-auto mt-6">
-          {inputText.id && inputText.pw !== "관심 종목을 선택해주세요." ? (
+          {inputText.nickname && inputText.stock.length ? (
             <Link href="/success">
               <TextButton size="full">다음</TextButton>
             </Link>

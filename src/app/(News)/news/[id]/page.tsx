@@ -1,4 +1,5 @@
 import CardSmallNews from "@/components/Card/CardSmallNews";
+import Header from "@/components/Header";
 import BasicIcon from "@/components/Icon/BasicIcons";
 import ListStockUp from "@/components/List/ListStockUp";
 import TextButton from "@/components/btnUi/TextButton";
@@ -8,6 +9,7 @@ export default function NewsDetail() {
   return (
     <>
       <div className="w-[1200px] h-full flex justify-between  ">
+        <Header />
         <div className="w-[792px] h-full flex flex-col bg-white p-8 font-pretendard rounded-2xl">
           <h1 className="text-3xl">삼성·TSMC 중국 접근 막을 수도" 美 새 반도체 제한 전망</h1>
           <div className="w-[728px] h-9 flex  items-start ">

@@ -1,7 +1,12 @@
+"use client";
 import Stock from "@/components/Stock/Stock";
 import { BadgeBlack } from "../../components/Badge/Badge";
 import News from "./components/News";
 import Report from "./components/Report";
+import IconButton from "@/components/btnUi/IconButton";
+import { useState } from "react";
+import Warning from "../../../public/icons/Warning.svg";
+import ChatBot from "../chatbot/ChatBot";
 
 const datas = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },
@@ -9,7 +14,7 @@ const datas = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "amazon" },
 ];
 
-const lists = [
+const lists: any[] = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "tesla" },
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "unity" },
@@ -17,6 +22,7 @@ const lists = [
 ];
 
 export default function UserHome() {
+  const [isShow, setIsShow] = useState(false);
   return (
     <>
       <div className="flex justify-center items-start w-full mt-[139px]">
@@ -30,7 +36,6 @@ export default function UserHome() {
                 <BadgeBlack />
               </div>
             </div>
-            {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4"> */}
             <div className="flex justify-between mt-4">
               {datas.slice(0, 3).map((data, index) => (
                 <div key={index} className="">
@@ -44,19 +49,28 @@ export default function UserHome() {
               <div className="flex flex-col justify-start">
                 <div className="text-scaleGray-900 text-3xl font-bold leading-9">최근 조회</div>
                 <div className="px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
-                  <div className="w-full">
-                    {lists.map((data, index) => (
-                      <div key={index} className="flex justify-between items-center rounded-lg">
-                        <Stock key={index} logo={data.reutersCode} />
+                  <div className="w-full min-h-[300px] flex flex-col justify-center items-center gap-4">
+                    {lists.length === 0 ? (
+                      <div className="w-full h-full flex flex-col justify-center items-center text-center flex-grow">
+                        <Warning />
+                        <div className="text-mainNavy-900 text-body2 font-semibold mt-4">
+                          최근 조회한 종목이 없습니다.
+                        </div>
                       </div>
-                    ))}
+                    ) : (
+                      lists.map((data, index) => (
+                        <div key={index} className="flex justify-between items-center rounded-lg">
+                          <Stock key={index} logo={data.reutersCode} />
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </div>
               <div className="flex flex-col justify-start">
                 <div className="text-scaleGray-900 text-3xl font-bold leading-9">관심 종목</div>
                 <div className="px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
-                  <div className="w-full">
+                  <div className="w-full min-h-[300px] flex flex-col justify-center items-center gap-4">
                     {lists.map((data, index) => (
                       <div key={index} className="flex justify-between items-center rounded-lg">
                         <Stock key={index} logo={data.reutersCode} />
@@ -75,6 +89,13 @@ export default function UserHome() {
               </div>
             </div>
           </div>
+        </div>
+        <div className="fixed bottom-4 right-4 py-2 px-4">
+          {isShow ? (
+            <ChatBot onClick={() => setIsShow(false)} />
+          ) : (
+            <IconButton size="chatBot" icon="ChatBot" onClick={() => setIsShow(true)} />
+          )}
         </div>
       </div>
     </>

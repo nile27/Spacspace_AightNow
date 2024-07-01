@@ -34,7 +34,14 @@ export const STOCK_CODE: { [key: string]: string } = {
   unity: "U",
 };
 
-export default function Stock({ logo, gap }: { logo: string; gap?: string }) {
+export default function Stock({ logo, gap, data }: TStock) {
+  const {
+    reutersCode,
+    closePrice,
+    compareToPreviousPrice,
+    compareToPreviousClosePrice,
+    fluctuationsRatio,
+  } = data;
   return (
     <>
       <button className="flex flex-col  justify-start items-start ">

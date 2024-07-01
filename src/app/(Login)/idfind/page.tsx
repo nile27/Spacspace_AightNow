@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function IdFind() {
   const [nameText, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [err, serErr] = useState(true);
+  const [err, serErr] = useState(false);
   const navigation = useRouter();
 
   const handlerOnClick = () => {

@@ -31,10 +31,10 @@ export default function WatchListCard() {
           <Image src="/result.png" alt="result" width={176} height={176} className="" />
         </div>
         <div className=" flex gap-4 justify-center items-center">
-          <TextButton size="custom" color="grayScale" width={"160"} height={"56"}>
+          <TextButton size="custom" color="grayScale" width={"160px"} height={"56px"}>
             삭제하기
           </TextButton>
-          <TextButton size="custom" width={"160"} height={"56"}>
+          <TextButton size="custom" width={"160px"} height={"56px"}>
             자세히 보기
           </TextButton>
         </div>

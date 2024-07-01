@@ -16,7 +16,6 @@ type TStock = {
   };
 };
 
-
 export const STOCK_NAMES: { [key: string]: string } = {
   tesla: "테슬라",
   google: "구글",

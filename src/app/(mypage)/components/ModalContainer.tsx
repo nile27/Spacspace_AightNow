@@ -20,7 +20,7 @@ export default function ModalContainer({
   const renderModal = (index: number) => {
     switch (index) {
       case 0:
-        return <ModalMain isModal={isModal} setIsModal={setIsModal} />;
+        return <ModalMain />;
       case 1:
         return <ProfileModal isModal={isModal} setIsModal={setIsModal} setIdx={setIdx} />;
       case 2:

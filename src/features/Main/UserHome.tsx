@@ -14,11 +14,55 @@ const datas = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "amazon" },
 ];
 
-const lists: any[] = [
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "tesla" },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "unity" },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "google" },
+const lists = [
+  {
+    reutersCode: "AAPL.O",
+    stockName: "애플",
+    symbolCode: "AAPL",
+    closePrice: "145.86",
+    compareToPreviousPrice: {
+      text: "하락",
+    },
+    compareToPreviousClosePrice: "0.86",
+    fluctuationsRatio: "2.00",
+    logo: "apple",
+  },
+  {
+    reutersCode: "GOOGL.O",
+    stockName: "구글",
+    symbolCode: "GOOGL",
+    closePrice: "2,763.82",
+    compareToPreviousPrice: {
+      text: "상승",
+    },
+    compareToPreviousClosePrice: "0.86",
+    fluctuationsRatio: "2.00",
+    logo: "google",
+  },
+  {
+    reutersCode: "AMZN.O",
+    stockName: "아마존",
+    symbolCode: "AMZN",
+    closePrice: "3,599.92",
+    compareToPreviousPrice: {
+      text: "하락",
+    },
+    compareToPreviousClosePrice: "0.86",
+    fluctuationsRatio: "2.00",
+    logo: "amazon",
+  },
+  {
+    reutersCode: "MSFT.O",
+    stockName: "마이크로소프트",
+    symbolCode: "MSFT",
+    closePrice: "304.80",
+    compareToPreviousPrice: {
+      text: "상승",
+    },
+    compareToPreviousClosePrice: "0.86",
+    fluctuationsRatio: "2.00",
+    logo: "microsoft",
+  },
 ];
 
 export default function UserHome() {
@@ -60,7 +104,7 @@ export default function UserHome() {
                     ) : (
                       lists.map((data, index) => (
                         <div key={index} className="flex justify-between items-center rounded-lg">
-                          <Stock key={index} logo={data.reutersCode} />
+                          <Stock data={data} logo={data.logo} gap="gap-[274px]" />
                         </div>
                       ))
                     )}
@@ -73,7 +117,7 @@ export default function UserHome() {
                   <div className="w-full min-h-[300px] flex flex-col justify-center items-center gap-4">
                     {lists.map((data, index) => (
                       <div key={index} className="flex justify-between items-center rounded-lg">
-                        <Stock key={index} logo={data.reutersCode} />
+                        <Stock data={data} logo={data.logo} gap="gap-[274px]" />
                       </div>
                     ))}
                   </div>

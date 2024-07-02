@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
 type TAuth = {
@@ -8,8 +6,6 @@ type TAuth = {
 };
 
 export default function Llmtest() {
-  const [response, setResponse] = useState("");
-
   async function fetchData() {
     // Authentication
     const authUrl = "http://43.203.238.76:8000/auth/token";
@@ -24,26 +20,29 @@ export default function Llmtest() {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams(authBody),
+        body: new URLSearchParams(authBody).toString(),
       });
 
-      console.log("Auth response:", authResponse);
-      console.log("Auth response status:", authResponse.status);
-      const responseData = await authResponse.json();
+      if (!authResponse.ok) {
+        const errorBody = await authResponse.json();
+        console.error("Error details:", errorBody);
+        throw new Error(`HTTP error! status: ${authResponse.status}`);
+      }
 
-      const token = responseData.access_token;
+      const authData = await authResponse.json();
+      const token = authData.access_token;
 
       // Generate request
       const url = "http://43.203.238.76:8000/generate";
-      console.log("Token:", token);
       const headers = {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       };
       const generateBody = {
-        user_message: "AAPL 주식이나 분석해줘",
-        temperature: 0.5,
-        top_p: 0.5,
+        user_message:
+          "As a stock analyst, you are an agent who gives stock-related information on behalf of customers when they want to obtain information such as stock-related information, current status, or statistics. If there are any stock-related terms to answer a question, you should put the term description below the answ \n\nquestion: , ,, .",
+        temperature: 0.9,
+        top_p: 0.9,
       };
 
       const generateResponse = await fetch(url, {
@@ -52,41 +51,18 @@ export default function Llmtest() {
         body: JSON.stringify(generateBody),
       });
 
-      console.log("Generate response:", generateResponse);
-
       if (!generateResponse.ok) {
         console.error("Request failed:", await generateResponse.text());
         return;
       }
 
-      const reader = generateResponse.body?.getReader();
-      const decoder = new TextDecoder("utf-8");
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            console.log("Stream complete");
-            break;
-          }
-          const chunk = decoder.decode(value, { stream: true });
-          console.log("Received chunk:", chunk);
-          setResponse(prevResponse => prevResponse + chunk);
-        }
-      }
+      // 변경된 부분: Response.text() 사용
+      const responseText = await generateResponse.text();
+      console.log(responseText);
     } catch (error) {
       console.error("An error occurred:", error);
     }
   }
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  return (
-    <div>
-      <h1>Stock Analyst Response</h1>
-      <pre>{response}</pre>
-    </div>
-  );
+  fetchData();
 }

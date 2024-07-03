@@ -39,7 +39,7 @@ export default async function Report() {
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport />
-          <Analysis stockName={stockName} stockInfo={appleStock2} report={llm} />
+          <Analysis stockName={stockName} stockInfo={appleStock2} report={llm ?? ""} />
         </div>
         <FavoriteNews />
       </div>

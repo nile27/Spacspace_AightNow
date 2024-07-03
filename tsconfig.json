@@ -26,8 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/features/report/components/api/test.jsx",
-    "src/features/report/components/api/Generate.js"
+    "src/features/report/components/test/test.jsx",
+    "src/features/report/components/test/Generate.js"
   ],
   "exclude": ["node_modules"]
 }

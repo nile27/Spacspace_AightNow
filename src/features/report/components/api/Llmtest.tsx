@@ -33,6 +33,8 @@ export default function Llmtest() {
 
       const token = responseData.access_token;
 
+      console.log("Token:", token);
+
       // Generate request
       const url = "http://43.203.238.76:8000/generate";
       console.log("Token:", token);
@@ -41,7 +43,7 @@ export default function Llmtest() {
         "Content-Type": "application/json",
       };
       const generateBody = {
-        user_message: "AAPL 주식이나 분석해줘",
+        user_message: "AAPL 주식 분석해줘",
         temperature: 0.5,
         top_p: 0.5,
       };

@@ -9,6 +9,7 @@ import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
 import { stockAction, stockAction2 } from "@/lib/stockAction";
 import { stockAction3 } from "@/app/api/stock/route";
+import Llmtest from "@/app/api/route";
 
 export default async function Report() {
   const appleStock = await stockAction();
@@ -16,6 +17,7 @@ export default async function Report() {
   const { stockName, reutersCode } = appleStock2;
   const stockCode = reutersCode.split(".")[0];
   const stockHistory = await stockAction3();
+  const llm = await Llmtest();
 
   return (
     <>
@@ -37,7 +39,7 @@ export default async function Report() {
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport />
-          <Analysis stockName={stockName} stockInfo={appleStock2} />
+          <Analysis stockName={stockName} stockInfo={appleStock2} report={llm} />
         </div>
         <FavoriteNews />
       </div>

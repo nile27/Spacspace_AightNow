@@ -7,16 +7,15 @@ import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
 import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
-import { stockAction, stockAction2, stockAction3 } from "@/lib/stockAction";
+import { stockAction, stockAction2 } from "@/lib/stockAction";
+import { stockAction3 } from "@/app/api/stock/route";
 
 export default async function Report() {
   const appleStock = await stockAction();
   const appleStock2 = await stockAction2();
   const { stockName, reutersCode } = appleStock2;
   const stockCode = reutersCode.split(".")[0];
-  const applePrice = await stockAction3();
-
-  console.log(applePrice);
+  const stockHistory = await stockAction3();
 
   return (
     <>
@@ -34,7 +33,7 @@ export default async function Report() {
         </div>
         <div className="w-[1200px] flex gap-4">
           <Summary overview={appleStock} stockInfo={appleStock2} />
-          <Chart />
+          <Chart stockData={stockHistory} />
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport />

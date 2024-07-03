@@ -16,10 +16,8 @@ type TSummary = {
 
 export default function Summary({ overview, stockInfo }: TSummary) {
   const { closePrice, compareToPreviousClosePrice, fluctuationsRatio, reutersCode } = stockInfo;
-
   const stockCode = reutersCode.split(".")[0];
 
-  console.log(stockInfo);
   return (
     <>
       <div className="w-[488px] h-64 flex flex-wrap justify-between items-start border bg-white rounded-2xl p-4">

@@ -20,4 +20,16 @@ type TArticle = {
   articleId: number;
 };
 
-export type { TStockData, TArticle };
+type TNewsList = {
+  stockName?: string;
+  type: number;
+  subcontent: string;
+  tumbUrl: string;
+  oid: string;
+  ohnm: number;
+  aid: string;
+  tit: string;
+  dt: number;
+};
+
+export type { TStockData, TArticle, TNewsList };

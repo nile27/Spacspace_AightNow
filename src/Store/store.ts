@@ -1,3 +1,4 @@
+import { exchangeRate } from "./../lib/stockAction";
 import { create } from "zustand";
 
 type TShoStore = {
@@ -27,6 +28,11 @@ type TStockStore = {
   compareToPreviousPrice: string;
 };
 
+type TExchangeStore = {
+  isChange: boolean;
+  setIsChange: (isChange: boolean) => void;
+};
+
 export const useShow = create<TShoStore>()(set => ({
   isShow: false,
   setIsShow: isShow => set({ isShow }),
@@ -49,4 +55,9 @@ export const useStockStore = create<TStockStore>(set => ({
   corporateOverview: "",
   stockExchangeType: "",
   compareToPreviousPrice: "",
+}));
+
+export const useExchange = create<TExchangeStore>(set => ({
+  isChange: false,
+  setIsChange: isChange => set({ isChange }),
 }));

@@ -7,7 +7,7 @@ import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
 import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
-import { stockAction, stockAction2 } from "@/lib/stockAction";
+import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";
 import { stockAction3 } from "@/app/api/stock/route";
 import Llmtest from "@/app/api/route";
 
@@ -18,6 +18,7 @@ export default async function Report() {
   const stockCode = reutersCode.split(".")[0];
   const stockHistory = await stockAction3();
   const llm = await Llmtest();
+  const exchange = await exchangeRate();
 
   return (
     <>
@@ -34,7 +35,7 @@ export default async function Report() {
           </TextButton>
         </div>
         <div className="w-[1200px] flex gap-4">
-          <Summary overview={appleStock} stockInfo={appleStock2} />
+          <Summary overview={appleStock} stockInfo={appleStock2} exchange={exchange} />
           <Chart stockData={stockHistory} />
         </div>
         <div className="w-[1200px] flex gap-4 ">

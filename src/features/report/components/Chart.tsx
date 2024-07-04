@@ -41,14 +41,11 @@ export default function Chart({ stockData }: { stockData: TStockData[] }) {
   return (
     <>
       <div id="chart" className="w-[692px] h-64 flex border bg-white rounded-2xl p-4">
-        {/* chart width= 556 + 64 height 192 */}
-        {/* <Image src="/chart1.png" alt="chart" width={556} height={192} />
-        <Image src="/year.png" alt="year" width={64} height={192} /> */}
         <ApexChart
           options={chartOption}
           series={chartData}
           type={"area"}
-          width={620}
+          width={680}
           height={250}
         />
       </div>

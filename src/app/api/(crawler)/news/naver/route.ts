@@ -1,20 +1,9 @@
 import { NextResponse } from "next/server";
+import { TNewsList } from "../../type";
 
 const symbols = ["AAPL.O", "TSLA.O", "MSFT.O", "AMZN.O", "GOOGL.O", "U"];
 
-type NewsData = {
-  stockName?: string;
-  type: number;
-  subcontent: string;
-  tumbUrl: string;
-  oid: string;
-  ohnm: number;
-  aid: string;
-  tit: string;
-  dt: number;
-};
-
-const fetchNaverNewsInfo = async (symbol: string): Promise<NewsData[]> => {
+const fetchNaverNewsInfo = async (symbol: string): Promise<TNewsList[]> => {
   const url = `https://api.stock.naver.com/news/worldStock/${symbol}?pageSize=20&page=1`;
   const headers = {
     "Content-Type": "application/json",
@@ -32,7 +21,7 @@ const fetchNaverNewsInfo = async (symbol: string): Promise<NewsData[]> => {
 };
 
 export async function GET(request: Request) {
-  const allStockNews: NewsData[] = [];
+  const allStockNews: TNewsList[] = [];
 
   for (let symbol of symbols) {
     const newsListData = await fetchNaverNewsInfo(symbol);

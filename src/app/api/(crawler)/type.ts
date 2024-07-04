@@ -1,4 +1,4 @@
-type StockData = {
+type TStockData = {
   reutersCode: string;
   stockName: string;
   symbolCode: string;
@@ -8,7 +8,7 @@ type StockData = {
   fluctuationsRatio: number;
 };
 
-type Article = {
+type TArticle = {
   title: string;
   provider: string;
   time: string;
@@ -20,4 +20,4 @@ type Article = {
   articleId: number;
 };
 
-export type { StockData, Article };
+export type { TStockData, TArticle };

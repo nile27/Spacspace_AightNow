@@ -10,6 +10,9 @@ import fireStore from "@/firebase/firestore";
 import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";
 import { stockAction3 } from "@/app/api/stock/route";
 import Llmtest from "@/app/api/route";
+import { llmChat } from "@/lib/testOllama";
+import { llmChat2 } from "@/lib/testOllama2";
+import { agentChat } from "@/lib/testOllama3";
 
 export default async function Report() {
   const appleStock = await stockAction();
@@ -17,8 +20,10 @@ export default async function Report() {
   const { stockName, reutersCode } = appleStock2;
   const stockCode = reutersCode.split(".")[0];
   const stockHistory = await stockAction3();
-  const llm = await Llmtest();
+  // const llm = await Llmtest();
   const exchange = await exchangeRate();
+  // const chat = await llmChat2();
+  const chat = await agentChat();
 
   return (
     <>
@@ -40,7 +45,7 @@ export default async function Report() {
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport />
-          <Analysis stockName={stockName} stockInfo={appleStock2} report={llm ?? ""} />
+          <Analysis stockName={stockName} stockInfo={appleStock2} report={chat ?? ""} />
         </div>
         <FavoriteNews />
       </div>

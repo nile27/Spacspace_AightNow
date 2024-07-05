@@ -1,3 +1,5 @@
+"use server";
+
 type TAuth = {
   username: string;
   password: string;
@@ -38,7 +40,7 @@ export default async function Llmtest() {
     };
     const generateBody = {
       user_message:
-        "너는 전문 애널리스트야 그러니까 애플 주식 분석을 해줄때 애널리스트들이 내는 주식 보고서 처럼 분석해주고 4줄로 요약해서 표현해줘",
+        "너는 전문 애널리스트야 그러니까 애플 주식 분석을 주식 보고서 처럼 분석해주고 4줄이상 넘어가지말고 요약해서 무조건 한국어로 표현해줘",
       temperature: 0.5,
       top_p: 0.5,
     };

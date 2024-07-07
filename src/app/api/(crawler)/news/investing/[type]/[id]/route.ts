@@ -20,6 +20,9 @@ export async function GET(req: Request, { params }: { params: { type: string; id
       const imageElement = element.querySelector("img.object-contain") as HTMLImageElement;
       const contentElement = selectElement("div.article_WYSIWYG__O0uhw");
       const timeElement = selectElement("div.flex.flex-col > div.flex.flex-row > span");
+      const providerElement = element.querySelector(
+        "div.flex.flex-row.items-end.text-xs > a > div > img",
+      ) as HTMLImageElement;
 
       if (!contentElement) {
         return null;
@@ -35,9 +38,10 @@ export async function GET(req: Request, { params }: { params: { type: string; id
 
       return {
         title: titleElement.innerText,
-        content: contentHTML,
-        image: imageElement ? imageElement.src : null,
+        provider: providerElement ? providerElement.alt : null,
         time: timeElement.innerText.replace("Published ", "").replace(",", ""),
+        body: contentHTML,
+        image: imageElement ? imageElement.src : null,
       };
     });
 

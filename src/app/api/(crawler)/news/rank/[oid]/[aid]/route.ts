@@ -18,8 +18,16 @@ export async function GET(req: Request, { params }: { params: { oid: string; aid
     const article = await page.$eval("#newsct", element => {
       const selectElement = (selector: string) => element.querySelector(selector) as HTMLElement;
       const titleElement = selectElement(".media_end_head_title");
+      const providerElement = selectElement(".media_end_head_top_logo_img").getAttribute("alt");
       const timeElement = selectElement(".media_end_head_info_datestamp_time._ARTICLE_DATE_TIME");
       const contentElement = selectElement("#dic_area");
+
+      if (contentElement) {
+        const end_photo = contentElement.querySelector("#img_a2");
+        if (end_photo) {
+          end_photo.remove();
+        }
+      }
 
       if (!titleElement || !timeElement || !contentElement) {
         throw new Error("Required elements not found");
@@ -27,8 +35,9 @@ export async function GET(req: Request, { params }: { params: { oid: string; aid
 
       return {
         title: titleElement.innerText,
+        provider: providerElement,
         time: timeElement.innerText,
-        content: contentElement.innerHTML,
+        body: contentElement.innerHTML,
       };
     });
 

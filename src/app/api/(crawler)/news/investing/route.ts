@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import puppeteer, { Page } from "puppeteer";
-import { TNewsList } from "../../type";
 
 export const BASE_URL = "https://www.investing.com";
 const stock_names = [
@@ -39,11 +38,11 @@ const fetchArticlesFromPage = async (stock_name: string, page: Page, index: numb
           const tumbUrl = tumbUrlElement ? tumbUrlElement.src : "";
 
           return {
-            aid: titleElement.getAttribute("href")?.split("/")[3],
-            tit: titleElement.innerText,
             subcontent: subcontentElement.innerText,
             tumbUrl,
+            tit: titleElement.innerText,
             ohnm: providerElement.innerText,
+            aid: titleElement.getAttribute("href")?.split("/")[3],
             dt: timeElement.innerText,
             url: titleElement.getAttribute("href")?.split("/")[2],
             // published: timeElement.getAttribute("datetime") || "",

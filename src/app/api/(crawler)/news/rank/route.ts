@@ -9,7 +9,22 @@ export async function GET(request: Request) {
   try {
     const response = await fetch(url, { headers });
     const data = await response.json();
-    return NextResponse.json(data.result);
+
+    const list = data.result.map((item: any) => {
+      return {
+        subcontent: item.body,
+        tumbUrl: item.imageOriginLink,
+        oid: item.officeId,
+        ohnm: item.officeName,
+        aid: item.articleId,
+        tit: item.title,
+        dt: item.datetime,
+        isVideo: item.isVideo,
+        hasImage: item.hasImage,
+      };
+    });
+
+    return NextResponse.json(list);
   } catch (error) {
     console.error(`Error fetching rank news:`, error);
     return NextResponse.json({ error: "Failed to fetch rank news data" }, { status: 500 });

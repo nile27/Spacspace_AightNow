@@ -8,22 +8,26 @@ import FavoriteNews from "./FavoriteNews";
 import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
 import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";
-import { stockAction3 } from "@/app/api/stock/route";
-import Llmtest from "@/app/api/route";
-import { llmChat } from "@/lib/testOllama";
-import { llmChat2 } from "@/lib/testOllama2";
-import { agentChat } from "@/lib/testOllama3";
+import { stockRealTime } from "@/app/api/stock/route";
+import { stockAnalysis } from "@/lib/stockAnalysis";
+import { stockEvaluation } from "@/lib/stockEvluation";
+import { generate, token } from "@/lib/token";
 
 export default async function Report() {
   const appleStock = await stockAction();
   const appleStock2 = await stockAction2();
   const { stockName, reutersCode } = appleStock2;
   const stockCode = reutersCode.split(".")[0];
-  const stockHistory = await stockAction3();
-  // const llm = await Llmtest();
+  const stockHistory = await stockRealTime();
+
   const exchange = await exchangeRate();
-  // const chat = await llmChat2();
-  const chat = await agentChat();
+  const chat = await stockAnalysis();
+  const score = await stockEvaluation();
+  // const chat = await agentChat();
+
+  const tokenValue = await token();
+  const data = generate(tokenValue);
+  console.log(JSON.stringify(data, null, 2));
 
   return (
     <>
@@ -44,7 +48,7 @@ export default async function Report() {
           <Chart stockData={stockHistory} />
         </div>
         <div className="w-[1200px] flex gap-4 ">
-          <AIReport />
+          <AIReport score={score ?? ""} />
           <Analysis stockName={stockName} stockInfo={appleStock2} report={chat ?? ""} />
         </div>
         <FavoriteNews />

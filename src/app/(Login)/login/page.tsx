@@ -6,11 +6,12 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
-import { loginRegExp, handleLogin } from "../utills/utill";
-import { useAuthStore } from "@/Store/store";
+import { loginRegExp, handleLogin } from "../utills/loginUtill";
+import { useLoginStore } from "@/Store/store";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const { setLogin } = useLoginStore();
   const navi = useRouter();
   const [pwHide, setpwHide] = useState(false);
   const [idText, setId] = useState("");
@@ -27,14 +28,12 @@ export default function Login() {
       const getData = await handleLogin(idText, pwText);
 
       if (getData) {
+        setLogin();
         navi.push("/");
-      } else {
-        setRegExpArr(false);
-        alert("로그인 실패: 사용자 데이터를 불러오지 못했습니다.");
       }
     } catch (error) {
+      setRegExpArr(false);
       console.error("Login error:", error);
-      alert("로그인 중 오류가 발생했습니다.");
     }
   };
 

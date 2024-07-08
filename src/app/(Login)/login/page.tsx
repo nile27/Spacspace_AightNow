@@ -6,22 +6,36 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
-import { loginRegExp } from "../utills/utill";
-import { error } from "console";
+import { loginRegExp, handleLogin } from "../utills/utill";
+import { useAuthStore } from "@/Store/store";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const navi = useRouter();
   const [pwHide, setpwHide] = useState(false);
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
-  const [regExpArr, setRegExpArr] = useState([true, true]);
-  const errMessage = {
-    id: "*  6~12자의 영문, 숫자, ,_을 이용한 조합",
-    pw: "*  8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합",
-  };
+  const [regExpArr, setRegExpArr] = useState(true);
 
-  const handleOnClick = () => {
-    const ok = loginRegExp(idText, pwText);
-    setRegExpArr(ok.bool);
+  const handleOnClick = async () => {
+    try {
+      const ok = loginRegExp(idText, pwText);
+      if (!ok.bool) {
+        setRegExpArr(false);
+        return;
+      }
+      const getData = await handleLogin(idText, pwText);
+
+      if (getData) {
+        navi.push("/");
+      } else {
+        setRegExpArr(false);
+        alert("로그인 실패: 사용자 데이터를 불러오지 못했습니다.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("로그인 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -33,8 +47,7 @@ export default function Login() {
           placeholder="아이디를 입력해주세요"
           autoComplete="username"
           value={idText}
-          style={!regExpArr[0] ? "error" : undefined}
-          caption={!regExpArr[0] ? errMessage.id : undefined}
+          style={!regExpArr ? "error" : undefined}
           onChange={e => setId(e.target.value)}
         ></NewInput>
         <NewInput
@@ -42,8 +55,8 @@ export default function Login() {
           placeholder="비밀번호를 입력해주세요"
           autoComplete="current-password"
           value={pwText}
-          style={!regExpArr[0] ? "error" : undefined}
-          caption={!regExpArr[0] ? errMessage.id : undefined}
+          style={!regExpArr ? "error" : undefined}
+          caption={!regExpArr ? "등록되지 않은 회원이거나 잘못된 회원정보입니다." : undefined}
           onChange={e => setPw(e.target.value)}
         >
           {!pwHide ? (

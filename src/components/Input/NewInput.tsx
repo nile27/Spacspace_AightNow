@@ -19,12 +19,12 @@ export default function NewInput(props: TInputProps) {
     variants: {
       text: {
         default: `text-scaleGray-900 `,
-        error: `text-warning`,
+        error: `text-warning placeholder:text-warning `,
         success: `text-success`,
       },
       border: {
         default: `border-scaleGray-200 group-focus:border-secondBlue-500 has-[:focus]:border-secondBlue-500`,
-        error: `border-warning group-focus:border-warning has-[:focus]:border-warning`,
+        error: ` border-warning group-focus:border-warning has-[:focus]:border-warning`,
         success:
           "border-scaleGray-200 group-focus:border-secondBlue-500 has-[:focus]:border-secondBlue-500",
       },
@@ -34,7 +34,7 @@ export default function NewInput(props: TInputProps) {
     variants: {
       text: {
         default: `text-scaleGray-900 `,
-        error: `text-warning`,
+        error: ` text-warning`,
         success: `text-scaleGray-900`,
       },
     },
@@ -61,7 +61,9 @@ export default function NewInput(props: TInputProps) {
         >
           <input
             id={id}
-            className=" text-start w-[100%] text-neutral-900 text-base font-normal leading-normal focus:outline-none "
+            className={` text-start w-[100%] text-neutral-900 text-base font-normal leading-normal focus:outline-none ${
+              style === "error" && "placeholder:text-warning"
+            } `}
             onChange={onChange}
             {...restProps}
           />

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import NewInput from "@/components/Input/NewInput";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import TextButton from "@/components/btnUi/TextButton";
 import { useSignUp } from "@/Store/store";
 import { firestore } from "@/firebase/firebaseDB";
@@ -10,7 +10,6 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function SignUp() {
   const navigation = useRouter();
-
   const searchParams = useSearchParams();
   const { inputText, setInput } = useSignUp();
   const [idCheck, setIdCheck] = useState(false);
@@ -85,16 +84,13 @@ export default function SignUp() {
 
     navigation.push("/profile");
   };
+
   useEffect(() => {
     const emailParam: string = searchParams.get("email") as string;
     const nameParam: string = searchParams.get("name") as string;
     setInput("email", emailParam);
     setInput("name", nameParam);
   }, []);
-
-  useEffect(() => {
-    console.log(inputText);
-  }, [inputText]);
 
   return (
     <>

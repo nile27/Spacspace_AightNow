@@ -23,15 +23,25 @@ import { getStorage } from "firebase/storage";
 // };
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCLxJ7uGBO3RsjuAxEaxWXDT44m9mrgCB8",
-  authDomain: "iott-b4895.firebaseapp.com",
-  databaseURL: "https://iott-b4895-default-rtdb.firebaseio.com",
-  projectId: "iott-b4895",
-  storageBucket: "iott-b4895.appspot.com",
-  messagingSenderId: "498904939578",
-  appId: "1:498904939578:web:74642e6263c30c862a8903",
-  measurementId: "G-ZG73C4V7PK",
+  apiKey: "AIzaSyCh93LSaD0oVyGiiWq9d6N6dVz1c7ikXjc",
+  authDomain: "test-29402.firebaseapp.com",
+  projectId: "test-29402",
+  storageBucket: "test-29402.appspot.com",
+  messagingSenderId: "934520066683",
+  appId: "1:934520066683:web:2122f35e931df397c908de",
+  measurementId: "G-GMBX9WMFYP",
 };
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCLxJ7uGBO3RsjuAxEaxWXDT44m9mrgCB8",
+//   authDomain: "iott-b4895.firebaseapp.com",
+//   databaseURL: "https://iott-b4895-default-rtdb.firebaseio.com",
+//   projectId: "iott-b4895",
+//   storageBucket: "iott-b4895.appspot.com",
+//   messagingSenderId: "498904939578",
+//   appId: "1:498904939578:web:74642e6263c30c862a8903",
+//   measurementId: "G-ZG73C4V7PK",
+// };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

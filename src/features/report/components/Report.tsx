@@ -13,15 +13,20 @@ import { stockAnalysis } from "@/lib/stockAnalysis";
 import { stockEvaluation } from "@/lib/stockEvluation";
 import { generate, token } from "@/lib/token";
 
-export default async function Report() {
-  const appleStock = await stockAction();
-  const appleStock2 = await stockAction2();
+type TParams = {
+  id: string;
+};
+
+export default async function Report({ id }: TParams) {
+  console.log(id);
+  const appleStock = await stockAction(id);
+  const appleStock2 = await stockAction2(id);
   const { stockName, reutersCode } = appleStock2;
   const stockCode = reutersCode.split(".")[0];
-  const stockHistory = await stockRealTime();
+  const stockHistory = await stockRealTime(id);
 
   const exchange = await exchangeRate();
-  const chat = await stockAnalysis();
+  const chat = await stockAnalysis(id);
   const score = await stockEvaluation();
   // const chat = await agentChat();
 
@@ -34,7 +39,7 @@ export default async function Report() {
       <div className="flex flex-col gap-4">
         <div className="w-[1200px] h-16  flex justify-between items-center  ">
           <div className="w-[388px] h-16 flex items-center gap-2">
-            <Icon name={stockName} size={50} />
+            <Icon name={id} size={50} />
             <span className="text-lg font-medium">
               {stockName} · {stockCode}
             </span>
@@ -49,7 +54,7 @@ export default async function Report() {
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport score={score ?? ""} />
-          <Analysis stockName={stockName} stockInfo={appleStock2} report={chat ?? ""} />
+          <Analysis stockName={stockName} stockInfo={appleStock2} report={chat ?? ""} id={id} />
         </div>
         <FavoriteNews />
       </div>

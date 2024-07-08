@@ -8,12 +8,12 @@ import { z } from "zod";
 import { stockAction4 } from "./stockAction";
 
 // ai report
-export async function agentChat() {
+export async function agentChat(id: string) {
   const search = new TavilySearchResults({
     maxResults: 2,
   });
 
-  const retriever = await search.invoke("애플 주식 ");
+  const retriever = await search.invoke(`최근 ${id} 주식`);
 
   const tools = [search];
   const prompt = await pull<ChatPromptTemplate>("hwchase17/openai-functions-agent");
@@ -50,7 +50,7 @@ export async function agentChat() {
 
   // 4. Agent 실행
   const result = await executor.invoke({
-    input: `${retriever}를 참고해서 애플 주식에 대해 분석해서 4줄짜리 애널리스트 보고서를 한글로 작성해줘. 절대로6줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
+    input: `${retriever}를 참고해서 ${id} 주식에 대해 분석해서 4줄짜리 애널리스트 보고서를 한글로 작성해줘. 절대로5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
   });
   const cleanOutput = result.output
     .replace(/^Here is a 4-line analyst report on Apple stock in Korean:\s*/, "")

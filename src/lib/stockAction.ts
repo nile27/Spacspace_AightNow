@@ -1,17 +1,24 @@
-"use server";
-
 import { revalidatePath } from "next/cache";
 
-export const stockAction = async () => {
-  const res = await fetch("https://api.stock.naver.com/stock/AAPL.O/integration");
+export const STOCK_NAME: { [key: string]: string } = {
+  tesla: "TSLA.O",
+  google: "GOOGL.O",
+  apple: "AAPL.O",
+  microsoft: "MSFT.O",
+  amazon: "AMZN.O",
+  unity: "U",
+};
+
+export const stockAction = async (stock: string) => {
+  const res = await fetch(`https://api.stock.naver.com/stock/${STOCK_NAME[stock]}/integration`);
   const data = await res.json();
   revalidatePath("/report");
   const { corporateOverview } = data;
   return corporateOverview;
 };
 
-export const stockAction2 = async () => {
-  const res = await fetch("https://api.stock.naver.com/stock/AAPL.O/basic");
+export const stockAction2 = async (stock: string) => {
+  const res = await fetch(`https://api.stock.naver.com/stock/${STOCK_NAME[stock]}/basic`);
   const data = await res.json();
   revalidatePath("/report");
   const {

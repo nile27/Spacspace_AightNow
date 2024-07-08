@@ -5,9 +5,7 @@ export default function page() {
   return (
     <>
       <Header />
-      <div className="h-full mt-52">
-        <Report />
-      </div>
+      <div className="h-full mt-52">{/* <Report  /> */}</div>
     </>
   );
 }

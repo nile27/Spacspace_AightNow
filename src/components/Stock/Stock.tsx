@@ -49,7 +49,7 @@ export default function Stock({ logo, gap, data }: TStock) {
           <div className={`w-full ${gap} py-2 flex justify-between items-center`}>
             <div className="flex justify-start items-center gap-4">
               <div className="flex items-center">
-                <Icon name={`Stock${reutersCode}`} size={50} />
+                <Icon name={STOCK_NAMES[logo]} size={50} />
               </div>
               <div className="flex flex-col justify-start items-start">
                 <div className="text-neutral-900 text-base font-bold font-['Pretendard'] leading-normal">

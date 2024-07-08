@@ -8,28 +8,27 @@ type TStockData = {
   fluctuationsRatio: number;
 };
 
-type TArticle = {
-  title: string;
-  provider: string;
-  time: string;
-  published: string;
-  url: string;
-  content: string;
-  image: string;
-  stockName: string;
-  articleId: number;
-};
-
 type TNewsList = {
   stockName?: string;
-  type: number;
   subcontent: string;
-  tumbUrl: string;
-  oid: string;
-  ohnm: number;
-  aid: string;
-  tit: string;
-  dt: number;
+  thumbUrl: string;
+  tit: string; // title
+  ohnm: string; // 언론사
+  aid: string; // article id
+  dt: string; // date / time
+  oid?: string;
+  type?: number; // 0: 사진없음, 1: 사진있음
+  isVideo?: boolean;
+  hasImage?: boolean;
+};
+
+type TArticle = {
+  articleId: string;
+  title: string;
+  provider: string | null;
+  time: string;
+  body: string;
+  image: string | null;
 };
 
 export type { TStockData, TArticle, TNewsList };

@@ -17,9 +17,9 @@ export default function AIReport({ score }: TAiScore) {
     <>
       <div className="w-[429px] h-[297px]  bg-white rounded-2xl p-4">
         <div className="w-[365px] flex justify-between  ">
-          <h2 className="font-['pretendard'] font-bold">종목 AI 리포트 점수</h2>
-          <span className="font-['pretendard'] font-bold text-2xl">
-            {score["**총점"].replace(/\*\*/g, "").substring(0, 3)}
+          <h2 className="font-['pretendard'] font-bold text-2xl">종목 AI 리포트 점수</h2>
+          <span className="font-['pretendard'] font-bold text-3xl">
+            {score["**총점"].replace(/\*\*/g, "").substring(0, 3)} 점
           </span>
         </div>
         <div className="w-[365px]  flex  justify-between ">

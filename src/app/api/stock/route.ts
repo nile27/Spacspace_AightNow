@@ -1,6 +1,6 @@
-"use server";
+import { STOCK_NAME } from "@/lib/stockAction";
 
-export const stockRealTime = async () => {
+export const stockRealTime = async (stock: string) => {
   const dateTime = new Date();
   const formattedDateTime =
     dateTime.getFullYear() +
@@ -10,7 +10,7 @@ export const stockRealTime = async () => {
     String(dateTime.getMinutes()).padStart(2, "0");
 
   const res = await fetch(
-    `https://api.stock.naver.com/chart/foreign/item/AAPL.O/day?startDateTime=202212120000&endDateTime=${formattedDateTime}`,
+    `https://api.stock.naver.com/chart/foreign/item/${STOCK_NAME[stock]}/day?startDateTime=202212120000&endDateTime=${formattedDateTime}`,
   );
   const data = await res.json();
 

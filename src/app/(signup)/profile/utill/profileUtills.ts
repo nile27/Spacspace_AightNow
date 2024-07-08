@@ -84,7 +84,7 @@ export const handleSignUp = async (inputText: TmemberText, imgFile: File | null)
       email: email,
       phone: phone,
       birth: birth,
-      logintype: "null",
+      logintype: "none",
     });
 
     // 회원가입 성공 후 리다이렉션 또는 다른 작업 수행

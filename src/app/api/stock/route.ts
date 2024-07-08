@@ -1,6 +1,6 @@
 "use server";
 
-export const stockAction3 = async () => {
+export const stockRealTime = async () => {
   const dateTime = new Date();
   const formattedDateTime =
     dateTime.getFullYear() +

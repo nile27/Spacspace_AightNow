@@ -88,8 +88,12 @@ export default function SignUp() {
   useEffect(() => {
     const emailParam: string = searchParams.get("email") as string;
     const nameParam: string = searchParams.get("name") as string;
-    setInput("email", emailParam);
-    setInput("name", nameParam);
+    if (emailParam && nameParam) {
+      setInput("email", emailParam);
+      setInput("name", nameParam);
+    }
+
+    console.log("inputText:", inputText);
   }, []);
 
   return (

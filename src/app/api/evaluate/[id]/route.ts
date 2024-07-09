@@ -1,4 +1,5 @@
 import { agentEvaluation } from "@/lib/Ollama";
+import { agentEvaluation2 } from "@/lib/OllamaTest";
 import { NextResponse } from "next/server";
 
 export async function GET(res: NextResponse) {

@@ -1,5 +1,6 @@
 import { STOCK_NAME } from "@/lib/stockAction";
 
+// 실시간 주식 가격 정보
 export const stockRealTime = async (stock: string) => {
   const dateTime = new Date();
   const formattedDateTime =

@@ -14,13 +14,13 @@ const fetchRankNews = async (page: Page) => {
 
     const list = data.result.map((item: any) => {
       return {
-        subcontent: item.body,
-        thumbUrl: item.imageOriginLink,
-        oid: item.officeId,
-        ohnm: item.officeName,
         aid: item.articleId,
         tit: item.title,
+        subcontent: item.body,
+        oid: item.officeId,
+        ohnm: item.officeName,
         dt: item.datetime,
+        thumbUrl: item.imageOriginLink,
         isVideo: item.isVideo,
         hasImage: item.hasImage,
       };
@@ -51,23 +51,23 @@ const fetchRankNews = async (page: Page) => {
         }
 
         return {
-          articleId: "",
-          title: titleElement.innerText,
-          provider: providerElement,
-          time: timeElement.innerText,
-          body: contentElement.innerHTML,
-          image: null,
+          // articleId: "",
+          // title: titleElement.innerText,
+          // provider: providerElement,
+          published: timeElement.innerText,
+          content: contentElement.innerHTML,
+          stockName: "rank",
         };
       });
 
       articles.push({
+        ...news,
         ...article,
-        articleId: news.aid,
       });
     }
     console.log(articles);
 
-    return list;
+    return articles;
   } catch (error) {
     console.error(`Error fetching rank news:`, error);
     throw new Error("Failed to fetch rank news data");

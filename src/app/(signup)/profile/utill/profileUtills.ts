@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
 import { firestore, storage, auth } from "@/firebase/firebaseDB";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
@@ -84,6 +84,7 @@ export const handleSignUp = async (inputText: TmemberText, imgFile: File | null)
       email: email,
       phone: phone,
       birth: birth,
+      createTime: Timestamp.now(),
       logintype: "none",
     });
 

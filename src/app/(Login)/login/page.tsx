@@ -7,13 +7,13 @@ import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
 import { loginRegExp, handleLogin } from "../utills/loginUtill";
-import { useLoginStore } from "@/Store/store";
+import { useLoginStore, useSignUp, useAuthStore, TUserData } from "@/Store/store";
 import { useRouter } from "next/navigation";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "@/firebase/firebaseDB";
+import { googleLogin, UserData } from "../utills/GoogleAuth";
 
 export default function Login() {
   const { setLogin } = useLoginStore();
+  const { setInput, setImgFile, setLabelImg } = useSignUp();
   const navi = useRouter();
   const [pwHide, setpwHide] = useState(false);
   const [idText, setId] = useState("");
@@ -40,8 +40,31 @@ export default function Login() {
   };
 
   const handleGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const data = await signInWithPopup(auth, provider);
+    try {
+      const userdata = await googleLogin();
+      if (userdata?.isSign === false) {
+        const { data } = userdata;
+
+        for (let key in data) {
+          if (data.hasOwnProperty(key)) {
+            setInput(key, data[key] as string);
+          }
+        }
+        if (userdata.imgFile && userdata.img) {
+          setLabelImg(userdata.img);
+        }
+        navi.push("/signup");
+      } else {
+        if (userdata?.data) {
+          setLogin();
+          useAuthStore.getState().setUser(userdata?.data as TUserData);
+        }
+
+        navi.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

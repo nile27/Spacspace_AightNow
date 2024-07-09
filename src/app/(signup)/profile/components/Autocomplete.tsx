@@ -25,15 +25,17 @@ export default function Autocomplete() {
 
   const handleSelectSuggestion = (suggestion: string) => {
     const splitArr = suggestion.split(" ");
-    if (inputText.stock.includes(`#${splitArr[1]}`)) {
+    if (inputText.stock.includes(`${splitArr[1]}`)) {
       setSelectedSuggestion(suggestion);
       setSuggestions([]);
+      setSearch("");
       return;
     }
-    const stockSymbol = `#${suggestion.split(" ")[1]}`;
+
+    const dataSymbol = suggestion.split(" ")[1];
     setSelectedSuggestion(suggestion);
     setSuggestions([]);
-    addStock(stockSymbol);
+    addStock(dataSymbol);
     setSearch("");
   };
 
@@ -54,7 +56,7 @@ export default function Autocomplete() {
           inputText.stock.map((item, idx) => (
             <button
               type="button"
-              className="h-auto w-auto whitespace-nowrap cursor-pointer"
+              className="h-auto w-auto whitespace-nowrap cursor-pointer bg-mainNavy-100 rounded-lg px-2"
               onClick={() => deleteTag(item)}
               key={idx}
             >

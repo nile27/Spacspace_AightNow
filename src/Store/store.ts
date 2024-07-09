@@ -32,6 +32,8 @@ export type TmemberText = {
   nickname: string;
   name: string;
   stock: string[];
+  logintype: string;
+  uid?: string;
 };
 
 export type TInputState = {
@@ -39,6 +41,10 @@ export type TInputState = {
   setInput: (key: string, value: string) => void;
   addStock: (stock: string) => void;
   removeStock: (stock: string) => void;
+  labelImg: string | null;
+  imgFile: File | null;
+  setLabelImg: (labelImg: string | null) => void;
+  setImgFile: (imgFile: File | null) => void;
 };
 
 export type TUserData = {
@@ -74,40 +80,53 @@ export const useLoginStore = create<TLoginStore>(set => ({
   setLogout: () => set({ isLoggedIn: false }),
 }));
 
-export const useSignUp = create<TInputState>(set => ({
-  inputText: {
-    id: "",
-    pw: "",
-    name: "",
-    pwCheck: "",
-    phone: "",
-    birth: "",
-    nickname: "",
-    email: "",
-    stock: [],
-  },
-  setInput: (key: string, value: string) =>
-    set(state => ({
+export const useSignUp = create<TInputState>()(
+  persist(
+    set => ({
       inputText: {
-        ...state.inputText,
-        [key]: value,
+        id: "",
+        pw: "",
+        name: "",
+        pwCheck: "",
+        phone: "",
+        birth: "",
+        nickname: "",
+        email: "",
+        stock: [],
+        logintype: "none",
       },
-    })),
-  addStock: (stock: string) =>
-    set(state => ({
-      inputText: {
-        ...state.inputText,
-        stock: [...state.inputText.stock, stock],
-      },
-    })),
-  removeStock: (stock: string) =>
-    set(state => ({
-      inputText: {
-        ...state.inputText,
-        stock: state.inputText.stock.filter(item => item !== stock),
-      },
-    })),
-}));
+      setInput: (key: string, value: string) =>
+        set(state => ({
+          inputText: {
+            ...state.inputText,
+            [key]: value,
+          },
+        })),
+      addStock: (stock: string) =>
+        set(state => ({
+          inputText: {
+            ...state.inputText,
+            stock: [...state.inputText.stock, stock],
+          },
+        })),
+      removeStock: (stock: string) =>
+        set(state => ({
+          inputText: {
+            ...state.inputText,
+            stock: state.inputText.stock.filter(item => item !== stock),
+          },
+        })),
+      labelImg: null,
+      imgFile: null,
+      setLabelImg: labelImg => set({ labelImg }),
+      setImgFile: imgFile => set({ imgFile }),
+    }),
+    {
+      name: "signup-storage",
+      getStorage: () => sessionStorage,
+    },
+  ),
+);
 
 export const useAuthStore = create(
   persist<AuthStore>(
@@ -117,8 +136,8 @@ export const useAuthStore = create(
       clearUser: () => set({ user: null }),
     }),
     {
-      name: "auth-storage", // 로컬 스토리지에 저장될 키 이름
-      getStorage: () => sessionStorage, // 기본값으로 로컬 스토리지 사용
+      name: "auth-storage",
+      getStorage: () => sessionStorage,
     },
   ),
 );

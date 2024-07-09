@@ -12,7 +12,6 @@ import { stockRealTime } from "@/app/api/stock/route";
 import { stockAnalysis } from "@/lib/stockAnalysis";
 import { stockEvaluation } from "@/lib/stockEvluation";
 import { generate, token } from "@/lib/token";
-import { agentChat2, agentEvaluation2 } from "@/lib/OllamaTest";
 
 type TParams = {
   id: string;

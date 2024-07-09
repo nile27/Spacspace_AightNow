@@ -1,3 +1,5 @@
+"use server";
+
 import { STOCK_NAME } from "@/lib/stockAction";
 
 // 실시간 주식 가격 정보

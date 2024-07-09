@@ -1,21 +1,26 @@
+"use server";
+
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 import { stockAction4 } from "./stockAction";
 import { generate, token } from "./token";
-export async function agentChat2(id: string) {
+
+export async function agentChatApi(id: string) {
   const search = new TavilySearchResults({
     maxResults: 2,
   });
   const retriever = await search.invoke(`최근 ${id} 주식`);
 
   const accessToken = await token();
-  const prompt = `${retriever}를 참고해서 ${id} 주식에 대해 분석해서 4줄짜리 애널리스트 보고서를 한글로 작성해줘. 절대로 5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`;
+  const prompt = `${retriever}를 참고해서 ${id} 주식에 대해 분석해서 4줄짜리 애널리스트 보고서를 한글로 작성해줘. 절대로 5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.\n`;
   const result = await generate(accessToken, prompt);
-  return result.text;
+  console.log(result.text);
+
+  return result.text.split("\n").slice(2, 6).join("\n");
 }
 
-export async function agentEvaluation2(id: string) {
+export async function agentEvaluationApi(id: string) {
   const search = new TavilySearchResults({
     maxResults: 2,
   });
@@ -39,9 +44,22 @@ export async function agentEvaluation2(id: string) {
   });
 
   const accessToken = await token();
-  const prompt = `${retriever}를 참고하여 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 사용하여 상세 데이터를 가져온 후, 다음 기준에 따라 분석 리포트를 작성해주세요: 
-  1. 전반적 평가, 2. 수익성, 3. 관심도, 4. 성장성, 5. 주가, 6. 총점`;
+  const prompt = `${retriever}를 참고하여 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 사용하여 상세 데이터를 가져온 후, 다음 기준에 따라 분석 리포트를 한글로 작성해주세요:
+
+  투자지수 평가 기준:
+
+  1. 전반적 평가: (긍정/중립/부정)
+  2. 수익성: (높음/중간/낮음)
+  3. 관심도: (상승/평균/하락)
+  4. 성장성: (상승/평균/하락)
+  5. 주가: (상승/일정/하락)
+  6. 총점: 각 평가 항목에 대해 100점 만점 중 점수로 평가하고, 총 평균 점수를 계산해주세요.
+
+  무조건 저 규격에 맞춰서 한글로 각 항목에 대해 평가를 제시하고 마지막에 총점을 제시해주세요.
+  한글로 작성해주세요. 제목이나 부가 설명 없이 바로 본문 내용만 작성해주세요. 영어는 절대로 사용하지 마세요.
+  \n`;
   const result = await generate(accessToken, prompt);
+  console.log(result.text);
 
   return parseEvaluationResult(result.text);
 }

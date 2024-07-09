@@ -13,7 +13,7 @@ export const STOCK_NAME: { [key: string]: string } = {
 export const stockAction = async (stock: string) => {
   const res = await fetch(`https://api.stock.naver.com/stock/${STOCK_NAME[stock]}/integration`);
   const data = await res.json();
-  // revalidatePath("/report");
+  revalidatePath("/watchlist");
   const { corporateOverview } = data;
   return corporateOverview;
 };
@@ -21,7 +21,7 @@ export const stockAction = async (stock: string) => {
 export const stockAction2 = async (stock: string) => {
   const res = await fetch(`https://api.stock.naver.com/stock/${STOCK_NAME[stock]}/basic`);
   const data = await res.json();
-  // revalidatePath("/report");
+  revalidatePath("/watchlist");
   const {
     stockName,
     compareToPreviousPrice,

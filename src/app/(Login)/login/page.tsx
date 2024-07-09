@@ -9,6 +9,8 @@ import OauthBtn from "./components/OauthBtn";
 import { loginRegExp, handleLogin } from "../utills/loginUtill";
 import { useLoginStore } from "@/Store/store";
 import { useRouter } from "next/navigation";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase/firebaseDB";
 
 export default function Login() {
   const { setLogin } = useLoginStore();
@@ -35,6 +37,11 @@ export default function Login() {
       setRegExpArr(false);
       console.error("Login error:", error);
     }
+  };
+
+  const handleGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const data = await signInWithPopup(auth, provider);
   };
 
   return (
@@ -108,7 +115,7 @@ export default function Login() {
           <OauthBtn style={"kakao"} />
           <OauthBtn style={"naver"} />
 
-          <OauthBtn style={"google"} />
+          <OauthBtn style={"google"} onClick={handleGoogle} />
         </div>
       </div>
     </>

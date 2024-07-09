@@ -2,16 +2,10 @@
 import HeaderDark from "../../public/icons/HeaderDark.svg";
 import Link from "next/link";
 import { useLoginStore, useAuthStore } from "@/Store/store";
-export default function Header({
-  background = "white",
-  isLogin = false,
-}: {
-  background?: string;
-  isLogin?: boolean;
-}) {
+export default function Header({ background = "white" }: { background?: string }) {
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
   const addressItem = ["/find", "/news", "/watchlist", "/mypage"];
-  const { isLoggedIn, setLogin, setLogout } = useLoginStore();
+  const { isLoggedIn, setLogout } = useLoginStore();
   const { clearUser } = useAuthStore();
 
   const handleLogout = () => {

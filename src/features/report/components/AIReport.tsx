@@ -1,22 +1,25 @@
-import Image from "next/image";
+type TAiScore = {
+  score: {
+    "**전반적 평가": string;
+    "**수익성": string;
+    "**관심도": string;
+    "**성장성": string;
+    "**주가": string;
+    "**총점": string;
+  };
+};
 
-export default function AIReport() {
+export default function AIReport({ score }: any) {
+  // console.log(score);
   return (
     <>
       <div className="w-[429px] h-[297px]  bg-white rounded-2xl p-4">
         <div className="w-[365px] flex justify-between  ">
-          <h2 className="font-['pretendard'] font-bold">종목 AI 리포트</h2>
-          <span className="font-['pretendard'] font-bold text-2xl">70점</span>
+          <h2 className="font-['pretendard'] font-bold text-2xl">종목 AI 리포트 점수</h2>
+          <span className="font-['pretendard'] font-bold text-3xl"></span>
         </div>
         <div className="w-[365px]  flex  justify-between ">
-          <Image
-            src="/aichart.png"
-            alt="aichart"
-            width={176}
-            height={176}
-            className="p-[13px] border"
-          />
-          <Image src="/result.png" alt="result" width={176} height={176} className="" />
+          <pre>{JSON.stringify(score, null, 2)}</pre>
         </div>
       </div>
     </>

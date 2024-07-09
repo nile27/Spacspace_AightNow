@@ -1,3 +1,4 @@
+import { exchangeRate } from "./../lib/stockAction";
 import { create } from "zustand";
 
 type TShoStore = {
@@ -21,6 +22,17 @@ type TRemoveStore = {
   removeFromWatchList: (id: number) => void;
 };
 
+type TStockStore = {
+  corporateOverview: string;
+  stockExchangeType: string;
+  compareToPreviousPrice: string;
+};
+
+type TExchangeStore = {
+  isChange: boolean;
+  setIsChange: (isChange: boolean) => void;
+};
+
 export const useShow = create<TShoStore>()(set => ({
   isShow: false,
   setIsShow: isShow => set({ isShow }),
@@ -37,4 +49,15 @@ export const useLoginStore = create<TLoginStore>(set => ({
   isLoggedIn: false,
   setLogin: () => set({ isLoggedIn: true }),
   // logout: () => set({ isLoggedIn: false }),
+}));
+
+export const useStockStore = create<TStockStore>(set => ({
+  corporateOverview: "",
+  stockExchangeType: "",
+  compareToPreviousPrice: "",
+}));
+
+export const useExchange = create<TExchangeStore>(set => ({
+  isChange: false,
+  setIsChange: isChange => set({ isChange }),
 }));

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import puppeteer, { Page } from "puppeteer";
 // import { db } from "../../../firebaseAdmin";
-import { TArticle, TNewsList } from "../../type";
+import { TNewsList } from "../../type";
 
 const BASE_URL = "https://www.investing.com";
 const stock_names = [
@@ -14,11 +14,7 @@ const stock_names = [
 ];
 
 // 뉴스 기사 내용을 가져오는 함수
-const fetchArticleContent = async (
-  page: Page,
-  oid: string,
-  aid: string,
-): Promise<TArticle | null> => {
+const fetchArticleContent = async (page: Page, oid: string, aid: string) => {
   try {
     console.log(aid);
     await page.goto(`${BASE_URL}/news/${oid}/${aid}`, { waitUntil: "networkidle2" });
@@ -26,14 +22,27 @@ const fetchArticleContent = async (
 
     const content = await page.$eval(".relative.flex.flex-col", element => {
       const selectElement = (selector: string) => element.querySelector(selector) as HTMLElement;
-      const aid = window.location.href.split("/")[5];
-      const titleElement = selectElement("h1");
+      // const aid = window.location.href.split("/")[5];
+      // const titleElement = selectElement("h1");
       const imageElement = element.querySelector("img.object-contain") as HTMLImageElement;
       const contentElement = selectElement("div.article_WYSIWYG__O0uhw");
       const timeElement = selectElement("div.flex.flex-col > div.flex.flex-row > span");
-      const providerElement = element.querySelector(
-        "div.flex.flex-row.items-end.text-xs > a > div > img",
-      ) as HTMLImageElement;
+      // const providerElement = element.querySelector(
+      //   "div.flex.flex-row.items-end.text-xs > a > div > img",
+      // ) as HTMLImageElement;
+
+      const parsedDate = new Date(timeElement.innerText.replace("Published ", "").replace(",", ""));
+      const period = parsedDate.getHours() < 12 ? "오전" : "오후";
+      const formattedDate = parsedDate.toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      });
+
+      const published = formattedDate.replace(/AM|PM/, period);
 
       if (!contentElement) {
         return null;
@@ -48,10 +57,11 @@ const fetchArticleContent = async (
       contentHTML = contentHTML.replace(/class=/g, "className="); // class 속성을 className으로 변경
 
       return {
-        articleId: aid,
-        title: titleElement.innerText,
-        provider: providerElement ? providerElement.alt : null,
-        time: timeElement.innerText.replace("Published ", "").replace(",", ""),
+        // articleId: aid,
+        // title: titleElement.innerText,
+        // provider: providerElement ? providerElement.alt : null,
+        // time: timeElement.innerText.replace("Published ", "").replace(",", ""),
+        time: published,
         body: contentHTML,
         image: imageElement ? imageElement.src : null,
       };
@@ -73,6 +83,7 @@ const fetchArticleContent = async (
 const fetchArticlesFromPage = async (stock_name: string, page: Page, index: number) => {
   try {
     await page.goto(`${BASE_URL}/equities/${stock_name}-news/${index}`, {
+      // headless: true,
       waitUntil: "networkidle2",
     });
 
@@ -101,15 +112,17 @@ const fetchArticlesFromPage = async (stock_name: string, page: Page, index: numb
           }
 
           return {
-            subcontent: subcontentElement.innerText.trim(),
-            thumbUrl: "",
-            tit: titleElement.innerText,
-            ohnm: providerElement.innerText,
             aid: titleElement.getAttribute("href")?.split("/")[3],
-            dt: timeElement.innerText,
+            tit: titleElement.innerText,
+            subcontent: subcontentElement.innerText.trim(),
             oid: titleElement.getAttribute("href")?.split("/")[2],
+            ohnm: providerElement.innerText,
+            dt: timeElement.innerText,
+            thumbUrl: "",
             isVideo: false,
             hasImage: false,
+            published: "",
+            content: "",
             stockName: "",
             // published: timeElement.getAttribute("datetime") || "",
           };
@@ -118,7 +131,7 @@ const fetchArticlesFromPage = async (stock_name: string, page: Page, index: numb
     );
 
     source.forEach(article => {
-      article.stockName = stock_name;
+      article.stockName = stock_name.split("-")[0];
     });
 
     const articles = [];
@@ -128,21 +141,16 @@ const fetchArticlesFromPage = async (stock_name: string, page: Page, index: numb
         const content = await fetchArticleContent(page, article.oid, article.aid);
         console.log(content);
         if (content) {
-          // article.stockName = stock_name;
+          article.published = content.time;
+          article.content = content.body;
           article.thumbUrl = content.image || "";
           article.hasImage = content.image ? true : false;
           articles.push(article as TNewsList);
-
-          // Firestore에 news list 저장
-          // await db
-          //   .collection("newsList")
-          //   .doc(`${BASE_URL}/news/${article.oid}/${article.aid}`)
-          //   .set(article);
         }
       }
     }
 
-    return source;
+    return articles;
   } catch (error) {
     console.error(`Error processing ${stock_name}:`, error);
     return [];
@@ -152,7 +160,7 @@ const fetchArticlesFromPage = async (stock_name: string, page: Page, index: numb
 // API 핸들러 함수
 export async function GET(request: Request) {
   const browser = await puppeteer.launch({
-    headless: true, // false 일 경우 실행 시 웹사이트 확인 가능
+    headless: false, // false 일 경우 실행 시 웹사이트 확인 가능
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
   const page = await browser.newPage();
@@ -164,7 +172,7 @@ export async function GET(request: Request) {
     // console.log(articles);
   }
 
-  await browser.close(); // 브라우저 종료
+  // await browser.close(); // 브라우저 종료
 
   return NextResponse.json(allArticles);
 }

@@ -1,7 +1,7 @@
 "use client";
 import HeaderDark from "../../public/icons/HeaderDark.svg";
 import Link from "next/link";
-import { useLoginStore } from "@/Store/store";
+import { useLoginStore, useAuthStore } from "@/Store/store";
 export default function Header({
   background = "white",
   isLogin = false,
@@ -12,6 +12,14 @@ export default function Header({
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
   const addressItem = ["/find", "/news", "/watchlist", "/mypage"];
   const { isLoggedIn, setLogin, setLogout } = useLoginStore();
+  const { clearUser } = useAuthStore();
+
+  const handleLogout = () => {
+    clearUser();
+    setLogout();
+    window.sessionStorage.clear();
+  };
+
   return (
     <header
       className={`fixed z-40 top-0 w-full h-[56px] py-[8px] bg-${background} flex flex-row justify-between items-center px-[5vw] `}
@@ -36,7 +44,7 @@ export default function Header({
 
       {isLoggedIn && (
         <button
-          onClick={setLogout}
+          onClick={handleLogout}
           className="w-[102px] h-[36px] border-[1px]  border-scaleGray-900 rounded-[8px] hover:text-mainNavy-900 hover:font-bold "
         >
           로그아웃

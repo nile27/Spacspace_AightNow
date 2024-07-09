@@ -1,3 +1,4 @@
+import { exchangeRate } from "./../lib/stockAction";
 import { create } from "zustand";
 
 type TShoStore = {
@@ -39,6 +40,16 @@ export type TInputState = {
   setInput: (key: string, value: string) => void;
   addStock: (stock: string) => void;
   removeStock: (stock: string) => void;
+}
+type TStockStore = {
+  corporateOverview: string;
+  stockExchangeType: string;
+  compareToPreviousPrice: string;
+};
+
+type TExchangeStore = {
+  isChange: boolean;
+  setIsChange: (isChange: boolean) => void;
 };
 
 export const useShow = create<TShoStore>()(set => ({
@@ -92,4 +103,15 @@ export const useSignUp = create<TInputState>(set => ({
         stock: state.inputText.stock.filter(item => item !== stock),
       },
     })),
+}));
+
+export const useStockStore = create<TStockStore>(set => ({
+  corporateOverview: "",
+  stockExchangeType: "",
+  compareToPreviousPrice: "",
+}));
+
+export const useExchange = create<TExchangeStore>(set => ({
+  isChange: false,
+  setIsChange: isChange => set({ isChange }),
 }));

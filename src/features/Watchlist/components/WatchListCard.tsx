@@ -5,14 +5,14 @@ import TextButton from "@/components/btnUi/TextButton";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function WatchListCard() {
+export default function WatchListCard({ name }: { name: string }) {
   return (
     <>
       <div className={`w-[392px] h-[360px]   bg-white rounded-2xl p-4 font-pretendard`}>
         <div className="w-[328px] h-14 flex flex-col">
           <div className="flex items-center gap-2 ">
-            <Icon name="apple" size={32} />
-            <span className="font-bold">애플</span>
+            <Icon name={name} size={32} />
+            <span className="font-bold">{name}</span>
             <span className="text-scaleGray-600">AAPL</span>
           </div>
           <div className="flex items-center gap-2">
@@ -35,7 +35,7 @@ export default function WatchListCard() {
           <TextButton size="custom" color="grayScale" width={"160px"} height={"56px"}>
             삭제하기
           </TextButton>
-          <Link href={"/report"}>
+          <Link href={`/report/${name}`}>
             <TextButton size="custom" width={"160px"} height={"56px"}>
               자세히 보기
             </TextButton>

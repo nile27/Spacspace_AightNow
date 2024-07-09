@@ -10,7 +10,7 @@ export default function NewsDetail() {
     <>
       <Header />
       <div className="w-[1200px] h-full flex justify-between  mt-52">
-        <div className="w-[792px] h-[1200px] flex flex-col bg-white p-8 font-pretendard rounded-2xl">
+        <div className="w-[792px] h-[1100px] flex flex-col bg-white p-8 font-pretendard rounded-2xl">
           <h1 className="text-3xl">삼성·TSMC 중국 접근 막을 수도" 美 새 반도체 제한 전망</h1>
           <div className="w-[728px] h-9 flex  items-start ">
             <div className="w-[728px] flex  mt-4 gap-2  text-zinc-600 text-sm font-medium  leading-tight">

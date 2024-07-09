@@ -8,7 +8,7 @@ import Header from "@/components/Header";
 export default function WatchList() {
   const { isShow, setIsShow } = useShow();
 
-  const testArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const testArr = ["apple", "google", "microsoft", "amazon", "unity", "tesla"];
 
   const handleDelete = () => {
     testArr.filter((item, idx) => item === testArr[idx]);
@@ -33,7 +33,7 @@ export default function WatchList() {
             </div>
             <div className={"my-6 grid grid-cols-3  gap-5"}>
               {testArr.map((item, idx) => (
-                <WatchListCard key={idx} />
+                <WatchListCard key={idx} name={item} />
               ))}
             </div>
           </div>

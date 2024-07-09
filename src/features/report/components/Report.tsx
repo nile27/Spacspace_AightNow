@@ -27,7 +27,7 @@ export default async function Report({ id }: TParams) {
 
   const exchange = await exchangeRate();
   const chat = await stockAnalysis(id);
-  const score = await stockEvaluation();
+  const score = await stockEvaluation(id);
   // const chat = await agentChat();
 
   const tokenValue = await token();

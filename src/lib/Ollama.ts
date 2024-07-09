@@ -29,13 +29,18 @@ export async function agentChat(id: string) {
   // 2. 도구 정의
   const stockAnalysisTool = new DynamicStructuredTool({
     name: "stock_analysis",
-    description: "주식에 대한 간단한 분석을 제공합니다.",
+    description: "주식에 대한 상세한 분석 데이터를 제공합니다.",
     schema: z.object({
-      stockName: z.string().describe("분석할 주식의 이름"),
+      stockName: z.string().describe(id),
     }),
-    func: async ({ stockName }) => {
-      // 여기에 실제 주식 분석 로직을 구현하세요
-      return `${stockName}에 대한 간단한 분석 결과입니다...`;
+    func: async () => {
+      try {
+        const stockInfo = await stockAction4();
+        return JSON.stringify(stockInfo);
+      } catch (error) {
+        console.error("Error fetching stock data:", error);
+        return JSON.stringify({ error: "Failed to fetch stock data" });
+      }
     },
   });
 
@@ -46,14 +51,18 @@ export async function agentChat(id: string) {
   });
 
   // 3. Agent 초기화
-  const executor = new AgentExecutor({ agent, tools });
+  const executor = new AgentExecutor({
+    agent,
+    tools,
+    maxIterations: 1,
+  });
 
   // 4. Agent 실행
   const result = await executor.invoke({
     input: `${retriever}를 참고해서 ${id} 주식에 대해 분석해서 4줄짜리 애널리스트 보고서를 한글로 작성해줘. 절대로5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
   });
   const cleanOutput = result.output
-    .replace(/^Here is a 4-line analyst report on Apple stock in Korean:\s*/, "")
+    .replace(/^Here is a 4-line analyst report in Korean:\s*/, "")
     .replace(/^.*본문:\s*/, "")
     .trim();
   console.log(cleanOutput);
@@ -63,12 +72,12 @@ export async function agentChat(id: string) {
 // --------------------------------------------------------------------------------------------
 
 // ai 점수 평가
-export async function agentEvaluation() {
+export async function agentEvaluation(id: string) {
   const search = new TavilySearchResults({
     maxResults: 2,
   });
 
-  const retriever = await search.invoke("최근 애플 주식 ");
+  const retriever = await search.invoke(`최근 ${id} 주식`);
 
   const tools = [search];
   const prompt = await pull<ChatPromptTemplate>("hwchase17/openai-functions-agent");
@@ -86,9 +95,9 @@ export async function agentEvaluation() {
     name: "stock_analysis",
     description: "주식에 대한 상세한 분석 데이터를 제공합니다.",
     schema: z.object({
-      stockName: z.string().describe("분석할 주식의 이름"),
+      stockName: z.string().describe(id),
     }),
-    func: async ({ stockName }) => {
+    func: async () => {
       try {
         const stockInfo = await stockAction4();
         return JSON.stringify(stockInfo);
@@ -114,7 +123,7 @@ export async function agentEvaluation() {
 
   // 4. Agent 실행
   const result = await executor.invoke({
-    input: `${retriever}를 참고하여 애플 주식에 대해 ${stockAnalysisTool} 도구를 사용하여 상세 데이터를 가져온 후, 다음 기준에 따라 분석 리포트를 작성해주세요:
+    input: `${retriever}를 참고하여 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 사용하여 상세 데이터를 가져온 후, 다음 기준에 따라 분석 리포트를 작성해주세요:
 
     투자지수 평가 기준:
 

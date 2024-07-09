@@ -9,8 +9,8 @@ type TAiScore = {
   };
 };
 
-export default function AIReport({ score }: any) {
-  // console.log(score);
+export default function AIReport({ score }: TAiScore) {
+  console.log(score);
   return (
     <>
       <div className="w-[429px] h-[297px]  bg-white rounded-2xl p-4">
@@ -19,7 +19,7 @@ export default function AIReport({ score }: any) {
           <span className="font-['pretendard'] font-bold text-3xl"></span>
         </div>
         <div className="w-[365px]  flex  justify-between ">
-          <pre>{JSON.stringify(score, null, 2)}</pre>
+          <div>{JSON.stringify(score, null, 2)}</div>
         </div>
       </div>
     </>

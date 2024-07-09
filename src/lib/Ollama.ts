@@ -1,3 +1,5 @@
+"use server";
+
 import { ChatOllama } from "@langchain/community/chat_models/ollama";
 import { createOpenAIFunctionsAgent, AgentExecutor } from "langchain/agents";
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
@@ -10,7 +12,7 @@ import { stockAction4 } from "./stockAction";
 // ai report
 export async function agentChat(id: string) {
   const search = new TavilySearchResults({
-    maxResults: 2,
+    maxResults: 1,
   });
 
   const retriever = await search.invoke(`최근 ${id} 주식`);
@@ -24,6 +26,10 @@ export async function agentChat(id: string) {
     model: "llama3",
     temperature: 0.3,
     topP: 0.3,
+    stop: ["\n\n\n\n\n"],
+    repeatLastN: 2,
+    numBatch: 16,
+    lowVram: true,
   });
 
   // 2. 도구 정의
@@ -74,7 +80,7 @@ export async function agentChat(id: string) {
 // ai 점수 평가
 export async function agentEvaluation(id: string) {
   const search = new TavilySearchResults({
-    maxResults: 2,
+    maxResults: 1,
   });
 
   const retriever = await search.invoke(`최근 ${id} 주식`);
@@ -88,6 +94,10 @@ export async function agentEvaluation(id: string) {
     model: "llama3",
     temperature: 0.3,
     topP: 0.3,
+    stop: ["\n\n\n\n"],
+    repeatLastN: 2,
+    numBatch: 16,
+    lowVram: true,
   });
 
   // 2. 도구 정의

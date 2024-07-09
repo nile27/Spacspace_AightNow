@@ -49,7 +49,7 @@ export default function Summary({ overview, stockInfo, exchange }: TSummary) {
               } text-xl font-['Pretendard'] leading-7`}
             >
               {compareUpDown === "2"
-                ? `▲ ${compareToPreviousClosePrice} `
+                ? `▲${compareToPreviousClosePrice} `
                 : `▼${compareToPreviousClosePrice} `}
             </div>
             <div

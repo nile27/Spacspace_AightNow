@@ -1,4 +1,5 @@
 import { agentChat } from "@/lib/Ollama";
+import { agentChat2 } from "@/lib/OllamaTest";
 import { NextResponse } from "next/server";
 
 export async function GET(res: NextResponse) {

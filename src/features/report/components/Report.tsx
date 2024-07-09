@@ -12,6 +12,7 @@ import { stockRealTime } from "@/app/api/stock/route";
 import { stockAnalysis } from "@/lib/stockAnalysis";
 import { stockEvaluation } from "@/lib/stockEvluation";
 import { generate, token } from "@/lib/token";
+import { agentChat2, agentEvaluation2 } from "@/lib/OllamaTest";
 
 type TParams = {
   id: string;
@@ -26,13 +27,15 @@ export default async function Report({ id }: TParams) {
   const stockHistory = await stockRealTime(id);
 
   const exchange = await exchangeRate();
-  const chat = await stockAnalysis(id);
+
   const score = await stockEvaluation(id);
+  const chat = await stockAnalysis(id);
+
   // const chat = await agentChat();
 
-  const tokenValue = await token();
-  const data = generate(tokenValue);
-  console.log(JSON.stringify(data, null, 2));
+  // const tokenValue = await token();
+  // const data = generate(tokenValue);
+  // console.log(JSON.stringify(data, null, 2));
 
   return (
     <>
@@ -54,7 +57,7 @@ export default async function Report({ id }: TParams) {
         </div>
         <div className="w-[1200px] flex gap-4 ">
           <AIReport score={score ?? ""} />
-          <Analysis stockName={stockName} stockInfo={appleStock2} report={chat ?? ""} id={id} />
+          <Analysis stockName={stockName} stockInfo={appleStock2} id={id} report={chat ?? ""} />
         </div>
         <FavoriteNews />
       </div>

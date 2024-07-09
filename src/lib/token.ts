@@ -1,3 +1,5 @@
+// llm api 호출
+
 export async function token() {
   const res = await fetch("http://43.203.238.76:8000/auth/token", {
     method: "POST",
@@ -15,16 +17,16 @@ export async function token() {
   return authData.access_token;
 }
 
-export async function generate(token: string) {
+export async function generate(token: string, prompt: string) {
   const url = "http://43.203.238.76:8000/generate";
   const headers = {
     Authorization: `bearer ${token}`,
     "Content-Type": "application/json",
   };
   const body = {
-    user_message: "애플 주식에 대해 분석해줘",
-    temperature: 0.5,
-    top_p: 0.5,
+    user_message: prompt,
+    temperature: 0.3,
+    top_p: 0.3,
   };
 
   try {

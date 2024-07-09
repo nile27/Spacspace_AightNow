@@ -50,7 +50,7 @@ export default function Summary({ overview, stockInfo, exchange }: TSummary) {
             >
               {compareUpDown === "2"
                 ? `▲ ${compareToPreviousClosePrice} `
-                : `▼ ${compareToPreviousClosePrice}`}
+                : `▼${compareToPreviousClosePrice} `}
             </div>
             <div
               className={`text-left ${

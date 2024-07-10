@@ -1,24 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewInput from "@/components/Input/NewInput";
 import BasicIcon from "@/components/Icon/BasicIcons";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
+import { signIn, useSession } from "next-auth/react";
 import { loginRegExp, handleLogin } from "../utills/loginUtill";
 import { useLoginStore, useSignUp, useAuthStore, TUserData } from "@/Store/store";
-import { useRouter } from "next/navigation";
-import { googleLogin, UserData } from "../utills/GoogleAuth";
+import { useRouter, redirect } from "next/navigation";
+
+import { googleLogin } from "../utills/GoogleAuth";
+import { signUpToFirebase } from "../utills/NextSessionSIgn";
 
 export default function Login() {
-  const { setLogin } = useLoginStore();
+  const { setLogin, isLoggedIn } = useLoginStore();
   const { setInput, setImgFile, setLabelImg } = useSignUp();
+  const { data: session, status } = useSession();
+
   const navi = useRouter();
   const [pwHide, setpwHide] = useState(false);
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
   const [regExpArr, setRegExpArr] = useState(true);
+  const [authType, setAuthType] = useState<string | null>(null);
 
   const handleOnClick = async () => {
     try {
@@ -66,6 +72,34 @@ export default function Login() {
       console.log(error);
     }
   };
+
+  const handleNextAuth = async (type: string) => {
+    signIn(type, { redirect: false });
+
+    if (session?.isNewUser) {
+      const sessionData = await signUpToFirebase(session);
+    } else {
+      const signInMember = {
+        id: session?.user.id ?? "",
+        email: session?.user.email ?? "",
+        nickname: session?.user.nickname ?? "",
+        phone: session?.user.phone ?? "",
+        birth: session?.user.birth ?? "",
+        stock: session?.user.stock ?? [],
+        logintype: session?.user.logintype,
+        profile_image: session?.user.profile_image,
+      };
+
+      useAuthStore.getState().setUser(signInMember as TUserData);
+    }
+  };
+
+  useEffect(() => {
+    if (session && session.user && useAuthStore.getState().user?.email) {
+      setLogin();
+      navi.push("/");
+    }
+  }, [session]);
 
   return (
     <>
@@ -135,8 +169,8 @@ export default function Login() {
           <div className="border-b-[1px] h-1 w-full border-scaleGray-400"></div>
         </div>
         <div className="w-full  flex gap-4  justify-center items-center">
-          <OauthBtn style={"kakao"} />
-          <OauthBtn style={"naver"} />
+          <OauthBtn style={"kakao"} onClick={() => handleNextAuth("kakao")} />
+          <OauthBtn style={"naver"} onClick={() => signIn("naver")} />
 
           <OauthBtn style={"google"} onClick={handleGoogle} />
         </div>

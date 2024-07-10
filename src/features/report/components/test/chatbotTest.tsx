@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export default function chabotTest() {
+export default function ChatBotTest() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
 

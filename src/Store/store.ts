@@ -54,6 +54,8 @@ export type TUserData = {
   phone: string;
   birth: string;
   stock: string[];
+  profile_image?: string;
+  logintype?: string;
 };
 
 export type AuthStore = {
@@ -74,11 +76,19 @@ export const useClose = create<TCloseStore>()(set => ({
   setIsClose: isClose => set({ isClose }),
 }));
 
-export const useLoginStore = create<TLoginStore>(set => ({
-  isLoggedIn: false,
-  setLogin: () => set({ isLoggedIn: true }),
-  setLogout: () => set({ isLoggedIn: false }),
-}));
+export const useLoginStore = create<TLoginStore>()(
+  persist(
+    set => ({
+      isLoggedIn: false,
+      setLogin: () => set({ isLoggedIn: true }),
+      setLogout: () => set({ isLoggedIn: false }),
+    }),
+    {
+      name: "login-storage",
+      getStorage: () => sessionStorage,
+    },
+  ),
+);
 
 export const useSignUp = create<TInputState>()(
   persist(

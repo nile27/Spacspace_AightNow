@@ -41,73 +41,12 @@ export const stockAction2 = async (stock: string) => {
 };
 
 // 기업 주식 정보
-export const stockAction4 = async () => {
-  const res = await fetch("https://api.stock.naver.com/stock/AAPL.O/basic");
+export const stockAction4 = async (stock: string) => {
+  const res = await fetch(`https://api.stock.naver.com/stock/${STOCK_NAME[stock]}/basic`);
   const data = await res.json();
   // revalidatePath("/report");
-  const {
-    stockItemTotalInfos,
-    stockName,
-    compareToPreviousPrice,
-    closePrice,
-    compareToPreviousClosePrice,
-    fluctuationsRatio,
-    reutersCode,
-  } = data;
 
-  const [
-    { value: basePrice },
-    { value: openPrice },
-    { value: highPrice },
-    { value: lowPrice },
-    { value: tradingVolume },
-    { value: tradingValue },
-    { value: marketValue },
-    { value: industryGroup },
-    { value: highPrice52Weeks },
-    { value: lowPrice52Weeks },
-    { value: per },
-    { value: eps },
-    { value: pbr },
-    { value: bps },
-    { value: dividend },
-    { value: dividendYieldRatio },
-    { value: dividendAt },
-    { value: exDividendAt },
-    { value: faceValueDivisionRate },
-    { value: faceValue },
-  ] = stockItemTotalInfos;
-
-  return [
-    { value: basePrice },
-    { value: openPrice },
-    { value: highPrice },
-    { value: lowPrice },
-    { value: tradingVolume },
-    { value: tradingValue },
-    { value: marketValue },
-    { value: industryGroup },
-    { value: highPrice52Weeks },
-    { value: lowPrice52Weeks },
-    { value: per },
-    { value: eps },
-    { value: pbr },
-    { value: bps },
-    { value: dividend },
-    { value: dividendYieldRatio },
-    { value: dividendAt },
-    { value: exDividendAt },
-    { value: faceValueDivisionRate },
-    { value: faceValue },
-    {
-      stockName,
-      compareToPreviousPrice,
-      closePrice,
-      compareToPreviousClosePrice,
-      fluctuationsRatio,
-      reutersCode,
-    },
-  ];
+  return data.stockItemTotalInfos;
 };
 // 원화 정보
 export const exchangeRate = async () => {

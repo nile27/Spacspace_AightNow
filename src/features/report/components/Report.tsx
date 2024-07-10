@@ -9,9 +9,7 @@ import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
 import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";
 import { stockRealTime } from "@/app/api/stock/route";
-import { stockEvaluation } from "@/lib/stockEvluation";
 import AIReport from "./AIReport";
-import { stockAnalysis } from "@/lib/stockAnalysis";
 
 type TParams = {
   id: string;
@@ -46,7 +44,7 @@ export default async function Report({ id }: TParams) {
           <Chart stockData={stockHistory} />
         </div>
         <div className=" w-[1200px] flex gap-4 ">
-          <AIReport />
+          <AIReport id={id} />
           <Analysis stockName={stockName} stockInfo={appleStock2} id={id} />
         </div>
         <FavoriteNews />

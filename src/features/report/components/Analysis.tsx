@@ -38,7 +38,7 @@ export default async function Analysis({
           </div>
         </div>
         <div className="w-[686px] h-24 mt-4 inline-flex justify-start items-start gap-2.5 ">
-          <div className="grow shrink basis-0   text-black  font-medium leading-normal line-clamp-6">
+          <div className="grow shrink basis-0   text-black  font-medium leading-normal line-clamp-5">
             {report}
           </div>
         </div>

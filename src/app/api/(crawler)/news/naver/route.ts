@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import { TNewsList } from "../../type";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import fireStore from "@/firebase/firestore";
+import { addNewsToFirestore } from "../firebase/fireStore";
 
 const symbols = ["AAPL.O", "TSLA.O", "MSFT.O", "AMZN.O", "GOOGL.O", "U"];
 const stockNames = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
 
-const fetchNaverNewsInfo = async (symbole: string, stockName: string) => {
+const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
   const url = `https://api.stock.naver.com/news/worldStock/${symbole}?pageSize=20&page=1`;
   const headers = {
     "Content-Type": "application/json",
@@ -18,10 +21,12 @@ const fetchNaverNewsInfo = async (symbole: string, stockName: string) => {
       data.forEach(item => {
         item.isVideo = false;
         item.hasImage = item.type === 1;
+        // item.stockName = stockName;
       });
     } else {
       data.isVideo = false;
       data.hasImage = data.type === 1;
+      // data.stockName = stockName;
     }
     const articleList = [];
     for (const article of data) {
@@ -57,9 +62,10 @@ export async function GET(request: Request) {
   const allStockNews: TNewsList[] = [];
 
   for (let i = 0; i < symbols.length; i++) {
-    const newsListData = await fetchNaverNewsInfo(symbols[i], stockNames[i]);
+    const newsListData = await fetchNaverNewsInfo(stockNames[i], symbols[i]);
     if (newsListData) {
       allStockNews.push(...newsListData);
+      await addNewsToFirestore(stockNames[i], newsListData); // Firestore에 뉴스 추가
     }
   }
 

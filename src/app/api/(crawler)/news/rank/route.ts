@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import puppeteer, { Page } from "puppeteer";
+import { addNewsToFirestore } from "../firebase/fireStore";
 
 const fetchRankNews = async (page: Page) => {
   const url = `https://m.stock.naver.com/front-api/news/category?category=ranknews&pageSize=20&page=1`;
@@ -79,6 +80,8 @@ export async function GET(request: Request) {
   const page = await browser.newPage();
   try {
     const rankNews = await fetchRankNews(page);
+    await addNewsToFirestore("rank", rankNews); // Firestore에 뉴스 추가
+
     return NextResponse.json(rankNews);
   } catch (error) {
     console.error(`Error in GET request:`, error);

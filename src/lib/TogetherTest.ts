@@ -5,8 +5,7 @@ import { createOpenAIFunctionsAgent, AgentExecutor } from "langchain/agents";
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import type { ChatPromptTemplate } from "@langchain/core/prompts";
 import { pull } from "langchain/hub";
-import { DynamicStructuredTool } from "@langchain/core/tools";
-import { z } from "zod";
+
 import { stockAction4 } from "./stockAction";
 
 // ai report
@@ -15,7 +14,7 @@ export async function agentChatTogether(id: string) {
     maxResults: 2,
   });
 
-  const retriever = await search.invoke(`최근 ${id} 주식`);
+  const retriever = await search.invoke(`최신 ${id} 주식`);
 
   const tools = [search];
   const prompt = await pull<ChatPromptTemplate>("hwchase17/openai-functions-agent");
@@ -29,22 +28,7 @@ export async function agentChatTogether(id: string) {
   });
 
   // 2. 도구 정의
-  const stockAnalysisTool = new DynamicStructuredTool({
-    name: "stock_analysis",
-    description: "주식에 대한 상세한 분석 데이터를 제공합니다.",
-    schema: z.object({
-      stockName: z.string().describe(id),
-    }),
-    func: async () => {
-      try {
-        const stockInfo = await stockAction4();
-        return JSON.stringify(stockInfo);
-      } catch (error) {
-        console.error("Error fetching stock data:", error);
-        return JSON.stringify({ error: "Failed to fetch stock data" });
-      }
-    },
-  });
+  const stockAnalysisTool = await stockAction4(id);
 
   const agent = await createOpenAIFunctionsAgent({
     llm,
@@ -56,12 +40,12 @@ export async function agentChatTogether(id: string) {
   const executor = new AgentExecutor({
     agent,
     tools,
-    maxIterations: 1,
+    maxIterations: 2,
   });
 
   // 4. Agent 실행
   const result = await executor.invoke({
-    input: `${retriever}를 참고해서 ${id} 주식에 대해 분석해서 4줄짜리 애널리스트 보고서를 한글로 작성해줘. 절대로5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
+    input: `${retriever}를 참고해서 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 참조해서 분석하고 애널리스트 보고서를 한글로 작성해줘. 절대로 5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
   });
   const cleanOutput = result.output
     .replace(/^Here is a 4-line analyst report in Korean:\s*/, "")
@@ -93,33 +77,20 @@ export async function agentEvaluationTogether(id: string) {
   });
 
   // 2. 도구 정의
-  const stockAnalysisTool = new DynamicStructuredTool({
-    name: "stock_analysis",
-    description: "주식에 대한 상세한 분석 데이터를 제공합니다.",
-    schema: z.object({
-      stockName: z.string().describe(id),
-    }),
-    func: async () => {
-      try {
-        const stockInfo = await stockAction4();
-        return JSON.stringify(stockInfo);
-      } catch (error) {
-        console.error("Error fetching stock data:", error);
-        return JSON.stringify({ error: "Failed to fetch stock data" });
-      }
-    },
-  });
+  const stockAnalysisTool = await stockAction4(id);
+
+  console.log("stockAnalysisTool:");
 
   const agent = await createOpenAIFunctionsAgent({
     llm,
-    tools: [...tools, stockAnalysisTool],
+    tools: [...tools],
     prompt,
   });
 
   // 3. Agent 초기화
   const executor = new AgentExecutor({
     agent,
-    tools: [...tools, stockAnalysisTool],
+    tools: [...tools],
     maxIterations: 1,
   });
 

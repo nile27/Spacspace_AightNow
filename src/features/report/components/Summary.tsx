@@ -62,7 +62,7 @@ export default function Summary({ overview, stockInfo, exchange }: TSummary) {
           </div>
         </div>
         <Toggle />
-        <div className="w-[424px] h-24 line-clamp-5 text-neutral-900 text-base font-normal font-['Pretendard'] leading-normal">
+        <div className="w-[424px] h-24 line-clamp-5  text-neutral-900 text-base font-normal font-['Pretendard'] leading-normal">
           {overview}
         </div>
       </div>

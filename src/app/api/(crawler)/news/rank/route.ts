@@ -39,11 +39,25 @@ const fetchRankNews = async (page: Page) => {
         const providerElement = selectElement(".media_end_head_top_logo_img").getAttribute("alt");
         const timeElement = selectElement(".media_end_head_info_datestamp_time._ARTICLE_DATE_TIME");
         const contentElement = selectElement("#dic_area");
+        const imageElement = element.querySelector("#img1") as HTMLImageElement;
 
         if (contentElement) {
+          const summaryElement = selectElement(".media_end_summary");
+          const end_photo_org = contentElement.querySelector(".end_photo_org");
           const end_photo = contentElement.querySelector("#img_a2");
+          const remove_article = element.querySelector("#dic_area > div:nth-child(38)");
+
+          if (summaryElement) {
+            summaryElement.remove();
+          }
+          if (end_photo_org) {
+            end_photo_org.remove();
+          }
           if (end_photo) {
             end_photo.remove();
+          }
+          if (remove_article) {
+            remove_article.remove();
           }
         }
 
@@ -56,7 +70,8 @@ const fetchRankNews = async (page: Page) => {
           // title: titleElement.innerText,
           // provider: providerElement,
           published: timeElement.innerText,
-          content: contentElement.innerHTML,
+          content: contentElement.outerHTML,
+          image: imageElement?.src,
           stockName: "rank",
         };
       });

@@ -10,10 +10,27 @@ export async function agentChatApi(id: string) {
   const search = new TavilySearchResults({
     maxResults: 2,
   });
-  const retriever = await search.invoke(`최근 ${id} 주식`);
+  const retriever = await search.invoke(`최신 ${id} 주식`);
+
+  const stockAnalysisTool = new DynamicStructuredTool({
+    name: "stock_analysis",
+    description: "주식에 대한 상세한 분석 데이터를 제공합니다.",
+    schema: z.object({
+      stockName: z.string().describe(id),
+    }),
+    func: async () => {
+      try {
+        const stockInfo = await stockAction4();
+        return JSON.stringify(stockInfo);
+      } catch (error) {
+        console.error("Error fetching stock data:", error);
+        return JSON.stringify({ error: "Failed to fetch stock data" });
+      }
+    },
+  });
 
   const accessToken = await token();
-  const prompt = `${retriever}를 참고해서 ${id} 주식에 대해 분석해서 4줄짜리 애널리스트 보고서를 한글로 작성해줘. 절대로 5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.\n`;
+  const prompt = `${retriever}를 참고해서 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 사용하여 상세 데이터를 가져온 후 분석해서 4줄짜리 애널리스트 보고서를 절대로 한글로 작성해줘. 절대로 제목이나 부가 설명 없이 바로 본문 내용만 한글로 작성해. 밑에 Note: 이런거 표시하지마세요 영어 절대로 표시하지마세요\n`;
   const result = await generate(accessToken, prompt);
   console.log(result.text);
 
@@ -22,7 +39,7 @@ export async function agentChatApi(id: string) {
 
 export async function agentEvaluationApi(id: string) {
   const search = new TavilySearchResults({
-    maxResults: 2,
+    maxResults: 1,
   });
   const retriever = await search.invoke(`최근 ${id} 주식`);
 
@@ -56,7 +73,7 @@ export async function agentEvaluationApi(id: string) {
   6. 총점: 각 평가 항목에 대해 100점 만점 중 점수로 평가하고, 총 평균 점수를 계산해주세요.
 
   무조건 저 규격에 맞춰서 한글로 각 항목에 대해 평가를 제시하고 마지막에 총점을 제시해주세요.
-  한글로 작성해주세요. 제목이나 부가 설명 없이 바로 본문 내용만 작성해주세요. 영어는 절대로 사용하지 마세요.
+  한글로 작성해주세요. 제목이나 부가 설명 없이 바로 본문 내용만 작성해주세요. 영어는 절대로 사용하지 마세요 그리고 url 표시하지마.
   \n`;
   const result = await generate(accessToken, prompt);
   console.log(result.text);

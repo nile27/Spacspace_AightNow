@@ -1,5 +1,5 @@
 import Main from "@/features/Main/Main";
-import Llmtest from "./api/route";
+import AIReport from "@/features/report/components/AIReport";
 
 export default function Home() {
   return (

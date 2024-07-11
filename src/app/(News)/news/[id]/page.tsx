@@ -6,14 +6,30 @@ import Header from "@/components/Header";
 import BasicIcon from "@/components/Icon/BasicIcons";
 import ListStockUp from "@/components/List/ListStockUp";
 import TextButton from "@/components/btnUi/TextButton";
-import fireStore from "@/firebase/firestore";
-import { collection, getDoc } from "firebase/firestore";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 type TPageProps = {
   params: { id: string };
 };
+
+function formatDateTime(dateTimeStr: string) {
+  if (!dateTimeStr || dateTimeStr.length !== 14) {
+    console.error("Invalid dateTimeStr format");
+    return null;
+  }
+
+  const year = dateTimeStr.substring(0, 4);
+  const month = dateTimeStr.substring(4, 6);
+  const day = dateTimeStr.substring(6, 8);
+  const hour = parseInt(dateTimeStr.substring(8, 10), 10);
+  const minute = dateTimeStr.substring(10, 12);
+
+  const period = hour >= 12 ? "오후" : "오전";
+  const formattedHour = hour % 12 || 12;
+
+  return `${year}년 ${month}월 ${day}일 ${period} ${formattedHour}:${minute}`;
+}
 
 export default function NewsDetail({ params }: TPageProps) {
   const { id } = params;
@@ -32,7 +48,6 @@ export default function NewsDetail({ params }: TPageProps) {
   }, []);
 
   console.log(article);
-  // getDoc(collection(fireStorem, 'news', id))
 
   return (
     <>
@@ -45,7 +60,11 @@ export default function NewsDetail({ params }: TPageProps) {
               <div className="w-[728px] flex  mt-4 gap-2  text-zinc-600 text-sm font-medium  leading-tight">
                 <div className="">{article.ohnm}</div>
                 <div className="text-right">∙</div>
-                <div className="">{article.published}</div>
+                <div className="">
+                  {isNaN(Number(article.published))
+                    ? article.published
+                    : formatDateTime(article.published)}
+                </div>
                 <div className="text-right">∙</div>
                 <div className="text-right">조회수 {article.view}회</div>
               </div>
@@ -69,7 +88,7 @@ export default function NewsDetail({ params }: TPageProps) {
                 가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공
                 유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성
               </div>
-              {article.hasImage && (
+              {article.image && (
                 <img src={article.image} alt="image" width={728} height={370} className="my-8" />
               )}
               <div dangerouslySetInnerHTML={{ __html: article.content }}></div>

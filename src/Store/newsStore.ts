@@ -30,6 +30,8 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   newsArticle: {} as any,
   lastVisible: null,
   aid: "",
+
+  // 초기 데이터 로드 함수
   fetchNewsList: async () => {
     try {
       const listRef = collection(fireStore, "news");
@@ -39,13 +41,13 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
 
       const list = documentSnapshots.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      // Update state
       set({ newsList: list, lastVisible });
     } catch (error) {
       console.error("Failed to fetch news list:", error);
     }
   },
 
+  // 추가 데이터 로드 함수
   fetchMoreNews: async () => {
     try {
       const { lastVisible, newsList } = get();
@@ -70,6 +72,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
     }
   },
 
+  // 특정 주식 관련 뉴스 리스트 가져오기
   fetchStockList: async (stockName: string) => {
     try {
       const rankRef = collection(fireStore, "news");
@@ -83,6 +86,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
     }
   },
 
+  // 랭킹 뉴스 리스트 가져오기
   fetchRankNewsList: async () => {
     try {
       const rankRef = collection(fireStore, "news");
@@ -95,7 +99,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       console.error("Failed to fetch rank news:", error);
     }
   },
-
+  // 특정 뉴스 가져오기
   fetchNewsArticle: async ({ id }: { id: string }) => {
     try {
       const newsRef = collection(fireStore, "news");
@@ -104,14 +108,10 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       // const data = getDoc(doc(fireStore, "news", aid));
 
       if (!querySnapshot.empty) {
-        const docData = querySnapshot.docs[0].data(); // 첫 번째 문서의 데이터 가져오기
-        const data = { id: querySnapshot.docs[0].id, ...docData }; // id와 데이터를 객체로 합치기
+        const docData = querySnapshot.docs[0].data();
+        const data = { id: querySnapshot.docs[0].id, ...docData };
 
         set({ newsArticle: data });
-
-        // Firestore에 저장
-        // const newsArticleRef = collection(db, "newsArticles");
-        // await addDoc(newsArticleRef, { type, aid, data });
       } else {
         console.error("No document found");
       }

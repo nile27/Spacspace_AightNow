@@ -115,7 +115,8 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       console.error("Failed to fetch rank news:", error);
     }
   },
-  // 특정 뉴스 가져오기
+
+  // 뉴스 기사 가져오기
   fetchNewsArticle: async ({ id }: { id: string }) => {
     try {
       const newsRef = collection(fireStore, "news");

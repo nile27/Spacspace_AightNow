@@ -70,6 +70,15 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      keyframes: {
+        blur: {
+          "0%": { filter: "blur(0)" },
+          "25%": { filter: "blur(2px)" },
+          "50%": { filter: "blur(5px)" },
+          "75%": { filter: "blur(2px)" },
+          "100%": { filter: "blur(0)" },
+        },
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],

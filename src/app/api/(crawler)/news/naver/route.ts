@@ -44,8 +44,10 @@ const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
         // title: articleData.article.tit,
         // provider: articleData.article.ohnm,
         published: articleData.article.dt,
-        content: articleData.article.content,
+        content: articleData.article.content.replace(/class=/g, "className="),
         stockName: stockName,
+        image: null,
+        relatedItems: articleData.article.relatedItems,
       };
       articleList.push(content);
     }

@@ -2,7 +2,7 @@ import LanguageButton from "@/components/btnUi/LanguageButton";
 
 export default function MainLanguage() {
   return (
-    <main className="w-full h-auto rounded-2xl p-[32px] min-h-[720px] bg-white ">
+    <main className="w-full h-auto rounded-2xl p-[32px] min-h-[500px] bg-white ">
       <div className="w-full h-auto flex justify-between items-center mb-[24px]">
         <div className="w-auto h-auto">
           <h2 className=" text-body2  text-mainNavy-900 font-bold mb-3">언어 설정</h2>
@@ -11,7 +11,7 @@ export default function MainLanguage() {
           </span>
         </div>
       </div>
-      <div className="w-full h-auto flex gap-[20px]">
+      <div className="w-full h-auto flex gap-[20px] flex-wrap">
         <LanguageButton style={"kr"} />
         <LanguageButton style={"en"} />
         <LanguageButton style={"ch"} />

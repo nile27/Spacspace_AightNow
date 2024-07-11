@@ -50,6 +50,7 @@ export type TInputState = {
 export type TUserData = {
   id: string;
   email: string;
+  name: string;
   nickname: string;
   phone: string;
   birth: string;
@@ -60,7 +61,9 @@ export type TUserData = {
 
 export type AuthStore = {
   user: TUserData | null;
+  profile: string | null;
   setUser: (user: TUserData) => void;
+  setProfile: (profile: string) => void;
   clearUser: () => void;
 };
 
@@ -142,8 +145,10 @@ export const useAuthStore = create(
   persist<AuthStore>(
     set => ({
       user: null,
+      profile: null,
       setUser: user => set({ user }),
       clearUser: () => set({ user: null }),
+      setProfile: profile => set({ profile }),
     }),
     {
       name: "auth-storage",

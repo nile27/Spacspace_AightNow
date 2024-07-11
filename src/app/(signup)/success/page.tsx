@@ -1,5 +1,7 @@
+"use client";
 import TextButton from "@/components/btnUi/TextButton";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 export default function Success() {
   return (
     <>
@@ -10,9 +12,10 @@ export default function Success() {
           <span className="text-center">로그인 후 이용해주세요!</span>
         </div>
       </div>
-      <Link href={"/login"} className="w-full h-auto">
-        <TextButton size="full">로그인하기</TextButton>
-      </Link>
+
+      <TextButton onClick={() => signOut({ callbackUrl: "/login" })} size="full">
+        로그인하기
+      </TextButton>
     </>
   );
 }

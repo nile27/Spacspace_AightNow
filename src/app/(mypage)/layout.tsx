@@ -16,10 +16,10 @@ export default function RootLayout({
   return (
     <div className={`font-pretendard w-[100vw] h-[100vh] flex flex-col relative`}>
       <Header />
-      <section className="bg-background w-full h-full flex justify-start items-start flex-col pt-[120px]  px-[140px] ">
+      <section className="bg-background w-full h-full flex justify-start items-start flex-col pt-[120px]  px-[100px] ">
         <article className=" w-full h-auto">
           <h1 className=" w-full h-auto text-h4 font-bold text-mainNavy-900 mb-5">마이페이지</h1>
-          <div className=" w-full h-auto flex gap-2 mb-10">{children}</div>
+          <div className=" w-full h-auto flex gap-2 mb-5">{children}</div>
         </article>
       </section>
     </div>

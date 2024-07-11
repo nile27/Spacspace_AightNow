@@ -2,16 +2,22 @@
 import HeaderDark from "../../public/icons/HeaderDark.svg";
 import Link from "next/link";
 import { useLoginStore, useAuthStore } from "@/Store/store";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 export default function Header({ background = "white" }: { background?: string }) {
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
   const addressItem = ["/find", "/news", "/watchlist", "/mypage"];
   const { isLoggedIn, setLogout } = useLoginStore();
   const { clearUser } = useAuthStore();
+  const navi = useRouter();
 
   const handleLogout = () => {
     clearUser();
     setLogout();
     window.sessionStorage.clear();
+    signOut({ callbackUrl: "/" });
+
+    navi.push("/");
   };
 
   return (

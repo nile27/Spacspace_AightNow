@@ -59,10 +59,20 @@ export default function ModalMain({
         stock: inputText.stock,
         imageFile: imgFile,
       });
+      const updates = {
+        nickname: inputText.nickname ? inputText.nickname : user.nickname,
+        stock: inputText.stock.length ? inputText.stock : user.stock,
+      };
+
+      if (updates.nickname === user.nickname && updates.stock === user.stock && !imgFile) {
+        alert("변경된 내용이 없습니다.");
+        return;
+      }
+
       setUser({
         ...user,
-        nickname: inputText.nickname,
-        stock: inputText.stock,
+        nickname: updates.nickname,
+        stock: updates.stock,
       });
 
       setProfile(labelFile);

@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import SessionProvider from "@/app/(Login)/components/SessionProvider";
 import { authConfig } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+//import AutoLogout from "@/components/AutoLogout/AutoLogout";
+
 export const metadata = {
   title: {
     template: "%s | AightNow",

@@ -43,8 +43,8 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    console.log(inputText);
-  }, []);
+    console.log(labelImg);
+  });
 
   return (
     <>

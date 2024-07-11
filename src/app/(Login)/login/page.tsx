@@ -6,25 +6,22 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, useSession, signOut } from "next-auth/react";
 import { loginRegExp, handleLogin } from "../utills/loginUtill";
 import { useLoginStore, useSignUp, useAuthStore, TUserData } from "@/Store/store";
-import { useRouter, redirect } from "next/navigation";
-
+import { useRouter } from "next/navigation";
 import { googleLogin } from "../utills/GoogleAuth";
-import { signUpToFirebase } from "../utills/NextSessionSIgn";
 
 export default function Login() {
   const { setLogin, isLoggedIn } = useLoginStore();
-  const { setInput, setImgFile, setLabelImg } = useSignUp();
-  const { data: session, status } = useSession();
+  const { setInput, setLabelImg } = useSignUp();
 
+  const { data: session, status } = useSession();
   const navi = useRouter();
   const [pwHide, setpwHide] = useState(false);
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
   const [regExpArr, setRegExpArr] = useState(true);
-  const [authType, setAuthType] = useState<string | null>(null);
 
   const handleOnClick = async () => {
     try {
@@ -56,14 +53,16 @@ export default function Login() {
             setInput(key, data[key] as string);
           }
         }
-        if (userdata.imgFile && userdata.img) {
-          setLabelImg(userdata.img);
+        if (userdata.imgFile) {
+          setLabelImg(userdata.imgFile as string);
         }
+        alert("회원 정보를 입력해주세요.");
         navi.push("/signup");
       } else {
         if (userdata?.data) {
           setLogin();
           useAuthStore.getState().setUser(userdata?.data as TUserData);
+          useAuthStore.getState().setProfile(userdata.imgFile as string);
         }
 
         navi.push("/");
@@ -74,35 +73,54 @@ export default function Login() {
   };
 
   const handleNextAuth = async (type: string) => {
-    signIn(type, { redirect: false });
+    await signIn(type);
+    // if (session && session.user && !useAuthStore.getState().user?.phone && session.isNewUser) {
+    //   const signUpMember: { [key: string]: string } = {
+    //     id: session?.user.id ?? "",
+    //     name: session?.user.name ?? "",
+    //     email: session?.user.email ?? "",
+    //     nickname: session?.user.nickname ?? "",
+    //     phone: session?.user.phone ?? "",
+    //     birth: session?.user.birth ?? "",
+    //     logintype: session?.user.logintype ?? "",
+    //   };
+    //   const imgFile = session?.user.profile_image ?? "";
+    //   setLabelImg(imgFile);
 
-    if (session?.isNewUser) {
-      const sessionData = await signUpToFirebase(session);
-    } else {
-      const signInMember = {
-        id: session?.user.id ?? "",
-        email: session?.user.email ?? "",
-        nickname: session?.user.nickname ?? "",
-        phone: session?.user.phone ?? "",
-        birth: session?.user.birth ?? "",
-        stock: session?.user.stock ?? [],
-        logintype: session?.user.logintype,
-        profile_image: session?.user.profile_image,
-      };
-
-      useAuthStore.getState().setUser(signInMember as TUserData);
-    }
+    //   for (let key in signUpMember) {
+    //     setInput(key, signUpMember[key]);
+    //   }
+    //   navi.push("/");
+    // }
   };
 
   useEffect(() => {
-    if (session && session.user && useAuthStore.getState().user?.email) {
+    if (session && session.user && !session.isNewUser) {
+      const signUpMember: TUserData = {
+        id: session?.user.id ?? "",
+        name: session?.user.name ?? "",
+        email: session?.user.email ?? "",
+        nickname: session?.user.nickname ?? "",
+        phone: session?.user.phone ?? "",
+        stock: session?.user.stock ?? [],
+        birth: session?.user.birth ?? "",
+        logintype: session?.user.logintype ?? "",
+      };
+      const imgFile = session?.user.profile_image ?? "";
+
+      useAuthStore.getState().setProfile(imgFile);
+
+      useAuthStore.getState().setUser(signUpMember as TUserData);
       setLogin();
       navi.push("/");
     }
-  }, [session]);
+
+    // console.log(session, useAuthStore.getState().user, status);
+  }, [session, status]);
 
   return (
     <>
+      <button onClick={() => signOut()}>asdasd</button>
       <h1 className=" mb-10 text-h3 font-extrabold">로그인</h1>
       <form className=" w-full h-auto flex flex-col gap-4 mb-7">
         <NewInput
@@ -170,7 +188,7 @@ export default function Login() {
         </div>
         <div className="w-full  flex gap-4  justify-center items-center">
           <OauthBtn style={"kakao"} onClick={() => handleNextAuth("kakao")} />
-          <OauthBtn style={"naver"} onClick={() => signIn("naver")} />
+          <OauthBtn style={"naver"} onClick={() => handleNextAuth("naver")} />
 
           <OauthBtn style={"google"} onClick={handleGoogle} />
         </div>

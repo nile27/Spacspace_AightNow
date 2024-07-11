@@ -90,8 +90,39 @@ export const handleSignUp = async (
         createTime: Timestamp.now(),
         logintype: "none",
       });
-    } else {
+    } else if (logintype === "google") {
       const user = auth.currentUser;
+
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+      let photoURL = labelImg;
+      if (imgFile) {
+        const storageRef = ref(storage, `profile_images/${user.uid}/${imgFile.name}`);
+        await uploadBytes(storageRef, imgFile);
+        photoURL = await getDownloadURL(storageRef);
+      }
+
+      await updateProfile(user, {
+        displayName: nickname,
+        photoURL: photoURL,
+      });
+
+      const userRef = doc(firestore, "users", user.uid);
+      await setDoc(userRef, {
+        userId: id,
+        nickname: nickname,
+        stock: stock,
+        name: name,
+        email: email,
+        phone: phone,
+        birth: birth,
+        createTime: Timestamp.now(),
+        logintype: logintype,
+      });
+    } else {
+      const authResult = await createUserWithEmailAndPassword(auth, email, pw);
+      const user = authResult.user;
 
       if (!user) {
         throw new Error("User not authenticated");

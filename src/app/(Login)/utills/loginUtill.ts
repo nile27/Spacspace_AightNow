@@ -46,19 +46,20 @@ export const handleLogin = async (email: string, pw: string): Promise<boolean> =
     console.log(userEmail);
     const userCredential = await signInWithEmailAndPassword(auth, userEmail, pw);
     const user = userCredential.user;
+
     const userRef = doc(firestore, "users", user.uid);
     const userDoc = await getDoc(userRef);
 
     if (userDoc.exists() && user) {
       const userData = userDoc.data();
       useAuthStore.getState().setUser(userData as TUserData);
-
+      useAuthStore.getState().setProfile(user.photoURL as string);
       return true;
     } else {
       return false;
     }
   } catch (error) {
     console.error("Error logging in:", error);
-    throw error; // 에러를 호출자에게 전달
+    throw error;
   }
 };

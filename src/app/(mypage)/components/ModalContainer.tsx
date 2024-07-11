@@ -21,7 +21,7 @@ export default function ModalContainer({
   const renderModal = (index: number) => {
     switch (index) {
       case 0:
-        return <ModalMain />;
+        return <ModalMain setIsModal={setIsModal} />;
       case 1:
         return <ProfileModal isModal={isModal} setIsModal={setIsModal} setIdx={setIdx} />;
       case 2:
@@ -53,9 +53,9 @@ export default function ModalContainer({
   }, [isModal, setIsModal]);
 
   return (
-    <div className="fixed z-30 backdrop-blur-md bg-[rgba(0,0,0,0.5)] w-full h-[100vh] pb-[60px] flex justify-center items-center  inset-0 overflow-y-hidden">
-      <div className=" mt-20 rounded-3xl w-[590px] min-h-[450px]  px-[102px] pt-[80px] pb-[10px] bg-white flex flex-col justify-start items-center relative">
-        <div className="w-full h-auto absolute top-5 flex justify-end items-cetner pr-4">
+    <div className="fixed z-50 backdrop-blur-md bg-[rgba(0,0,0,0.5)] w-full h-[100vh] pb-[60px] flex justify-center items-center  inset-0 overflow-y-hidden">
+      <div className=" overflow-y-scroll mt-20 rounded-3xl w-[590px] min-h-[450px] max-h-[600px]  px-[102px] pt-[40px] pb-[10px] bg-white flex flex-col justify-start items-center relative">
+        <div className="w-full h-auto absolute top-5 flex justify-end items-cetner pr-4 ">
           <button onClick={() => setIsModal(false)}>
             <BasicIcon name="Close" color="black" size={36} />
           </button>

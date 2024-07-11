@@ -51,7 +51,7 @@ export default function LanguageButton(props: TIconButton) {
     <>
       <button
         {...restBtnProps}
-        className="w-[198px] h-[160px] rounded-lg flex justify-center items-center flex-col gap-1 border-[1px] border-scaleGray-300 text-scaleGray-300 hover:border-secondBlue-600 hover:text-secondBlue-600"
+        className="w-[130px] h-[120px] rounded-lg flex justify-center items-center flex-col gap-1 border-[1px] border-scaleGray-300 text-scaleGray-300 hover:border-secondBlue-600 hover:text-secondBlue-600"
       >
         {renderIcon(style)}
         {renderButtonText(style)}

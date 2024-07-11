@@ -15,7 +15,9 @@ import { create } from "zustand";
 
 type TNewsStore = {
   newsList: any[];
+  rankList: any[];
   lastVisible: QueryDocumentSnapshot<DocumentData> | null;
+  hasMore: boolean;
   aid: string;
   newsArticle: any;
   fetchNewsList: () => void;
@@ -27,8 +29,10 @@ type TNewsStore = {
 
 export const useNewsStore = create<TNewsStore>((set, get) => ({
   newsList: [],
+  rankList: [],
   newsArticle: {} as any,
   lastVisible: null,
+  hasMore: true,
   aid: "",
 
   // 초기 데이터 로드 함수
@@ -36,12 +40,16 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
     try {
       const listRef = collection(fireStore, "news");
       const q = query(listRef, where("stockName", "!=", "rank"), limit(4));
-      const documentSnapshots = await getDocs(q);
-      const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+      const querySnapshot = await getDocs(q);
 
-      const list = documentSnapshots.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const newsList = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+      const hasMore = querySnapshot.docs.length === 4;
 
-      set({ newsList: list, lastVisible });
+      set({ newsList, lastVisible, hasMore });
     } catch (error) {
       console.error("Failed to fetch news list:", error);
     }
@@ -50,9 +58,9 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   // 추가 데이터 로드 함수
   fetchMoreNews: async () => {
     try {
-      const { lastVisible, newsList } = get();
+      const { lastVisible, newsList, hasMore } = get();
 
-      if (lastVisible) {
+      if (lastVisible && hasMore) {
         const next = query(
           collection(fireStore, "news"),
           where("stockName", "!=", "rank"),
@@ -61,11 +69,19 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
           limit(4),
         );
 
-        const documentSnapshots = await getDocs(next);
-        const newLastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-        const newList = documentSnapshots.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const querySnapshot = await getDocs(next);
+        const newNewsList = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+        const moreDataAvailable = querySnapshot.docs.length === 4;
 
-        set({ newsList: [...newsList, ...newList], lastVisible: newLastVisible });
+        set({
+          newsList: [...newsList, ...newNewsList],
+          lastVisible: newLastVisible,
+          hasMore: moreDataAvailable,
+        });
       }
     } catch (error) {
       console.error("Failed to fetch more news:", error);
@@ -90,11 +106,11 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   fetchRankNewsList: async () => {
     try {
       const rankRef = collection(fireStore, "news");
-      const q = query(rankRef, where("stockName", "==", "rank"));
+      const q = query(rankRef, where("stockName", "==", "rank"), limit(3));
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      set({ newsList: data });
+      set({ rankList: data });
     } catch (error) {
       console.error("Failed to fetch rank news:", error);
     }
@@ -105,7 +121,6 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       const newsRef = collection(fireStore, "news");
       const q = query(newsRef, where(documentId(), "==", id));
       const querySnapshot = await getDocs(q);
-      // const data = getDoc(doc(fireStore, "news", aid));
 
       if (!querySnapshot.empty) {
         const docData = querySnapshot.docs[0].data();

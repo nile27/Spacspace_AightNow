@@ -13,6 +13,7 @@ export default function NewsPage() {
   const [ref, inView] = useInView();
   const fetchNewsList = useNewsStore(state => state.fetchNewsList);
   const fetchMoreNews = useNewsStore(state => state.fetchMoreNews);
+  const hasMore = useNewsStore(state => state.hasMore);
   const data = useNewsStore(state => state.newsList);
 
   useEffect(() => {
@@ -32,9 +33,9 @@ export default function NewsPage() {
       setTimeout(() => {
         setLoading(false);
       }, 300);
-      // alert("View End");
+      //   alert("View End");
     }
-  }, [inView]);
+  }, [inView, hasMore]);
   return (
     <>
       <div className="w-[1200px] h-full font-pretendard mt-60">
@@ -60,7 +61,12 @@ export default function NewsPage() {
                 <ListNews data={news} />
               </Link>
             ))}
-            <div ref={ref}></div>
+            <div ref={ref} />
+            {!hasMore && (
+              <p className="text-scaleGray-400 text-base leading-normal text-center">
+                마지막 기사입니다
+              </p>
+            )}
           </div>
         </div>
       </div>

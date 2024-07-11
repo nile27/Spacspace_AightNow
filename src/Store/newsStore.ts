@@ -19,6 +19,7 @@ type TNewsStore = {
   aid: string;
   newsArticle: any;
   fetchNewsList: () => void;
+  fetchMoreNews: () => Promise<void>;
   fetchStockList: (stockName: string) => void;
   fetchRankNewsList: () => void;
   fetchNewsArticle: (params: { id: string }) => void;
@@ -32,14 +33,40 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   fetchNewsList: async () => {
     try {
       const listRef = collection(fireStore, "news");
-      const q = query(listRef, orderBy("dt", "desc"), limit(4));
+      const q = query(listRef, where("stockName", "!=", "rank"), limit(4));
       const documentSnapshots = await getDocs(q);
+      const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
       const list = documentSnapshots.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
       // Update state
-      set({ newsList: list });
+      set({ newsList: list, lastVisible });
     } catch (error) {
       console.error("Failed to fetch news list:", error);
+    }
+  },
+
+  fetchMoreNews: async () => {
+    try {
+      const { lastVisible, newsList } = get();
+
+      if (lastVisible) {
+        const next = query(
+          collection(fireStore, "news"),
+          where("stockName", "!=", "rank"),
+          // orderBy("dt", "desc"),
+          startAfter(lastVisible),
+          limit(4),
+        );
+
+        const documentSnapshots = await getDocs(next);
+        const newLastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+        const newList = documentSnapshots.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        set({ newsList: [...newsList, ...newList], lastVisible: newLastVisible });
+      }
+    } catch (error) {
+      console.error("Failed to fetch more news:", error);
     }
   },
 

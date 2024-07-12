@@ -9,12 +9,10 @@ import { useRouter } from "next/navigation";
 import { handleNickNameCheck, saveImgFile, handleSignUp } from "./utill/profileUtills";
 
 export default function Profile() {
-  const { inputText, setInput } = useSignUp();
   const [nickNameCheck, setNickNameCheck] = useState(false);
   const [nickNameErr, setNickNameErr] = useState(false);
   const navi = useRouter();
-  const [imgFile, setImgFile] = useState<File | null>(null);
-  const [labelImg, setLabelImg] = useState<string | null>(null);
+  const { inputText, setInput, labelImg, setLabelImg, imgFile, setImgFile } = useSignUp();
   const imgRef = useRef<HTMLInputElement>(null);
 
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +29,12 @@ export default function Profile() {
 
   const handleSignUpClick = async () => {
     try {
-      await handleSignUp(inputText, imgFile);
+      if (imgFile) {
+        await handleSignUp(inputText, imgFile, null);
+      } else {
+        await handleSignUp(inputText, null, labelImg);
+      }
+      window.sessionStorage.removeItem("signup-storage");
       navi.push("/success");
     } catch (error) {
       console.error("Error signing up:", error);
@@ -40,8 +43,8 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    console.log(inputText);
-  }, [inputText]);
+    console.log(labelImg);
+  });
 
   return (
     <>

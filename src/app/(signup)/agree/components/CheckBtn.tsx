@@ -6,7 +6,6 @@ export default function CheckBtn(props: React.ComponentProps<"input">) {
         <input
           value="wedding-gift"
           className="peer cursor-pointer hidden after:opacity-100"
-          defaultChecked={false}
           type="checkbox"
           {...restProps}
         />

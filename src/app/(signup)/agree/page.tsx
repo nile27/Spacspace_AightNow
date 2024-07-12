@@ -7,10 +7,14 @@ import { useState, useEffect } from "react";
 export default function Agree() {
   const [disabled, setDisabled] = useState(Array.from({ length: 3 }, () => false));
   const handleDisabled = (idx: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-
-    const copy = [...disabled];
-    copy[idx] = true;
+    let copy = [];
+    if (idx === 0) copy = Array.from({ length: 3 }, () => !disabled[0]);
+    else {
+      copy = [...disabled];
+      copy[idx] = !copy[idx];
+    }
+    if (copy[1] && copy[2]) copy[0] = true;
+    else copy[0] = false;
 
     setDisabled(copy);
   };
@@ -21,7 +25,7 @@ export default function Agree() {
 
       <div className=" pb-3  border-b-[2px] w-full h-auto flex justify-between items-start">
         <span>이용약관, 개인정보 처리방침에 모두 동의합니다.</span>
-        <CheckBtn onChange={handleDisabled(0)} />
+        <CheckBtn onChange={handleDisabled(0)} checked={disabled[0]} />
       </div>
 
       <div className="w-full pt-4">
@@ -116,7 +120,7 @@ export default function Agree() {
         </div>
         <div className="mt-1 w-full flex justify-end items-start gap-1">
           <span>동의합니다.</span>
-          <CheckBtn onChange={handleDisabled(1)} />
+          <CheckBtn onChange={handleDisabled(1)} checked={disabled[1]} />
         </div>
       </div>
 
@@ -189,10 +193,10 @@ export default function Agree() {
         </div>
         <div className="mt-1 items-start w-full flex justify-end gap-1">
           <span className="">동의합니다.</span>
-          <CheckBtn onChange={handleDisabled(2)} />
+          <CheckBtn onChange={handleDisabled(2)} checked={disabled[2]} />
         </div>
       </div>
-      {!disabled.includes(false) ? (
+      {disabled[0] ? (
         <Link href={"/auth"}>
           <TextButton>다음 </TextButton>
         </Link>

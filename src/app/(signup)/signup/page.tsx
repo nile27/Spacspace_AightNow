@@ -1,23 +1,23 @@
 "use client";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewInput from "@/components/Input/NewInput";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import TextButton from "@/components/btnUi/TextButton";
+import { useSignUp } from "@/Store/store";
+import { firestore } from "@/firebase/firebaseDB";
+
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function SignUp() {
   const navigation = useRouter();
-  const [inputText, setInput] = useState({
-    id: "",
-    pw: "",
-    pwCheck: "",
-    phone: "",
-    birth: "",
-  });
+
+  const searchParams = useSearchParams();
+  const { inputText, setInput } = useSignUp();
   const [idCheck, setIdCheck] = useState(false);
   const [errArr, setErrArr] = useState(Array.from({ length: 5 }, () => true));
+
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput({ ...inputText, [key]: e.target.value });
+    setInput(key, e.target.value);
   };
 
   const errHandler = (idx: number) => {
@@ -26,7 +26,7 @@ export default function SignUp() {
     setErrArr(copy);
   };
 
-  const handleIdCheck = () => {
+  const handleIdCheck = async () => {
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/;
     const copy = [...errArr];
     setIdCheck(true);
@@ -34,9 +34,22 @@ export default function SignUp() {
       errHandler(0);
       return;
     }
-    copy[0] = true;
-    setErrArr(copy);
+    try {
+      const userRef = collection(firestore, "users");
+      const q = query(userRef, where("userId", "==", inputText.id));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        errHandler(0);
+      } else {
+        copy[0] = true;
+        setErrArr(copy);
+      }
+    } catch (error) {
+      console.error("Error checking ID: ", error);
+      alert("아이디 확인 중 오류가 발생했습니다.");
+    }
   };
+
   const handleAllCheck = () => {
     const regexPw =
       /^(?=.*[A-Za-z])(?=.*\d|.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$|^(?=.*\d)(?=.*[A-Za-z]|.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$|^(?=.*[!@#$%^&*])(?=.*[A-Za-z]|.*\d)[A-Za-z\d!@#$%^&*]{8,20}$/;
@@ -72,6 +85,16 @@ export default function SignUp() {
 
     navigation.push("/profile");
   };
+  useEffect(() => {
+    const emailParam: string = searchParams.get("email") as string;
+    const nameParam: string = searchParams.get("name") as string;
+    setInput("email", emailParam);
+    setInput("name", nameParam);
+  }, []);
+
+  useEffect(() => {
+    console.log(inputText);
+  }, [inputText]);
 
   return (
     <>
@@ -83,17 +106,23 @@ export default function SignUp() {
           autoComplete="off"
           label="아이디"
           id="id"
-          caption="* 6~12자의 영문, 숫자를 이용한 조합"
+          caption={
+            idCheck
+              ? errArr[0]
+                ? "사용 가능한 아이디입니다."
+                : "중복된 아이디이거나, 조합이 맞지 않습니다."
+              : "* 6~12자의 영문, 숫자를 이용한 조합"
+          }
           value={inputText.id}
           style={idCheck ? (!errArr[0] ? "error" : "success") : undefined}
           onChange={handleInputValue("id")}
         >
           {inputText.id ? (
-            <TextButton onClick={handleIdCheck} size="custom" width="120px" height="auto">
+            <TextButton onClick={handleIdCheck} size="custom" width="100px" height="30px">
               중복 확인
             </TextButton>
           ) : (
-            <TextButton color="disable" size="custom" width="120px" height="auto">
+            <TextButton color="disable" size="custom" width="100px" height="30px">
               중복 확인
             </TextButton>
           )}

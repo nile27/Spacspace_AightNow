@@ -22,7 +22,6 @@ export default function Login() {
   const handleOnClick = () => {
     const ok = loginRegExp(idText, pwText);
     setRegExpArr(ok.bool);
-    console.log(ok);
   };
 
   return (
@@ -70,24 +69,24 @@ export default function Login() {
         </div>
 
         {idText && pwText ? (
-          <TextButton onClick={handleOnClick} size="full">
+          <TextButton onClick={handleOnClick} size="custom" width="100%" height="55px">
             로그인
           </TextButton>
         ) : (
-          <TextButton onClick={handleOnClick} size="full" color="disable">
+          <TextButton onClick={handleOnClick} size="custom" width="100%" height="55px">
             로그인
           </TextButton>
         )}
 
         <div className=" w-full flex justify-between items-center py-1">
           <span className="text-center">아직 회원이 아니신가요?</span>
-          <Link href={"/auth"} className=" text-secondBlue-600 border-b-2 border-secondBlue-600">
+          <Link href={"/agree"} className=" text-secondBlue-600 border-b-2 border-secondBlue-600">
             아잇나우 회원가입
           </Link>
         </div>
       </form>
 
-      <div className=" w-full flex flex-col items-center gap-6">
+      <div className=" w-full flex flex-col items-center gap-4">
         <div className="w-full h-auto flex items-center gap-5">
           <div className="border-b-[1px] h-1 w-full border-scaleGray-400"></div>
           <span className=" whitespace-nowrap">또는</span>

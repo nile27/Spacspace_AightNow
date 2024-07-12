@@ -1,9 +1,25 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { firestore } from "@/firebase/firebaseDB";
 const RedirectPage: React.FC = () => {
   const router = useRouter();
+
+  const checkEmail = async (email: string | null) => {
+    try {
+      const usersCollectionRef = collection(firestore, "users");
+      const q = query(usersCollectionRef, where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        router.push("/signduple");
+        return;
+      }
+    } catch (error) {
+      console.log("회원가입 진행");
+    }
+  };
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -20,6 +36,7 @@ const RedirectPage: React.FC = () => {
       name = name || continueUrlParams.get("name");
     }
 
+    checkEmail(email);
     if (mode && oobCode) {
       switch (mode) {
         case "resetPassword":

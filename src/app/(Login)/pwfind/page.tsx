@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
+import { pwResetEmail } from "../utills/PwResetEmail";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
 import AuthModal from "./component/AuthModal";
-import { useRouter } from "next/navigation";
 
 export default function Pwfind() {
   const [inputText, setInput] = useState({
@@ -16,12 +16,13 @@ export default function Pwfind() {
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...inputText, [key]: e.target.value });
   };
-  const handleOnClick = () => {
-    if (inputText.email.length < 3) {
+  const handleOnClick = async () => {
+    try {
+      await pwResetEmail(inputText.email, inputText.name, inputText.id);
+      setModal(!ismodal);
+    } catch (error) {
       setErr(false);
-      return;
     }
-    setModal(!ismodal);
   };
   return (
     <>

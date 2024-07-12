@@ -28,6 +28,7 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
         ohnm: item.officeName,
         dt: item.datetime,
         thumbUrl: item.imageOriginLink,
+        relatedItems: symbols.filter((item: any) => item.includes(symbol)),
         type: item.photoType,
         stockName: stockName,
         isVideo: item.photoType === 2,

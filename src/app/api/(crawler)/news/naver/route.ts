@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import { TNewsList } from "../../type";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
-import fireStore from "@/firebase/firestore";
 import { addNewsToFirestore } from "../firebase/fireStore";
 
 const symbols = ["AAPL.O", "TSLA.O", "MSFT.O", "AMZN.O", "GOOGL.O", "U"];
@@ -21,12 +19,10 @@ const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
       data.forEach(item => {
         item.isVideo = false;
         item.hasImage = item.type === 1;
-        // item.stockName = stockName;
       });
     } else {
       data.isVideo = false;
       data.hasImage = data.type === 1;
-      // data.stockName = stockName;
     }
     const articleList = [];
     for (const article of data) {
@@ -40,14 +36,14 @@ const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
 
       const content = {
         ...article,
-        // articleId: articleData.article.aid,
-        // title: articleData.article.tit,
-        // provider: articleData.article.ohnm,
         published: articleData.article.dt,
         content: articleData.article.content.replace(/class=/g, "className="),
+        // .replace(/<p class="tr-advisory">.*?<\/p>/gs, ""),
         stockName: stockName,
         image: null,
-        relatedItems: articleData.article.relatedItems,
+        relatedItems: articleData.article.relatedItems
+          .filter((item: any) => symbols.includes(item.reutersCode))
+          .map((item: any) => item.reutersCode),
       };
       articleList.push(content);
     }
@@ -67,7 +63,7 @@ export async function GET(request: Request) {
     const newsListData = await fetchNaverNewsInfo(stockNames[i], symbols[i]);
     if (newsListData) {
       allStockNews.push(...newsListData);
-      await addNewsToFirestore(stockNames[i], newsListData); // Firestore에 뉴스 추가
+      await addNewsToFirestore(stockNames[i], newsListData);
     }
   }
 

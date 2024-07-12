@@ -110,9 +110,8 @@ export async function GET(request: Request) {
         allLocalNews.push(...newsListData);
         await addNewsToFirestore(stockNames[i], newsListData); // Firestore에 뉴스 추가
       }
-
-      return NextResponse.json(allLocalNews);
     }
+    return NextResponse.json(allLocalNews);
   } catch (error) {
     console.error(`Error in GET request:`, error);
     return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });

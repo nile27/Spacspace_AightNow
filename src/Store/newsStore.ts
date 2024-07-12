@@ -22,7 +22,7 @@ type TNewsStore = {
   newsArticle: any;
   fetchNewsList: () => void;
   fetchMoreNews: () => Promise<void>;
-  fetchStockList: (stockName: string) => void;
+  fetchStockList: (stockName: string[]) => void;
   fetchRankNewsList: () => void;
   fetchNewsArticle: (params: { id: string }) => void;
 };
@@ -89,10 +89,10 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   },
 
   // 특정 주식 관련 뉴스 리스트 가져오기
-  fetchStockList: async (stockName: string) => {
+  fetchStockList: async (stockNames: string[]) => {
     try {
       const rankRef = collection(fireStore, "news");
-      const q = query(rankRef, where("stockName", "==", stockName));
+      const q = query(rankRef, where("stockName", "in", stockNames));
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 

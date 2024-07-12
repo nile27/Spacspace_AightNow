@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/Store/store";
 import { useState } from "react";
 
 export default function Autocomplete({
@@ -33,15 +34,18 @@ export default function Autocomplete({
 
   const handleSelectSuggestion = (suggestion: string) => {
     const splitArr = suggestion.split(" ");
-    if (inputText.stock.includes(`#${splitArr[1]}`)) {
+    if (inputText.stock.includes(`${splitArr[1]}`)) {
       setSelectedSuggestion(suggestion);
       setSuggestions([]);
+      setSearch("");
       return;
     }
-    const copyStock = [`#${suggestion.split(" ")[1]}`, ...inputText.stock];
+
+    const dataSymbol = [`${suggestion.split(" ")[1]}`, ...inputText.stock];
     setSelectedSuggestion(suggestion);
     setSuggestions([]);
-    setInput({ ...inputText, stock: copyStock });
+    setInput({ ...inputText, stock: dataSymbol });
+    setSearch("");
   };
 
   const deleteTag = (idx: number) => {
@@ -83,7 +87,27 @@ export default function Autocomplete({
           value={search}
         />
       </div>
-      <ul className=" absolute top-[90px] border bg-white border-scaleGray-200 rounded-lg w-full h-auto flex flex-col items-start justify-center">
+      <ul className=" absolute top-[90px]  bg-white border-scaleGray-200 rounded-lg w-full h-auto flex flex-col items-start justify-center">
+        {suggestions
+          ? suggestions.map((suggestion, index) => (
+              <li
+                className="text-start cursor-pointer w-full h-auto flex justify-start items-center p-4 hover:bg-gray-100"
+                key={index}
+                onClick={() => handleSelectSuggestion(suggestion)}
+              >
+                {suggestion}
+              </li>
+            ))
+          : useAuthStore.getState().user?.stock.map((suggestion, index) => (
+              <li
+                className="text-start cursor-pointer w-full h-auto flex justify-start items-center p-4 hover:bg-gray-100"
+                key={index}
+                onClick={() => handleSelectSuggestion(suggestion)}
+              >
+                {suggestion}
+              </li>
+            ))}
+
         {suggestions.map((suggestion, index) => (
           <li
             className="text-start cursor-pointer w-full h-auto flex justify-start items-center p-4 hover:bg-gray-100"

@@ -3,20 +3,27 @@ import { useState } from "react";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
 import { useRouter } from "next/navigation";
+import { checkEmail } from "../utills/IdFindUtill";
 
 export default function IdFind() {
   const [nameText, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [err, serErr] = useState(false);
+  const [err, serErr] = useState(true);
   const navigation = useRouter();
 
-  const handlerOnClick = () => {
-    if (nameText.length < 5) {
-      serErr(false);
-      return;
-    }
-    if (err) {
-      navigation.push(`/idfind/idshow`);
+  const handlerOnClick = async () => {
+    try {
+      const data = await checkEmail(nameText, phone);
+
+      if (data) {
+        navigation.push(
+          `/idfind/idshow?id=${data.userId}&createdata=${data.createTime}&logintype=${data.logintype}`,
+        );
+      } else {
+        serErr(false);
+      }
+    } catch (error) {
+      console.error("Error checking email:", error);
     }
   };
 

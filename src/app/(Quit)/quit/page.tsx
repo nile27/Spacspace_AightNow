@@ -1,6 +1,22 @@
+"use client";
 import TextButton from "@/components/btnUi/TextButton";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useAuthStore, useLoginStore } from "@/Store/store";
+import { signOut } from "next-auth/react";
+
 export default function Quit() {
+  const { clearUser } = useAuthStore();
+  const { setLogout } = useLoginStore();
+
+  useEffect(() => {
+    const handleLogout = () => {
+      clearUser();
+      setLogout();
+      window.sessionStorage.clear();
+    };
+    handleLogout();
+  }, []);
   return (
     <>
       <div className="w-full h-auto flex flex-col justify-start items-center mb-[56px] gap-[24px]">

@@ -1,6 +1,6 @@
 import { exchangeRate } from "./../lib/stockAction";
 import { create } from "zustand";
-
+import { persist } from "zustand/middleware";
 type TShoStore = {
   isShow: boolean;
   setIsShow: (isShow: boolean) => void;
@@ -33,6 +33,8 @@ export type TmemberText = {
   nickname: string;
   name: string;
   stock: string[];
+  logintype: string;
+  uid?: string;
 };
 
 export type TInputState = {
@@ -40,7 +42,31 @@ export type TInputState = {
   setInput: (key: string, value: string) => void;
   addStock: (stock: string) => void;
   removeStock: (stock: string) => void;
-}
+  labelImg: string | null;
+  imgFile: File | null;
+  setLabelImg: (labelImg: string | null) => void;
+  setImgFile: (imgFile: File | null) => void;
+};
+
+export type TUserData = {
+  id: string;
+  email: string;
+  name: string;
+  nickname: string;
+  phone: string;
+  birth: string;
+  stock: string[];
+  profile_image?: string;
+  logintype?: string;
+};
+
+export type AuthStore = {
+  user: TUserData | null;
+  profile: string | null;
+  setUser: (user: TUserData) => void;
+  setProfile: (profile: string) => void;
+  clearUser: () => void;
+};
 type TStockStore = {
   corporateOverview: string;
   stockExchangeType: string;
@@ -64,46 +90,83 @@ export const useClose = create<TCloseStore>()(set => ({
   setIsClose: isClose => set({ isClose }),
 }));
 
-export const useLoginStore = create<TLoginStore>(set => ({
-  isLoggedIn: false,
-  setLogin: () => set({ isLoggedIn: true }),
-  setLogout: () => set({ isLoggedIn: false }),
-}));
+export const useLoginStore = create<TLoginStore>()(
+  persist(
+    set => ({
+      isLoggedIn: false,
+      setLogin: () => set({ isLoggedIn: true }),
+      setLogout: () => set({ isLoggedIn: false }),
+    }),
+    {
+      name: "login-storage",
+      getStorage: () => sessionStorage,
+    },
+  ),
+);
 
-export const useSignUp = create<TInputState>(set => ({
-  inputText: {
-    id: "",
-    pw: "",
-    name: "",
-    pwCheck: "",
-    phone: "",
-    birth: "",
-    nickname: "",
-    email: "",
-    stock: [],
-  },
-  setInput: (key: string, value: string) =>
-    set(state => ({
+export const useSignUp = create<TInputState>()(
+  persist(
+    set => ({
       inputText: {
-        ...state.inputText,
-        [key]: value,
+        id: "",
+        pw: "",
+        name: "",
+        pwCheck: "",
+        phone: "",
+        birth: "",
+        nickname: "",
+        email: "",
+        stock: [],
+        logintype: "none",
       },
-    })),
-  addStock: (stock: string) =>
-    set(state => ({
-      inputText: {
-        ...state.inputText,
-        stock: [...state.inputText.stock, stock],
-      },
-    })),
-  removeStock: (stock: string) =>
-    set(state => ({
-      inputText: {
-        ...state.inputText,
-        stock: state.inputText.stock.filter(item => item !== stock),
-      },
-    })),
-}));
+      setInput: (key: string, value: string) =>
+        set(state => ({
+          inputText: {
+            ...state.inputText,
+            [key]: value,
+          },
+        })),
+      addStock: (stock: string) =>
+        set(state => ({
+          inputText: {
+            ...state.inputText,
+            stock: [...state.inputText.stock, stock],
+          },
+        })),
+      removeStock: (stock: string) =>
+        set(state => ({
+          inputText: {
+            ...state.inputText,
+            stock: state.inputText.stock.filter(item => item !== stock),
+          },
+        })),
+      labelImg: null,
+      imgFile: null,
+      setLabelImg: labelImg => set({ labelImg }),
+      setImgFile: imgFile => set({ imgFile }),
+    }),
+    {
+      name: "signup-storage",
+      getStorage: () => sessionStorage,
+    },
+  ),
+);
+
+export const useAuthStore = create(
+  persist<AuthStore>(
+    set => ({
+      user: null,
+      profile: null,
+      setUser: user => set({ user }),
+      clearUser: () => set({ user: null }),
+      setProfile: profile => set({ profile }),
+    }),
+    {
+      name: "auth-storage",
+      getStorage: () => sessionStorage,
+    },
+  ),
+);
 
 export const useStockStore = create<TStockStore>(set => ({
   corporateOverview: "",

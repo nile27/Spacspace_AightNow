@@ -3,11 +3,10 @@
 import { useNewsStore } from "@/Store/newsStore";
 import CardSmallNews from "@/components/Card/CardSmallNews";
 import Header from "@/components/Header";
-import BasicIcon from "@/components/Icon/BasicIcons";
 import ListStockUp from "@/components/List/ListStockUp";
 import TextButton from "@/components/btnUi/TextButton";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import ArticleIcon from "@/features/news/components/ArticleIcon.svg";
 
 type TPageProps = {
   params: { id: string };
@@ -47,15 +46,16 @@ export default function NewsDetail({ params }: TPageProps) {
     fetchData();
   }, []);
 
-  console.log(article);
-
   return (
     <>
       <Header />
       <div className="h-full">
         <div className="w-[1200px] flex justify-between  mt-[121px]">
           <div className="w-[792px] flex flex-col bg-white p-8 font-pretendard rounded-2xl">
-            <h1 className="text-3xl font-bold">{article.tit}</h1>
+            <h1
+              className="text-3xl font-bold"
+              dangerouslySetInnerHTML={{ __html: article.tit }}
+            ></h1>
             <div className="w-[728px] h-9 flex  items-start ">
               <div className="w-[728px] flex  mt-4 gap-2  text-zinc-600 text-sm font-medium  leading-tight">
                 <div className="">{article.ohnm}</div>
@@ -75,7 +75,11 @@ export default function NewsDetail({ params }: TPageProps) {
               </div>
             </div>
             <div className="w-[138px] h-6 flex justify-between my-8">
-              <BasicIcon name="AI" size={24} />
+              <div className="w-6 h-6 pt-[5.2px] pb-[6.34px] pl-[4.82px] pr-[4.4px] bg-mainNavy-900 rounded-md flex items-center justify-center">
+                <div className="relative">
+                  <ArticleIcon />
+                </div>
+              </div>
               <div>아이낫우 AI 요약</div>
             </div>
 

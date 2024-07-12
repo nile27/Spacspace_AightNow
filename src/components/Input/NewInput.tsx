@@ -41,7 +41,7 @@ export default function NewInput(props: TInputProps) {
   });
   return (
     <>
-      <div className="min-w-[386px] w-full h-auto min-h-[56px] flex-col justify-start items-start gap-1 inline-flex">
+      <div className="min-w-[386px] w-full h-auto min-h-[46px] flex-col justify-start items-start gap-1 inline-flex">
         {id && label && (
           <label
             htmlFor={id}
@@ -56,7 +56,7 @@ export default function NewInput(props: TInputProps) {
         <div
           className={cn(
             inputVariants({ text: style, border: style }),
-            `  min-h-[56px] w-full px-4 py-2.5 bg-white rounded-lg border-[1px]    justify-start items-center gap-4 inline-flex`,
+            `  min-h-[46px] w-full px-4 py-2.5 bg-white rounded-lg border-[1px]    justify-start items-center gap-4 inline-flex`,
           )}
         >
           <input

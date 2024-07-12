@@ -3,14 +3,21 @@ import { useState } from "react";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
 import AuthModal from "./component/AuthModal";
-
+import { sendVerificationEmail } from "../lib/sendVerificationEmail";
 export default function Auth() {
   const [nameText, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isModal, setIsModal] = useState(false);
 
-  const handlerAuth = () => {
-    setIsModal(!isModal);
+  const handleRegister = async (e: any) => {
+    e.preventDefault();
+    try {
+      await sendVerificationEmail(email, nameText);
+
+      setIsModal(!isModal);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   return (
@@ -37,7 +44,7 @@ export default function Auth() {
         </div>
 
         {email && email.includes("@") && nameText ? (
-          <TextButton onClick={handlerAuth} size="full">
+          <TextButton onClick={handleRegister} size="full">
             인증링크 전송
           </TextButton>
         ) : (
@@ -46,7 +53,7 @@ export default function Auth() {
           </TextButton>
         )}
       </form>
-      {isModal && <AuthModal />}
+      {isModal && <AuthModal setIsModal={setIsModal} />}
     </>
   );
 }

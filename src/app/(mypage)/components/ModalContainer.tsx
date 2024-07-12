@@ -2,7 +2,6 @@
 import { Dispatch, SetStateAction, useEffect } from "react";
 import ModalMain from "../mypage/components/ModalMain";
 import ProfileModal from "@/app/(mypage)/mypage/components/ProfileModal";
-
 import BasicIcon from "@/components/Icon/BasicIcons";
 import AuthModal from "@/app/(mypage)/mypage/components/AuthModal";
 import QuitModal from "@/app/(mypage)/mypage/components/QuitModal";

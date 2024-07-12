@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`font-pretendard w-[100vw] min-h-[100vh] flex flex-col `}>
+    <div className={`font-pretendard w-[100vw] min-h-[100vh] flex flex-col relative`}>
       <Header />
       {children}
     </div>

@@ -95,7 +95,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (session && session.user && !session.isNewUser) {
+    if (session && session.user) {
       const signUpMember: TUserData = {
         id: session?.user.id ?? "",
         name: session?.user.name ?? "",
@@ -115,12 +115,11 @@ export default function Login() {
       navi.push("/");
     }
 
-    // console.log(session, useAuthStore.getState().user, status);
+    console.log(session, useAuthStore.getState().user, status);
   }, [session, status]);
 
   return (
     <>
-      <button onClick={() => signOut()}>asdasd</button>
       <h1 className=" mb-10 text-h3 font-extrabold">로그인</h1>
       <form className=" w-full h-auto flex flex-col gap-4 mb-7">
         <NewInput

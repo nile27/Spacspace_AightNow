@@ -1,18 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import NewInput from "@/components/Input/NewInput";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import TextButton from "@/components/btnUi/TextButton";
 import { useSignUp } from "@/Store/store";
 import { firestore } from "@/firebase/firebaseDB";
+import { useSession, getSession } from "next-auth/react";
 
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default function SignUp() {
   const navigation = useRouter();
-
   const searchParams = useSearchParams();
-  const { inputText, setInput } = useSignUp();
+  const { data: session, status } = useSession();
+  const { inputText, setInput, setLabelImg } = useSignUp();
   const [idCheck, setIdCheck] = useState(false);
   const [errArr, setErrArr] = useState(Array.from({ length: 5 }, () => true));
 
@@ -85,16 +86,29 @@ export default function SignUp() {
 
     navigation.push("/profile");
   };
+
   useEffect(() => {
     const emailParam: string = searchParams.get("email") as string;
     const nameParam: string = searchParams.get("name") as string;
-    setInput("email", emailParam);
-    setInput("name", nameParam);
-  }, []);
+    const type: string = searchParams.get("type") as string;
 
-  useEffect(() => {
-    console.log(inputText);
-  }, [inputText]);
+    if (emailParam && nameParam) {
+      setInput("email", emailParam);
+      setInput("name", nameParam);
+    }
+
+    if (type) {
+      const paramArr = ["name", "email"];
+      setLabelImg(searchParams.get("profile_image") as string);
+      setInput("logintype", type);
+      for (let i of paramArr) {
+        setInput(i, searchParams.get(i) as string);
+      }
+    }
+
+    console.log("inputText:", inputText);
+    console.log("session:", session);
+  }, []);
 
   return (
     <>

@@ -1,21 +1,35 @@
 "use client";
 import HeaderDark from "../../public/icons/HeaderDark.svg";
 import Link from "next/link";
-import { useLoginStore } from "@/Store/store";
-export default function Header({
-  background = "white",
-  isLogin = false,
-}: {
-  background?: string;
-  isLogin?: boolean;
-}) {
+import { useLoginStore, useAuthStore } from "@/Store/store";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+export default function Header({ background = "white" }: { background?: string }) {
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
   const addressItem = ["/find", "/news", "/watchlist", "/mypage"];
-  const { isLoggedIn, setLogin, setLogout } = useLoginStore();
+  const { isLoggedIn, setLogout } = useLoginStore();
+  const { clearUser } = useAuthStore();
+  const navi = useRouter();
+  const [mounted, setMounted] = useState(false);
+
+  const handleLogout = () => {
+    clearUser();
+    setLogout();
+    window.sessionStorage.clear();
+    signOut({ callbackUrl: "/" });
+
+    navi.push("/");
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
-    <header
-      className={`fixed z-40 top-0 w-full h-[56px] py-[8px] bg-${background} flex flex-row justify-between items-center px-[5vw] `}
-    >
+    <header className="fixed z-40 top-0 w-full h-[56px] py-[8px] bg-background flex flex-row justify-between items-center px-[5vw] ">
       <div className=" w-[65%] flex flex-row justify-between gap-2 items-center pr-5 ">
         <Link href={"/"}>
           <button>
@@ -36,7 +50,7 @@ export default function Header({
 
       {isLoggedIn && (
         <button
-          onClick={setLogout}
+          onClick={handleLogout}
           className="w-[102px] h-[36px] border-[1px]  border-scaleGray-900 rounded-[8px] hover:text-mainNavy-900 hover:font-bold "
         >
           로그아웃

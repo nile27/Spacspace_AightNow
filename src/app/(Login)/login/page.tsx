@@ -1,28 +1,122 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewInput from "@/components/Input/NewInput";
 import BasicIcon from "@/components/Icon/BasicIcons";
 import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
-import { loginRegExp } from "../utills/utill";
-import { error } from "console";
+import { signIn, useSession, signOut } from "next-auth/react";
+import { loginRegExp, handleLogin } from "../utills/loginUtill";
+import { useLoginStore, useSignUp, useAuthStore, TUserData } from "@/Store/store";
+import { useRouter } from "next/navigation";
+import { googleLogin } from "../utills/GoogleAuth";
 
 export default function Login() {
+  const { setLogin, isLoggedIn } = useLoginStore();
+  const { setInput, setLabelImg } = useSignUp();
+
+  const { data: session, status } = useSession();
+  const navi = useRouter();
   const [pwHide, setpwHide] = useState(false);
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
-  const [regExpArr, setRegExpArr] = useState([true, true]);
-  const errMessage = {
-    id: "*  6~12자의 영문, 숫자, ,_을 이용한 조합",
-    pw: "*  8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합",
+  const [regExpArr, setRegExpArr] = useState(true);
+
+  const handleOnClick = async () => {
+    try {
+      const ok = loginRegExp(idText, pwText);
+      if (!ok.bool) {
+        setRegExpArr(false);
+        return;
+      }
+      const getData = await handleLogin(idText, pwText);
+
+      if (getData) {
+        setLogin();
+        navi.push("/");
+      }
+    } catch (error) {
+      setRegExpArr(false);
+      console.error("Login error:", error);
+    }
   };
 
-  const handleOnClick = () => {
-    const ok = loginRegExp(idText, pwText);
-    setRegExpArr(ok.bool);
+  const handleGoogle = async () => {
+    try {
+      const userdata = await googleLogin();
+      if (userdata?.isSign === false) {
+        const { data } = userdata;
+
+        for (let key in data) {
+          if (data.hasOwnProperty(key)) {
+            setInput(key, data[key] as string);
+          }
+        }
+        if (userdata.imgFile) {
+          setLabelImg(userdata.imgFile as string);
+        }
+        alert("회원 정보를 입력해주세요.");
+        navi.push("/signup");
+      } else {
+        if (userdata?.data) {
+          setLogin();
+          useAuthStore.getState().setUser(userdata?.data as TUserData);
+          useAuthStore.getState().setProfile(userdata.imgFile as string);
+        }
+
+        navi.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const handleNextAuth = async (type: string) => {
+    await signIn(type);
+    // if (session && session.user && !useAuthStore.getState().user?.phone && session.isNewUser) {
+    //   const signUpMember: { [key: string]: string } = {
+    //     id: session?.user.id ?? "",
+    //     name: session?.user.name ?? "",
+    //     email: session?.user.email ?? "",
+    //     nickname: session?.user.nickname ?? "",
+    //     phone: session?.user.phone ?? "",
+    //     birth: session?.user.birth ?? "",
+    //     logintype: session?.user.logintype ?? "",
+    //   };
+    //   const imgFile = session?.user.profile_image ?? "";
+    //   setLabelImg(imgFile);
+
+    //   for (let key in signUpMember) {
+    //     setInput(key, signUpMember[key]);
+    //   }
+    //   navi.push("/");
+    // }
+  };
+
+  useEffect(() => {
+    if (session && session.user) {
+      const signUpMember: TUserData = {
+        id: session?.user.id ?? "",
+        name: session?.user.name ?? "",
+        email: session?.user.email ?? "",
+        nickname: session?.user.nickname ?? "",
+        phone: session?.user.phone ?? "",
+        stock: session?.user.stock ?? [],
+        birth: session?.user.birth ?? "",
+        logintype: session?.user.logintype ?? "",
+      };
+      const imgFile = session?.user.profile_image ?? "";
+
+      useAuthStore.getState().setProfile(imgFile);
+
+      useAuthStore.getState().setUser(signUpMember as TUserData);
+      setLogin();
+      navi.push("/");
+    }
+
+    console.log(session, useAuthStore.getState().user, status);
+  }, [session, status]);
 
   return (
     <>
@@ -33,8 +127,7 @@ export default function Login() {
           placeholder="아이디를 입력해주세요"
           autoComplete="username"
           value={idText}
-          style={!regExpArr[0] ? "error" : undefined}
-          caption={!regExpArr[0] ? errMessage.id : undefined}
+          style={!regExpArr ? "error" : undefined}
           onChange={e => setId(e.target.value)}
         ></NewInput>
         <NewInput
@@ -42,8 +135,8 @@ export default function Login() {
           placeholder="비밀번호를 입력해주세요"
           autoComplete="current-password"
           value={pwText}
-          style={!regExpArr[0] ? "error" : undefined}
-          caption={!regExpArr[0] ? errMessage.id : undefined}
+          style={!regExpArr ? "error" : undefined}
+          caption={!regExpArr ? "등록되지 않은 회원이거나 잘못된 회원정보입니다." : undefined}
           onChange={e => setPw(e.target.value)}
         >
           {!pwHide ? (
@@ -93,10 +186,10 @@ export default function Login() {
           <div className="border-b-[1px] h-1 w-full border-scaleGray-400"></div>
         </div>
         <div className="w-full  flex gap-4  justify-center items-center">
-          <OauthBtn style={"kakao"} />
-          <OauthBtn style={"naver"} />
+          <OauthBtn style={"kakao"} onClick={() => handleNextAuth("kakao")} />
+          <OauthBtn style={"naver"} onClick={() => handleNextAuth("naver")} />
 
-          <OauthBtn style={"google"} />
+          <OauthBtn style={"google"} onClick={handleGoogle} />
         </div>
       </div>
     </>

@@ -1,11 +1,12 @@
+import { TNewsList } from "@/app/api/(crawler)/type";
 import Image from "next/image";
 
 export default function CardNews({
-  id,
+  data,
   image,
   height,
 }: {
-  id: number;
+  data: TNewsList;
   image: string;
   height?: string;
 }) {
@@ -13,11 +14,11 @@ export default function CardNews({
   return (
     <div className={`relative w-[590px] `} style={{ height: cardHeight }}>
       {/* 컨테이너의 크기와 position 설정 */}
-      <Image
+      <img
         src={image}
-        alt={`news-${id}`}
-        fill
-        className={`object-cover opacity-80 ${cardHeight === height ? "" : "rounded-3xl"}`}
+        alt={`news-${data.aid}`}
+        style={{ fill: "cover", width: "100%", height: "100%" }}
+        className={`object-cover opacity-80 rounded-3xl}`}
       />
       <div
         className={`absolute bottom-0 left-0 w-full h-[114px] p-4 bg-black bg-opacity-30 ${
@@ -25,13 +26,11 @@ export default function CardNews({
         }`}
       >
         {/* 텍스트를 위한 반투명 배경 */}
-        <div className="text-white text-2xl font-bold leading-tight mb-6">
-          엔비디아 또 신고가… 시총 2위 애플과 962억달러 차이
-        </div>
+        <div className="text-white text-2xl font-bold leading-tight mb-4">{data.tit}</div>
         <div className="flex items-center text-stone-300 text-sm font-medium">
-          <span>2024.06.05</span>
+          <span>{data.dt.replace(/(\d{4})(\d{2})(\d{2}).*/, "$1.$2.$3")}</span>
           <span className="mx-2">∙</span>
-          <span>문화일보</span>
+          <span>{data.ohnm}</span>
         </div>
       </div>
     </div>

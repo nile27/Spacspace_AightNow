@@ -5,7 +5,6 @@ import { createOpenAIFunctionsAgent, AgentExecutor } from "langchain/agents";
 import { TavilySearchResults } from "@langchain/community/tools/tavily_search";
 import type { ChatPromptTemplate } from "@langchain/core/prompts";
 import { pull } from "langchain/hub";
-
 import { stockAction4 } from "./stockAction";
 
 // ai report
@@ -21,7 +20,7 @@ export async function agentChatTogether(id: string) {
 
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
-    model: "meta-llama/Llama-3-8b-chat-hf",
+    model: "meta-llama/Llama-3-70b-chat-hf",
     temperature: 0.3,
     topP: 0.3,
     apiKey: process.env.TOGETHER_API_KEY,
@@ -29,6 +28,7 @@ export async function agentChatTogether(id: string) {
 
   // 2. 도구 정의
   const stockAnalysisTool = await stockAction4(id);
+  const stock = JSON.stringify(stockAnalysisTool);
 
   const agent = await createOpenAIFunctionsAgent({
     llm,
@@ -45,7 +45,8 @@ export async function agentChatTogether(id: string) {
 
   // 4. Agent 실행
   const result = await executor.invoke({
-    input: `${retriever}를 참고해서 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 참조해서 분석하고 애널리스트 보고서를 한글로 작성해줘. 절대로 5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
+    input: `${retriever}를 참고해서 ${id} 주식에 대해 ${stock} 도구를 참조해서 분석하고 애널리스트 보고서를 한글로 작성해줘. \n
+    절대로 5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
   });
   const cleanOutput = result.output
     .replace(/^Here is a 4-line analyst report in Korean:\s*/, "")
@@ -70,7 +71,7 @@ export async function agentEvaluationTogether(id: string) {
 
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
-    model: "meta-llama/Llama-3-8b-chat-hf",
+    model: "meta-llama/Llama-3-70b-chat-hf",
     temperature: 0.3,
     topP: 0.3,
     apiKey: process.env.TOGETHER_API_KEY,
@@ -78,8 +79,7 @@ export async function agentEvaluationTogether(id: string) {
 
   // 2. 도구 정의
   const stockAnalysisTool = await stockAction4(id);
-
-  console.log("stockAnalysisTool:");
+  const stock = JSON.stringify(stockAnalysisTool);
 
   const agent = await createOpenAIFunctionsAgent({
     llm,
@@ -96,7 +96,7 @@ export async function agentEvaluationTogether(id: string) {
 
   // 4. Agent 실행
   const result = await executor.invoke({
-    input: `${retriever}를 참고하여 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 사용하여 상세 데이터를 가져온 후, 다음 기준에 따라 분석 리포트를 작성해주세요:
+    input: `${retriever}를 참고하여 ${id} 주식에 대해 ${stock} 도구를 사용하여 상세 데이터를 가져온 후, 다음 기준에 따라 분석 리포트를 작성해주세요:
 
     투자지수 평가 기준:
 

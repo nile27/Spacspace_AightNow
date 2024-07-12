@@ -1,6 +1,6 @@
 "use client";
-import { stockAction5 } from "@/lib/teststock";
-import { ReactElement, useEffect, useState } from "react";
+
+import { useEffect, useState } from "react";
 
 // 메시지 타입 정의
 type Message = {
@@ -17,8 +17,6 @@ export default function ChatBotTest() {
     setSessionId(Math.random().toString(36).substring(7));
   }, []);
 
-  stockAction5("apple");
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -34,9 +32,9 @@ export default function ChatBotTest() {
         body: JSON.stringify({ input, sessionId }),
       });
       const data = await response.json();
-      const chatMessage: Message = { role: "user", content: data.response };
+      const chatMessage: Message = { role: "bot", content: data.response };
       setMessages(prev => [...prev, chatMessage]);
-      setInput(""); // 입력 필드 초기화
+      setInput("");
     } catch (error) {
       console.error("Error:", error);
       const errorMessage: Message = { role: "bot", content: "오류가 발생했습니다." };
@@ -61,7 +59,7 @@ export default function ChatBotTest() {
           type="text"
           value={input}
           onChange={e => setInput(e.target.value)}
-          placeholder="주식에 대해 물어보세요"
+          placeholder="AI에게 물어보세요"
         />
         <button type="submit">전송</button>
       </form>

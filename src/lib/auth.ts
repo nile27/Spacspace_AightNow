@@ -74,7 +74,6 @@ export const authConfig: NextAuthOptions = {
       clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
 
       profile(profile) {
-        console.log(profile);
         return {
           id: profile.id.toString(),
           name: profile.kakao_account.profile.nickname,
@@ -94,7 +93,7 @@ export const authConfig: NextAuthOptions = {
         const q = query(usersCollectionRef, where("email", "==", user?.email));
 
         const userDocSnap = await getDocs(q);
-        console.log("user:", user);
+        console.log("user:", userDocSnap.docs[0].data());
 
         if (userDocSnap.empty) {
           const redirectPath = `/signup?type=${encodeURIComponent(
@@ -133,10 +132,11 @@ export const authConfig: NextAuthOptions = {
 
         try {
           const existUser = await auth.getUserByEmail(user.email as string);
-          console.log(existUser);
+          console.log("exust", existUser);
           if (existUser) {
             const userSnapshot = await db.collection("users").doc(existUser.uid).get();
             const userData = userSnapshot.data();
+            console.log(userData);
             if (userData) {
               token.id = userData.userId;
               token.name = userData.name;
@@ -149,6 +149,7 @@ export const authConfig: NextAuthOptions = {
               token.logintype = userData.logintype;
               token.profile_image = existUser.photoURL;
               token.isNewUser = false;
+              console.log("sss");
               return token;
             }
           }
@@ -181,23 +182,4 @@ export const authConfig: NextAuthOptions = {
       return session;
     },
   },
-  session: {
-    strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 1일 (선택 사항, 세션 지속 시간 설정)
-    updateAge: 24 * 60 * 60, // 1일 마다 세션 갱신 (선택 사항)
-  },
-  jwt: {
-    secret: process.env.JWT_SECRET,
-  },
-  pages: {
-    signIn: "/login",
-    signOut: "/logout",
-    error: "/error",
-  },
-  events: {
-    async signOut(message) {
-      console.log("User signed out:", message);
-    },
-  },
-  debug: true,
 };

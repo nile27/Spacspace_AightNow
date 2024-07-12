@@ -2,17 +2,14 @@ import Icon from "@/components/Stock/Icon";
 import TextButton from "@/components/btnUi/TextButton";
 import Summary from "./Summary";
 import Chart from "./Chart";
-import AIReport from "./AIReport";
+
 import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
 import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
 import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";
 import { stockRealTime } from "@/app/api/stock/route";
-import { stockAnalysis } from "@/lib/stockAnalysis";
-import { stockEvaluation } from "@/lib/stockEvluation";
-import { generate, token } from "@/lib/token";
-import { agentChat2, agentEvaluation2 } from "@/lib/OllamaTest";
+import AIReport from "./AIReport";
 
 type TParams = {
   id: string;
@@ -27,15 +24,6 @@ export default async function Report({ id }: TParams) {
   const stockHistory = await stockRealTime(id);
 
   const exchange = await exchangeRate();
-
-  const score = await stockEvaluation(id);
-  const chat = await stockAnalysis(id);
-
-  // const chat = await agentChat();
-
-  // const tokenValue = await token();
-  // const data = generate(tokenValue);
-  // console.log(JSON.stringify(data, null, 2));
 
   return (
     <>
@@ -55,9 +43,9 @@ export default async function Report({ id }: TParams) {
           <Summary overview={appleStock} stockInfo={appleStock2} exchange={exchange} />
           <Chart stockData={stockHistory} />
         </div>
-        <div className="w-[1200px] flex gap-4 ">
-          <AIReport score={score ?? ""} />
-          <Analysis stockName={stockName} stockInfo={appleStock2} id={id} report={chat ?? ""} />
+        <div className=" w-[1200px] flex gap-4 ">
+          <AIReport id={id} />
+          <Analysis stockName={stockName} stockInfo={appleStock2} id={id} />
         </div>
         <FavoriteNews />
       </div>

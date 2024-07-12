@@ -1,12 +1,10 @@
-"use client";
-
 import Icon from "@/components/Stock/Icon";
 import { TStockinfo } from "./Summary";
+import { stockAnalysis } from "@/lib/stockAnalysis";
 
-export default function Analysis({
+export default async function Analysis({
   stockName,
   stockInfo,
-  report,
   id,
 }: {
   stockName: string;
@@ -14,7 +12,10 @@ export default function Analysis({
   report?: string;
   id: string;
 }) {
-  const { closePrice, compareToPreviousClosePrice, fluctuationsRatio } = stockInfo;
+  const { closePrice, compareToPreviousClosePrice, fluctuationsRatio, compareToPreviousPrice } =
+    stockInfo;
+  const compareUpDown = compareToPreviousPrice.code;
+  const report = await stockAnalysis(id);
 
   return (
     <>
@@ -26,12 +27,18 @@ export default function Analysis({
             <span>{stockName}</span>
             <span>∙</span>
             <span>${closePrice}</span>
-            <span className="text-rose-500">▲+{compareToPreviousClosePrice}</span>
-            <span className="text-rose-500">+{fluctuationsRatio}%</span>
+            <span className={`${compareUpDown === "2" ? "text-rose-500" : "text-blue-500"}`}>
+              {compareUpDown === "2"
+                ? `▲${compareToPreviousClosePrice} `
+                : `▼${compareToPreviousClosePrice} `}
+            </span>
+            <span className={`${compareUpDown === "2" ? "text-rose-500" : "text-blue-500"}`}>
+              {fluctuationsRatio}%
+            </span>
           </div>
         </div>
         <div className="w-[686px] h-24 mt-4 inline-flex justify-start items-start gap-2.5 ">
-          <div className="grow shrink basis-0   text-black  font-medium leading-normal line-clamp-6">
+          <div className="grow shrink basis-0   text-black  font-medium leading-normal line-clamp-5">
             {report}
           </div>
         </div>

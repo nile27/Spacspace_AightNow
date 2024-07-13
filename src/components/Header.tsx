@@ -29,7 +29,7 @@ export default function Header({ background = "white" }: { background?: string }
   if (!mounted) return null;
 
   return (
-    <header className="fixed z-40 top-0 w-full h-[56px] py-[8px] bg-background flex flex-row justify-between items-center px-[5vw] ">
+    <header className="fixed z-40 top-0 w-full h-[56px] py-[8px] bg-white flex flex-row justify-between items-center px-[5vw] ">
       <div className=" w-[65%] flex flex-row justify-between gap-2 items-center pr-5 ">
         <Link href={"/"}>
           <button>

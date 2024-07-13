@@ -1,10 +1,10 @@
 "use client";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "@/firebase/firebaseDB";
 import { EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-
+import { useAuthStore } from "@/Store/store";
 export default function ProfileModal({
   currentPw,
   setCurrentPw,
@@ -15,6 +15,7 @@ export default function ProfileModal({
   setIdx: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const [err, setErr] = useState("");
+  const { user } = useAuthStore();
 
   const handlePwCheck = async () => {
     const user = auth.currentUser;
@@ -34,6 +35,12 @@ export default function ProfileModal({
       return false; // 비밀번호 확인 실패
     }
   };
+
+  useEffect(() => {
+    if (user?.logintype !== "none") {
+      setIdx(2);
+    }
+  }, []);
 
   return (
     <div className=" w-full h-auto flex justify-center items-center gap-[24px] flex-col">

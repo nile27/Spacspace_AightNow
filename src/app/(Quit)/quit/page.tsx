@@ -27,7 +27,7 @@ export default function Quit() {
         </div>
       </div>
       <Link href={"/"} className="w-full h-auto">
-        <TextButton size="full">확인하기</TextButton>
+        <TextButton size="full">홈으로</TextButton>
       </Link>
     </>
   );

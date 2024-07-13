@@ -22,6 +22,7 @@ export default function Login() {
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
   const [regExpArr, setRegExpArr] = useState(true);
+  const [clientLogin, setClientLogin] = useState(false);
 
   const handleOnClick = async () => {
     try {
@@ -74,6 +75,7 @@ export default function Login() {
 
   const handleNextAuth = async (type: string) => {
     await signIn(type);
+    setClientLogin(true);
     // if (session && session.user && !useAuthStore.getState().user?.phone && session.isNewUser) {
     //   const signUpMember: { [key: string]: string } = {
     //     id: session?.user.id ?? "",
@@ -95,7 +97,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (session && session.user) {
+    if (status === "authenticated") {
       const signUpMember: TUserData = {
         id: session?.user.id ?? "",
         name: session?.user.name ?? "",
@@ -115,8 +117,8 @@ export default function Login() {
       navi.push("/");
     }
 
-    console.log(session, useAuthStore.getState().user, status);
-  }, [session, status]);
+    console.log(session, clientLogin, useAuthStore.getState().user, status);
+  }, [session, isLoggedIn]);
 
   return (
     <>

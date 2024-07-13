@@ -67,7 +67,7 @@ export default function MainProfile() {
         <div className="w-full h-auto mt-8 mb-5 flex ">
           <span className="mr-[120px] w-[56px]">아이디</span>
           <div className="flex justify-center items-center gap-[16px]">
-            <span>{user?.id}</span>
+            <span>{user?.userId ? user?.userId : user?.id}</span>
           </div>
         </div>
         <div className="w-full h-auto mb-5  flex ">

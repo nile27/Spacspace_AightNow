@@ -33,7 +33,7 @@ export default function QuitModal() {
 
         signOut({ callbackUrl: "/quit" });
       } else {
-        alert("회원 탈퇴 중 오류가 발생했습니다: " + result.error);
+        alert("비밀번호를 확인해주세요. " + result.error);
       }
     }
   };

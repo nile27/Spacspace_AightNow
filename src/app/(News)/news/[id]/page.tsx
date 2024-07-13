@@ -1,12 +1,13 @@
 "use client";
 
-import { useNewsStore } from "@/Store/newsStore";
+import { useNewsStore, useStockStore } from "@/Store/newsStore";
 import CardSmallNews from "@/components/Card/CardSmallNews";
 import Header from "@/components/Header";
-import ListStockUp from "@/components/List/ListStockUp";
 import TextButton from "@/components/btnUi/TextButton";
 import React, { useEffect, useState } from "react";
 import ArticleIcon from "@/features/news/components/ArticleIcon.svg";
+import Stock from "@/components/Stock/Stock";
+import Link from "next/link";
 
 type TPageProps = {
   params: { id: string };
@@ -33,31 +34,47 @@ function formatDateTime(dateTimeStr: string) {
 export default function NewsDetail({ params }: TPageProps) {
   const { id } = params;
   const [loading, setLoading] = useState(false);
-
+  const [stockDataList, setStockDataList] = useState<any[]>([]);
   const fetchNewsArticle = useNewsStore(state => state.fetchNewsArticle);
+  const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
+  const fetchStockData = useStockStore(state => state.fetchStockData);
+  const stockData = useStockStore(state => state.stockData);
+  const stockNewsList = useNewsStore(state => state.stockNewsList);
   const article = useNewsStore(state => state.newsArticle);
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       setLoading(true);
-      fetchNewsArticle({ id });
+      await fetchNewsArticle({ id });
+      await fetchStockNewsList(article.relatedItems);
+      await fetchStockData();
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [id]);
+
+  useEffect(() => {
+    if (stockData.length > 0 && article.relatedItems.length > 0) {
+      const orderedStockData = article.relatedItems
+        .map(item => stockData.find(stock => stock.logo === item))
+        .filter(Boolean); // undefined 요소 제거
+
+      setStockDataList(orderedStockData);
+    }
+  }, [stockData, article.relatedItems]);
 
   return (
     <>
       <Header />
       <div className="h-full">
-        <div className="w-[1200px] flex justify-between  mt-[121px]">
+        <div className="w-[1200px] flex justify-between mt-[121px]">
           <div className="w-[792px] flex flex-col bg-white p-8 font-pretendard rounded-2xl">
             <h1
               className="text-3xl font-bold"
               dangerouslySetInnerHTML={{ __html: article.tit }}
             ></h1>
-            <div className="w-[728px] h-9 flex  items-start ">
-              <div className="w-[728px] flex  mt-4 gap-2  text-zinc-600 text-sm font-medium  leading-tight">
+            <div className="w-[728px] h-9 flex items-start">
+              <div className="w-[728px] flex mt-4 gap-2 text-zinc-600 text-sm font-medium leading-tight">
                 <div className="">{article.ohnm}</div>
                 <div className="text-right">∙</div>
                 <div className="">
@@ -83,7 +100,7 @@ export default function NewsDetail({ params }: TPageProps) {
               <div>아이낫우 AI 요약</div>
             </div>
 
-            <div className=" flex flex-col">
+            <div className="flex flex-col">
               <div className="p-4 rounded-lg mb-4">
                 바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성 바이오 연구의 첨단,인공
                 유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생
@@ -101,20 +118,31 @@ export default function NewsDetail({ params }: TPageProps) {
 
           <div className="flex flex-col gap-y-4">
             <div className="w-[384px] h-[310px] bg-white rounded-2xl font-pretendard p-8">
-              <h2 className="text-xl  ">현재 뉴스와 관련된 주식</h2>
-              <div className=" flex flex-col ">
-                <ListStockUp />
-                <ListStockUp />
-                <ListStockUp />
+              <h2 className="text-xl mb-3">현재 뉴스와 관련된 주식</h2>
+              <div className="flex flex-col">
+                {stockDataList.map((data, index) => (
+                  <Link href={`/report/${data.logo}`} key={index}>
+                    <Stock
+                      data={data}
+                      logo={article.relatedItems[index]}
+                      gap={`${
+                        data.stockName.length < 3 && data.symbolCode.length < 5
+                          ? "gap-32"
+                          : data.stockName.length < 4
+                          ? "gap-[113px]"
+                          : "gap-[49px]"
+                      }`}
+                    />
+                  </Link>
+                ))}
               </div>
             </div>
             <div className="w-[388px] h-[488px] p-8 bg-white rounded-2xl font-pretendard">
               <h2 className="font-bold text-xl">관련기사</h2>
-              <div className=" flex flex-col gap-y-5 mt-[10px]">
-                <CardSmallNews />
-                <CardSmallNews />
-                <CardSmallNews />
-                <CardSmallNews />
+              <div className="flex flex-col gap-y-5 mt-[10px]">
+                {stockNewsList.slice(0, 4).map(news => (
+                  <CardSmallNews key={news.id} data={news} />
+                ))}
               </div>
             </div>
           </div>

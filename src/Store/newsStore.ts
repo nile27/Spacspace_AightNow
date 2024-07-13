@@ -1,3 +1,4 @@
+import { TStockData } from "@/app/api/(crawler)/type";
 import fireStore from "@/firebase/firestore";
 import {
   collection,
@@ -12,6 +13,26 @@ import {
   QueryDocumentSnapshot,
 } from "firebase/firestore";
 import { create } from "zustand";
+
+type TStockStore = {
+  stockData: TStockData[];
+  fetchStockData: () => Promise<void>;
+  // fetchStockData: (filterCondition?: (stock: TStockData) => boolean) => void;
+};
+
+export const useStockStore = create<TStockStore>(set => ({
+  stockData: [],
+  fetchStockData: async () => {
+    try {
+      const response = await fetch(`/api/news/stock`);
+      const data: TStockData[] = await response.json();
+
+      set({ stockData: data });
+    } catch (error) {
+      console.error("Failed to fetch stock data:", error);
+    }
+  },
+}));
 
 type TNewsStore = {
   newsList: any[];

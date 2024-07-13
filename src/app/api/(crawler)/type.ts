@@ -3,9 +3,12 @@ type TStockData = {
   stockName: string;
   symbolCode: string;
   closePrice: number;
-  compareToPreviousPriceText: string;
+  compareToPreviousPrice: {
+    text: string;
+  };
   compareToPreviousClosePrice: number;
   fluctuationsRatio: number;
+  logo: string;
 };
 
 type TNewsList = {

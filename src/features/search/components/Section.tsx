@@ -1,5 +1,6 @@
 import Stock from "@/components/Stock/Stock";
 import FindNews from "./FindNews";
+import Link from "next/link";
 
 type TSectionProps = {
   title: string;
@@ -26,9 +27,11 @@ export default function Section(props: TSectionProps) {
             <div className="text-scaleGray-400 text-base leading-normal">검색 결과가 없습니다.</div>
           ) : isNews ? (
             <div className="flex flex-col w-full">
-              {items.slice(0, visibleItems).map((data, index) => (
-                <div key={index} className="flex rounded-lg gap-4 pb-4">
-                  <FindNews data={data} />
+              {items.slice(0, visibleItems).map(data => (
+                <div key={data.id} className="flex rounded-lg gap-4 pb-4">
+                  <Link href={`/news/${data.id}`}>
+                    <FindNews data={data} />
+                  </Link>
                 </div>
               ))}
             </div>
@@ -36,7 +39,9 @@ export default function Section(props: TSectionProps) {
             <div className="grid grid-cols-2 gap-4 w-full">
               {items.slice(0, visibleItems).map((data, index) => (
                 <div key={index} className="flex justify-between items-center rounded-lg">
-                  <Stock data={data} logo={data.logo} gap="gap-[64px]" />
+                  <Link href={`/report/${data.logo}`}>
+                    <Stock data={data} logo={data.logo} gap="gap-[64px]" />
+                  </Link>
                 </div>
               ))}
             </div>

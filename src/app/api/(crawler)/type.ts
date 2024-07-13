@@ -21,11 +21,11 @@ type TNewsList = {
   aid: string; // article id
   dt: string; // 뉴스 리스트 date / time
   published: string; // 뉴스 기사 시간
-  // category?: string;
   oid?: string;
   type?: number; // 0: 사진없음, 1: 사진있음
   isVideo?: boolean;
   hasImage?: boolean;
+  image: string | null;
 };
 
 // type TArticle = {

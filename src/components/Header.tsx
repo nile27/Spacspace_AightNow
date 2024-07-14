@@ -16,6 +16,7 @@ export default function Header({ background = "white" }: { background?: string }
   const handleLogout = () => {
     clearUser();
     setLogout();
+
     window.sessionStorage.clear();
     signOut({ callbackUrl: "/" });
 

@@ -39,7 +39,7 @@ export const googleLogin = async (): Promise<LoginResponse | undefined> => {
         const imgFile = user.photoURL;
         console.log(imgFile);
 
-        return { isSign: false, data: userData, img: user.photoURL || "", imgFile: "" };
+        return { isSign: false, data: userData, img: user.photoURL || "", imgFile: imgFile };
       } else {
         const profileImage = userProfile?.profile_image;
 

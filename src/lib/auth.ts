@@ -140,6 +140,7 @@ export const authConfig: NextAuthOptions = {
 
         try {
           console.log(user.email);
+          console.log(adminAuth);
           const existUser = await adminAuth.getUserByEmail(user.email as string);
           console.log("exust", existUser);
           if (existUser) {

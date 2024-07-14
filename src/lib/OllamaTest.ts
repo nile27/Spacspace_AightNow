@@ -6,6 +6,7 @@ import { z } from "zod";
 import { stockAction4 } from "./stockAction";
 import { generate, token } from "./token";
 
+// ollama 사용
 export async function agentChatApi(id: string) {
   const search = new TavilySearchResults({
     maxResults: 2,
@@ -20,7 +21,7 @@ export async function agentChatApi(id: string) {
     }),
     func: async () => {
       try {
-        const stockInfo = await stockAction4();
+        const stockInfo = await stockAction4(id);
         return JSON.stringify(stockInfo);
       } catch (error) {
         console.error("Error fetching stock data:", error);
@@ -51,7 +52,7 @@ export async function agentEvaluationApi(id: string) {
     }),
     func: async () => {
       try {
-        const stockInfo = await stockAction4();
+        const stockInfo = await stockAction4(id);
         return JSON.stringify(stockInfo);
       } catch (error) {
         console.error("Error fetching stock data:", error);

@@ -1,3 +1,5 @@
+"use client";
+
 import StockList from "@/components/Stock/StockList";
 import WatchInput from "./WatchInput";
 import Header from "@/components/Header";
@@ -6,9 +8,10 @@ import { useClose, useShow } from "@/Store/store";
 
 export default function WatchListAdd() {
   const { isClose, setIsClose } = useClose();
-  const { isShow } = useShow();
+  const { isShow, setIsShow } = useShow();
 
   const handleClose = () => {
+    setIsShow(!isShow);
     setIsClose(!isClose);
   };
 

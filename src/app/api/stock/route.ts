@@ -1,6 +1,15 @@
 "use server";
 
-import { STOCK_NAME } from "@/lib/stockAction";
+// import { STOCK_NAME } from "@/lib/stockAction";
+
+const STOCK_NAME: { [key: string]: string } = {
+  tesla: "TSLA.O",
+  google: "GOOGL.O",
+  apple: "AAPL.O",
+  microsoft: "MSFT.O",
+  amazon: "AMZN.O",
+  unity: "U",
+};
 
 // 실시간 주식 가격 정보
 export const stockRealTime = async (stock: string) => {

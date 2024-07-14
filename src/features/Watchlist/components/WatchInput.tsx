@@ -1,22 +1,42 @@
 "use client";
 import { useShow } from "@/Store/store";
 import BasicIcon from "@/components/Icon/BasicIcons";
+import { getStockSearch } from "@/lib/getStockSearch";
+import { stockSearchAdd } from "@/lib/stockSerchAdd";
 import { useEffect, useRef, useState } from "react";
-
-const stockName = ["애플", "구글", "테슬라", "아마존", "마이크로소프트", "유니티"];
 
 export default function WatchInput() {
   const [isShow, setIsShow] = useState(false);
   const [search, setSearch] = useState("");
-  const [filteredStocks, setFilteredStocks] = useState<string[]>([]);
+  const [filteredStocks, setFilteredStocks] = useState<
+    Array<{ id: string; name: string; nameEn: string; symbol: string }>
+  >([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { watchList, setWatchList } = useShow();
+
+  const stocksToAdd = [
+    { id: "AAPL", name: "애플", nameEn: "Apple", symbol: "AAPL" },
+    { id: "TSLA", name: "테슬라", nameEn: "Tesla", symbol: "TSLA" },
+    { id: "GOOGL", name: "구글", nameEn: "Google", symbol: "GOOGL" },
+    { id: "AMZN", name: "아마존", nameEn: "Amazon", symbol: "AMZN" },
+    { id: "MSFT", name: "마이크로소프트", nameEn: "Microsoft", symbol: "MSFT" },
+    { id: "U", name: "유니티", nameEn: "Unity", symbol: "U" },
+  ];
+
+  stockSearchAdd(stocksToAdd);
 
   useEffect(() => {
-    const searchStock = stockName.filter(stock => stock.includes(search));
-    setFilteredStocks(searchStock);
-    setSelectedIndex(-1);
+    if (search === "") {
+      setFilteredStocks([]);
+      return;
+    }
+    const fetchStocks = async () => {
+      const stocks: any = await getStockSearch(search);
+      setFilteredStocks(stocks);
+      setSelectedIndex(-1);
+    };
+
+    fetchStocks();
   }, [search]);
 
   const searchHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,19 +51,17 @@ export default function WatchInput() {
     } else if (e.key === "ArrowUp") {
       setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
     } else if (e.key === "Enter" && selectedIndex >= 0) {
-      setSearch(filteredStocks[selectedIndex]);
-      setIsShow(false);
+      handleItemClick(filteredStocks[selectedIndex]);
     }
   };
 
-  const handleItemClick = (stock: string) => {
-    setSearch(stock);
+  const handleItemClick = (stock: any) => {
+    setSearch(stock.name);
     setIsShow(false);
-    setWatchList([search, ...filteredStocks]);
+
     inputRef.current?.focus();
   };
 
-  console.log(watchList.length);
   return (
     <>
       <form action="">
@@ -65,7 +83,7 @@ export default function WatchInput() {
           <ul className=" w-[712px] bg-white border border-scaleGray-400 rounded-lg mt-1">
             {filteredStocks.map((stock, index) => (
               <li
-                key={stock}
+                key={stock.id}
                 className={`p-2 hover:bg-gray-100 cursor-pointer flex gap-4 items-center rounded-lg ${
                   index === selectedIndex ? "bg-gray-200" : ""
                 }`}
@@ -73,7 +91,7 @@ export default function WatchInput() {
               >
                 <BasicIcon name="Search" size={24} />
                 <div className="w-full flex justify-between items-center">
-                  {stock}
+                  {stock.name} {stock.symbol}
                   <button>
                     <BasicIcon name="Close" size={24} className="" />
                   </button>

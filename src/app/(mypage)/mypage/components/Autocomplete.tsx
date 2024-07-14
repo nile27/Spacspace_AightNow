@@ -107,16 +107,6 @@ export default function Autocomplete({
                 {suggestion}
               </li>
             ))}
-
-        {suggestions.map((suggestion, index) => (
-          <li
-            className="text-start cursor-pointer w-full h-auto flex justify-start items-center p-4 hover:bg-gray-100"
-            key={index}
-            onClick={() => handleSelectSuggestion(suggestion)}
-          >
-            {suggestion}
-          </li>
-        ))}
       </ul>
     </div>
   );

@@ -46,7 +46,6 @@ export default function NewsDetail({ params }: TPageProps) {
     const fetchData = async () => {
       setLoading(true);
       await fetchNewsArticle({ id });
-      await fetchStockNewsList(article.relatedItems);
       await fetchStockData();
       setLoading(false);
     };
@@ -54,7 +53,10 @@ export default function NewsDetail({ params }: TPageProps) {
   }, [id]);
 
   useEffect(() => {
-    if (stockData.length > 0 && article.relatedItems.length > 0) {
+    if (article.relatedItems) {
+      fetchStockNewsList(article.relatedItems);
+    }
+    if (stockData && article.relatedItems) {
       const orderedStockData = article.relatedItems
         .map(item => stockData.find(stock => stock.logo === item))
         .filter(Boolean); // undefined 요소 제거
@@ -117,7 +119,7 @@ export default function NewsDetail({ params }: TPageProps) {
           </div>
 
           <div className="flex flex-col gap-y-4">
-            <div className="w-[384px] h-[310px] bg-white rounded-2xl font-pretendard p-8">
+            <div className="w-[384px] bg-white rounded-2xl font-pretendard p-8">
               <h2 className="text-xl mb-3">현재 뉴스와 관련된 주식</h2>
               <div className="flex flex-col">
                 {stockDataList.map((data, index) => (
@@ -141,7 +143,9 @@ export default function NewsDetail({ params }: TPageProps) {
               <h2 className="font-bold text-xl">관련기사</h2>
               <div className="flex flex-col gap-y-5 mt-[10px]">
                 {stockNewsList.slice(0, 4).map(news => (
-                  <CardSmallNews key={news.id} data={news} />
+                  <Link href={`/news/${news.id}`} key={news.id}>
+                    <CardSmallNews data={news} />
+                  </Link>
                 ))}
               </div>
             </div>

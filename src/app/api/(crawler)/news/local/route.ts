@@ -4,6 +4,7 @@ import { addNewsToFirestore } from "../firebase/fireStore";
 import { TNewsList } from "../../type";
 
 const symbols = ["AAPL.O", "TSLA.O", "MSFT.O", "AMZN.O", "GOOGL.O", "U"];
+const relatedItem = ["애플", "테슬라", "마이크로소프트", "아마존", "구글", "유니티"];
 const stockNames = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
 
 const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => {
@@ -28,7 +29,6 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
         ohnm: item.officeName,
         dt: item.datetime,
         thumbUrl: item.imageOriginLink,
-        relatedItems: symbols.filter((item: any) => item.includes(symbol)),
         type: item.photoType,
         stockName: stockName,
         isVideo: item.photoType === 2,
@@ -42,47 +42,60 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
         waitUntil: "networkidle2",
       });
 
-      const article = await page.$eval("#newsct", element => {
-        const selectElement = (selector: string) => element.querySelector(selector) as HTMLElement;
-        const titleElement = selectElement(".media_end_head_title");
-        const providerElement = selectElement(".media_end_head_top_logo_img").getAttribute("alt");
-        const timeElement = selectElement(".media_end_head_info_datestamp_time._ARTICLE_DATE_TIME");
-        const contentElement = selectElement("#dic_area");
-        const imageElement = element.querySelector("#img1") as HTMLImageElement;
+      const article = await page.$eval(
+        "#newsct",
+        (element, relatedItem, stockNames) => {
+          const selectElement = (selector: string) =>
+            element.querySelector(selector) as HTMLElement;
+          const titleElement = selectElement(".media_end_head_title");
+          const providerElement = selectElement(".media_end_head_top_logo_img").getAttribute("alt");
+          const timeElement = selectElement(
+            ".media_end_head_info_datestamp_time._ARTICLE_DATE_TIME",
+          );
+          const contentElement = selectElement("#dic_area");
+          const imageElement = element.querySelector("#img1") as HTMLImageElement;
 
-        if (contentElement) {
-          const summaryElement = selectElement(".media_end_summary");
-          const end_photo_org = contentElement.querySelector(".end_photo_org");
-          const end_photo = contentElement.querySelector("#img_a2");
-          const remove_article = element.querySelector("#dic_area > div:nth-child(38)");
+          if (!titleElement || !timeElement || !contentElement) {
+            throw new Error("Required elements not found");
+          }
 
-          if (summaryElement) {
-            summaryElement.remove();
-          }
-          if (end_photo_org) {
-            end_photo_org.remove();
-          }
-          if (end_photo) {
-            end_photo.remove();
-          }
-          if (remove_article) {
-            remove_article.remove();
-          }
-        }
+          const relatedItems = stockNames.filter((_, index) =>
+            contentElement.innerText.includes(relatedItem[index]),
+          );
 
-        if (!titleElement || !timeElement || !contentElement) {
-          throw new Error("Required elements not found");
-        }
+          if (contentElement) {
+            const summaryElement = selectElement(".media_end_summary");
+            const end_photo_org = contentElement.querySelector(".end_photo_org");
+            const end_photo = contentElement.querySelector("#img_a2");
+            const remove_article = element.querySelector("#dic_area > div:nth-child(38)");
 
-        return {
-          // articleId: "",
-          // title: titleElement.innerText,
-          // provider: providerElement,
-          published: timeElement.innerText,
-          content: contentElement.outerHTML,
-          image: imageElement?.src,
-        };
-      });
+            if (summaryElement) {
+              summaryElement.remove();
+            }
+            if (end_photo_org) {
+              end_photo_org.remove();
+            }
+            if (end_photo) {
+              end_photo.remove();
+            }
+            if (remove_article) {
+              remove_article.remove();
+            }
+          }
+
+          return {
+            // articleId: "",
+            // title: titleElement.innerText,
+            // provider: providerElement,
+            published: timeElement.innerText,
+            content: contentElement.outerHTML,
+            image: imageElement?.src,
+            relatedItems: relatedItems,
+          };
+        },
+        relatedItem,
+        stockNames,
+      );
 
       articles.push({
         ...news,
@@ -93,8 +106,8 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
 
     return articles;
   } catch (error) {
-    console.error(`Error fetching rank news:`, error);
-    throw new Error("Failed to fetch rank news data");
+    console.error(`Error fetching local news:`, error);
+    throw new Error("Failed to fetch local news data");
   }
 };
 

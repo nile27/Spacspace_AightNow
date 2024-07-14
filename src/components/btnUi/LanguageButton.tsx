@@ -6,10 +6,11 @@ import Japan from "../../../public/icons/Japan.svg";
 import Korea from "../../../public/icons/Korea.svg";
 type TIconButton = React.ComponentProps<"button"> & {
   style: "en" | "ch" | "fr" | "jp" | "kr";
+  focusBtn: boolean;
 };
 
 export default function LanguageButton(props: TIconButton) {
-  const { style, ...restBtnProps } = props;
+  const { style, focusBtn, ...restBtnProps } = props;
 
   // 국기 조건 스타일링
   const renderIcon = (style: TIconButton["style"]) => {
@@ -51,7 +52,9 @@ export default function LanguageButton(props: TIconButton) {
     <>
       <button
         {...restBtnProps}
-        className="w-[130px] h-[120px] rounded-lg flex justify-center items-center flex-col gap-1 border-[1px] border-scaleGray-300 text-scaleGray-300 hover:border-secondBlue-600 hover:text-secondBlue-600"
+        className={`w-[130px] h-[120px] rounded-lg flex justify-center items-center flex-col gap-1 border-[1px] border-scaleGray-300 text-scaleGray-300 ${
+          focusBtn ? "border-secondBlue-600 text-secondBlue-600" : ""
+        } hover:border-secondBlue-600 hover:text-secondBlue-600`}
       >
         {renderIcon(style)}
         {renderButtonText(style)}

@@ -1,17 +1,17 @@
 import admin from "firebase-admin";
 import { initializeApp } from "firebase-admin";
 
-// const FIREBASE_PROJECT_ID = "aightnow-96848";
-// const FIREBASE_CLIENT_EMAIL = "firebase-adminsdk-na0sx@aightnow-96848.iam.gserviceaccount.com";
-// const FIREBASE_PRIVATE_KEY =
+// const id = "aightnow-96848";
+// const email = "firebase-adminsdk-na0sx@aightnow-96848.iam.gserviceaccount.com";
+// const key =
 //   "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDfkRzb6k+Ez8gv\niEGSZjbnUOjIq5zMG1ozkAQEIqFAVN1xvni4F3dgK+ECF8t1O9Msi94jtapBYF00\nE3Yy2zXqz6r+Ng8BPkAHZZi9DqFB7IegoleIbFTE+WBoTgA1STk78MAoyt6JxPRI\nYo7685HvjR4pVtt8iOyzWrKB6x7yMuwcKS3mNcyrp/ypmkqytFmWsurnD/HBTmbG\nH2955dR1GoTB0CH6iHMK9A26O+Z8A+F8yOgv5jSA4KW/0gfRbjFttBkaVcQ2NO3j\nPt5DmXGejSDopP1iQFnnZPbOr0KZD0hqehqHPvgyfyyM+IkF9gurmNlajv3XALtU\nQa0L0woVAgMBAAECggEAIsgcyUoG3Q7Ggj6clP46BHrd/HpWhpqqyeLZ/Rq2I6AQ\nY6XSejGMbPXmp8Cz8qVAEWohQUT+G/W2CmgMt5TLKqDsZWhbpUHeDEiOHrur8umt\noBwhqiPQfGSfzxpzhdbChMTL4IzPWne92ZUb0YcbaT13N88/jnxu9uhhZT0DL4La\nCW0RdBGo8abYVWHsUIu3ZgJrncvVZwWRIKdj+5fo9qKo2I2heEDdZwGtM8dYcSeH\nGwVFoBey1wYN2n0uOHrGJGcbhr7DSf2tL2RzOhzVkKrpIj/UNGm7kMPlIoMpqUJ5\nwOSHx8rblrcQ43zDIqAe8pTxxWhj2fIhAC43NtSYAQKBgQD/CtS2FAmlB2DLVDL2\nAX024K71WrKpPAD8II5arF9a6v8aT31vjDn5JVtyTWykR5D6eIdecruFsvBnny7z\nshnOqJbSGDEEP3q9DZgrjSCuBd5GOlrSVgCgVNXfou6kbvgWsuLlq1KW0s8VSU5N\ndjypnAxIxONg+MnchQYi1XsdgQKBgQDgaAZcRjFzyT4A6338WdbSuWJsp5hbbjqh\n1A2zaOVEpglZ5SePol8051Oa/J0jQmjaTFs7d++n6CDuEeXZBuZY8seCt/e0mJlF\nGEvxUVXsIg+5tcxEDJodI0taGSpEd+vu2HmP8T/BC6kSFATbQ1B+NtIN9u8r7KBz\nSi4ynBXelQKBgQDVVhYACFrY9Ib/Dfti1HQNB3zSN3/jGBIq1IC/UBijUJb7RyrB\nuCZ2Rc1sm18ZO9QF7/QsCQTbHYcC5qC7sGrt9w/RxfKafw8IPOrg4zhG2RnI3N9D\nujTj6JLOctf0K+7R7ejl/J0lFEmsoJkjKpgruCB+blNUtkcEczFiyfgmAQKBgQDe\n9vy62hNwk9dDWrhG74x+uyuMAcljrtYazHMAe4yw9Lf91a3FDPPDwMRVDgGjcuxz\nWcKcB8La9c0iPi49wJlGb5LD0r4Pdj9zY3yxPLs+b2lof7WBN3Q410SbNL3GYdDN\n89B0sKNDz64hBDr/EJb9kMKMlXl2Dxos8tuL9YHVMQKBgD5Y1zm0RW3Mn/dd7xxQ\naUoE2PvkZbaBLCjr3TIzPIGthaAFBRAe5VlgQjHjkmAXc01SeLh8mwJsWh/kwrui\nvIMRreWbPE8xQSZAtRKDCo+oc/rNXLY1Kbdo/G3LTjpUl/DKwQaq0bil7/YLFX+2\nh0X56hTpPWWeEMj63JmZPkYa\n-----END PRIVATE KEY-----\n";
 
 // if (!admin.apps.length) {
 //   admin.initializeApp({
 //     credential: admin.credential.cert({
-//       projectId: FIREBASE_PROJECT_ID as string,
-//       clientEmail: FIREBASE_CLIENT_EMAIL as string,
-//       privateKey: FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n"),
+//       projectId: id as string,
+//       clientEmail: email as string,
+//       privateKey: key!.replace(/\\n/g, "\n"),
 //     }),
 //   });
 // }

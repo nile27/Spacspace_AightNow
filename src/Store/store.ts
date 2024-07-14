@@ -58,6 +58,7 @@ export type TUserData = {
   stock: string[];
   profile_image?: string;
   logintype?: string;
+  language: string;
 };
 
 export type AuthStore = {

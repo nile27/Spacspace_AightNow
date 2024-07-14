@@ -22,7 +22,6 @@ export default function Login() {
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
   const [regExpArr, setRegExpArr] = useState(true);
-  const [clientLogin, setClientLogin] = useState(false);
 
   const handleOnClick = async () => {
     try {
@@ -48,7 +47,7 @@ export default function Login() {
       const userdata = await googleLogin();
       if (userdata?.isSign === false) {
         const { data } = userdata;
-
+        console.log(userdata);
         for (let key in data) {
           if (data.hasOwnProperty(key)) {
             setInput(key, data[key] as string);
@@ -75,7 +74,7 @@ export default function Login() {
 
   const handleNextAuth = async (type: string) => {
     await signIn(type);
-    setClientLogin(true);
+
     // if (session && session.user && !useAuthStore.getState().user?.phone && session.isNewUser) {
     //   const signUpMember: { [key: string]: string } = {
     //     id: session?.user.id ?? "",
@@ -106,6 +105,7 @@ export default function Login() {
         phone: session?.user.phone ?? "",
         stock: session?.user.stock ?? [],
         birth: session?.user.birth ?? "",
+        language: session?.user.language ?? "",
         logintype: session?.user.logintype ?? "",
       };
       const imgFile = session?.user.profile_image ?? "";
@@ -117,7 +117,7 @@ export default function Login() {
       navi.push("/");
     }
 
-    console.log(session, clientLogin, useAuthStore.getState().user, status);
+    console.log(session, useAuthStore.getState().user, status);
   }, [session, isLoggedIn]);
 
   return (

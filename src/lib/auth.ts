@@ -22,6 +22,7 @@ declare module "next-auth/jwt" {
     createTime?: Timestamp;
     stock?: string[];
     logintype?: string;
+    language: string;
     isNewUser?: boolean;
   }
 }
@@ -33,6 +34,7 @@ declare module "next-auth" {
     birth?: string;
     nickname?: string;
     logintype?: string;
+    language?: string;
     profile_image?: string;
   }
   interface Session {
@@ -46,6 +48,7 @@ declare module "next-auth" {
       profile_image?: string;
       firebaseToken?: string;
       phone?: string;
+      language: string;
       createTime?: Timestamp;
       stock?: string[];
       logintype?: string;
@@ -124,6 +127,7 @@ export const authConfig: NextAuthOptions = {
         token.nickname = "";
         token.stock = [];
         token.logintype = user.logintype;
+        token.language = "kr";
         token.profile_image = user.profile_image;
         token.isNewUser = false;
 
@@ -142,7 +146,7 @@ export const authConfig: NextAuthOptions = {
             const userRef = doc(firestore, "users", existUser.uid);
             const userDoc = await getDoc(userRef);
             const userData = userDoc.data();
-            console.log(userDoc);
+            console.log(userDoc.data());
             if (userData) {
               token.id = userData.userId;
               token.name = userData.name;
@@ -153,6 +157,7 @@ export const authConfig: NextAuthOptions = {
               token.nickname = userData.nickname;
               token.stock = userData.stock;
               token.logintype = userData.logintype;
+              token.language = userData.language;
               token.profile_image = existUser.photoURL;
               token.isNewUser = false;
               console.log("sss");
@@ -175,6 +180,7 @@ export const authConfig: NextAuthOptions = {
         name: token.name,
         email: token.email,
         birth: token.birth,
+        language: token.language,
         firebaseToken: token.firebaseToken,
         profile_image: token.profile_image,
         phone: token.phone,

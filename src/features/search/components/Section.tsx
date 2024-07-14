@@ -40,7 +40,17 @@ export default function Section(props: TSectionProps) {
               {items.slice(0, visibleItems).map((data, index) => (
                 <div key={index} className="flex justify-between items-center rounded-lg">
                   <Link href={`/report/${data.logo}`}>
-                    <Stock data={data} logo={data.logo} gap="gap-[64px]" />
+                    <Stock
+                      data={data}
+                      logo={data.logo}
+                      gap={`${
+                        data.stockName.length < 3 && data.symbolCode.length < 5
+                          ? "gap-[81px]"
+                          : data.stockName.length < 4
+                          ? "gap-[64px]"
+                          : ""
+                      }`}
+                    />
                   </Link>
                 </div>
               ))}

@@ -1,3 +1,4 @@
+import { TStockData } from "@/app/api/(crawler)/type";
 import fireStore from "@/firebase/firestore";
 import {
   collection,
@@ -16,13 +17,14 @@ import { create } from "zustand";
 type TNewsStore = {
   newsList: any[];
   rankList: any[];
+  stockNewsList: any[];
   lastVisible: QueryDocumentSnapshot<DocumentData> | null;
   hasMore: boolean;
   aid: string;
   newsArticle: any;
   fetchNewsList: () => void;
   fetchMoreNews: () => Promise<void>;
-  fetchStockList: (stockName: string[]) => void;
+  fetchStockNewsList: (stockName: string[]) => void;
   fetchRankNewsList: () => void;
   fetchNewsArticle: (params: { id: string }) => void;
 };
@@ -30,6 +32,7 @@ type TNewsStore = {
 export const useNewsStore = create<TNewsStore>((set, get) => ({
   newsList: [],
   rankList: [],
+  stockNewsList: [],
   newsArticle: {} as any,
   lastVisible: null,
   hasMore: true,
@@ -39,13 +42,20 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   fetchNewsList: async () => {
     try {
       const listRef = collection(fireStore, "news");
-      const q = query(listRef, where("stockName", "!=", "rank"), limit(4));
-      const querySnapshot = await getDocs(q);
+      const first = query(
+        listRef,
+        where("stockName", "!=", "rank"),
+        orderBy("dt", "desc"),
+        orderBy("stockName"),
+        limit(4),
+      );
+      const querySnapshot = await getDocs(first);
 
       const newsList = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
       }));
+
       const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
       const hasMore = querySnapshot.docs.length === 4;
 
@@ -64,7 +74,8 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
         const next = query(
           collection(fireStore, "news"),
           where("stockName", "!=", "rank"),
-          // orderBy("dt", "desc"),
+          orderBy("dt", "desc"),
+          orderBy("stockName"),
           startAfter(lastVisible),
           limit(4),
         );
@@ -74,6 +85,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
         const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
         const moreDataAvailable = querySnapshot.docs.length === 4;
 
@@ -88,15 +100,24 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
     }
   },
 
-  // 특정 주식 관련 뉴스 리스트 가져오기
-  fetchStockList: async (stockNames: string[]) => {
+  fetchStockNewsList: async (stockNames: string[]) => {
     try {
       const rankRef = collection(fireStore, "news");
-      const q = query(rankRef, where("stockName", "in", stockNames));
+      const q = query(
+        rankRef,
+        where("stockName", "in", stockNames),
+        orderBy("dt", "desc"),
+        orderBy("stockName"),
+        limit(4),
+      );
       const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      set({ newsList: data });
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      set({ stockNewsList: data });
     } catch (error) {
       console.error("Failed to fetch rank news:", error);
     }
@@ -106,7 +127,13 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   fetchRankNewsList: async () => {
     try {
       const rankRef = collection(fireStore, "news");
-      const q = query(rankRef, where("stockName", "==", "rank"), limit(3));
+      const q = query(
+        rankRef,
+        where("stockName", "==", "rank"),
+        orderBy("dt", "desc"),
+        orderBy("stockName"),
+        limit(3),
+      );
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 

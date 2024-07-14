@@ -17,7 +17,7 @@ const lists = [
 export default function News() {
   const [loading, setLoading] = useState(false);
   const fetchNewsList = useNewsStore(state => state.fetchNewsList);
-  const fetchStockList = useNewsStore(state => state.fetchStockList);
+  const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
   const stockList = useNewsStore(state => state.newsList);
   const data = useNewsStore(state => state.newsList);
 
@@ -25,7 +25,7 @@ export default function News() {
     const fetchData = () => {
       setLoading(true);
       fetchNewsList();
-      fetchStockList(["apple"]);
+      fetchStockNewsList(["apple"]);
       setLoading(false);
     };
     fetchData();

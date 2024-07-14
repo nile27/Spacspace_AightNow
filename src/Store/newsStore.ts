@@ -11,6 +11,10 @@ import {
   startAfter,
   DocumentData,
   QueryDocumentSnapshot,
+  updateDoc,
+  increment,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { create } from "zustand";
 
@@ -22,11 +26,13 @@ type TNewsStore = {
   hasMore: boolean;
   aid: string;
   newsArticle: any;
+  view: number;
   fetchNewsList: () => void;
   fetchMoreNews: () => Promise<void>;
   fetchStockNewsList: (stockName: string[]) => void;
   fetchRankNewsList: () => void;
   fetchNewsArticle: (params: { id: string }) => void;
+  fetchUpdateViews: (id: string) => void;
 };
 
 export const useNewsStore = create<TNewsStore>((set, get) => ({
@@ -37,6 +43,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
   lastVisible: null,
   hasMore: true,
   aid: "",
+  view: 0,
 
   // 초기 데이터 로드 함수
   fetchNewsList: async () => {
@@ -160,6 +167,22 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       }
     } catch (error) {
       console.error("Failed to fetch news article:", error);
+    }
+  },
+  fetchUpdateViews: async (id: string) => {
+    try {
+      const newsRef = doc(fireStore, "news", id);
+      await updateDoc(newsRef, {
+        views: increment(1),
+      });
+
+      const docSnapshot = await getDoc(newsRef);
+      if (docSnapshot.exists()) {
+        const updatedViews = docSnapshot.data().views;
+        set({ view: updatedViews });
+      }
+    } catch (error) {
+      console.error("Failed to update views:", error);
     }
   },
 }));

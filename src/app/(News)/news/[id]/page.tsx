@@ -37,6 +37,8 @@ export default function NewsDetail({ params }: TPageProps) {
   const [stockDataList, setStockDataList] = useState<any[]>([]);
   const fetchNewsArticle = useNewsStore(state => state.fetchNewsArticle);
   const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
+  const fetchUpdateViews = useNewsStore(state => state.fetchUpdateViews);
+  const view = useNewsStore(state => state.view);
   const fetchStockData = useStockStore(state => state.fetchStockData);
   const stockData = useStockStore(state => state.stockData);
   const stockNewsList = useNewsStore(state => state.stockNewsList);
@@ -47,10 +49,11 @@ export default function NewsDetail({ params }: TPageProps) {
       setLoading(true);
       await fetchNewsArticle({ id });
       await fetchStockData();
+      await fetchUpdateViews(id);
       setLoading(false);
     };
     fetchData();
-  }, [id]);
+  }, [id, fetchNewsArticle, fetchStockData, fetchUpdateViews]);
 
   useEffect(() => {
     if (article.relatedItems) {
@@ -85,7 +88,7 @@ export default function NewsDetail({ params }: TPageProps) {
                     : formatDateTime(article.published)}
                 </div>
                 <div className="text-right">∙</div>
-                <div className="text-right">조회수 {article.view}회</div>
+                <div className="text-right">조회수 {view}회</div>
               </div>
               <div className="mt-3">
                 <TextButton size="custom" width="176px" height="36px" icon="Translate">

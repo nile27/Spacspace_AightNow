@@ -1,129 +1,59 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { useNewsStore, useStockStore } from "@/Store/newsStore";
 import Section from "./Section";
-
-const fetchSearchResults = [
-  {
-    reutersCode: "AAPL.O",
-    stockName: "애플",
-    symbolCode: "AAPL",
-    closePrice: "145.86",
-    compareToPreviousPrice: {
-      text: "하락",
-    },
-    compareToPreviousClosePrice: "0.86",
-    fluctuationsRatio: "2.00",
-    logo: "apple",
-  },
-  {
-    reutersCode: "GOOGL.O",
-    stockName: "구글",
-    symbolCode: "GOOGL",
-    closePrice: "2,763.82",
-    compareToPreviousPrice: {
-      text: "상승",
-    },
-    compareToPreviousClosePrice: "0.86",
-    fluctuationsRatio: "2.00",
-    logo: "google",
-  },
-  {
-    reutersCode: "AMZN.O",
-    stockName: "아마존",
-    symbolCode: "AMZN",
-    closePrice: "3,599.92",
-    compareToPreviousPrice: {
-      text: "하락",
-    },
-    compareToPreviousClosePrice: "0.86",
-    fluctuationsRatio: "2.00",
-    logo: "amazon",
-  },
-  {
-    reutersCode: "MSFT.O",
-    stockName: "마이크로소프트",
-    symbolCode: "MSFT",
-    closePrice: "304.80",
-    compareToPreviousPrice: {
-      text: "상승",
-    },
-    compareToPreviousClosePrice: "0.86",
-    fluctuationsRatio: "2.00",
-    logo: "microsoft",
-  },
-];
-
-const news = [
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-  {
-    title: `일본, '빅테크 규제법' 내년 시행…"사실상 애플·구글 규제"`,
-    time: "n시간 전",
-    company: "문화일보",
-  },
-];
 
 function SearchPanel(props: any) {
   const { searchTerm } = props;
   const [visibleItems, setVisibleItems] = useState(6);
   const [visibleNews, setVisibleNews] = useState(5);
+  const [loading, setLoading] = useState(false);
+  const fetchNewsList = useNewsStore(state => state.fetchNewsList);
+  const fetchStockList = useStockStore(state => state.fetchStockData);
+  const stockData = useStockStore(state => state.stockData);
+  const newsList = useNewsStore(state => state.newsList);
+  const term = searchTerm.toLowerCase().trim();
 
+  useEffect(() => {
+    const fetchData = () => {
+      setLoading(true);
+      fetchStockList(); // 주식 데이터 가져오기
+      fetchNewsList(); // 뉴스 데이터 가져오기
+      setLoading(false);
+    };
+    fetchData();
+  }, [searchTerm, fetchStockList, fetchNewsList]);
+
+  // 더보기 버튼 클릭 시 호출되는 함수
   const handleLoadMoreItems = () => {
-    setVisibleItems(prevVisibleItems => Math.min(prevVisibleItems + 6, fetchSearchResults.length));
+    setVisibleItems(prevVisibleItems => Math.min(prevVisibleItems + 6, stockData.length));
   };
 
   const handleLoadMoreNews = () => {
-    setVisibleNews(visibleNews + 5);
+    setVisibleNews(prevVisibleNews => prevVisibleNews + 5);
   };
 
+  // 검색어에 따라 주식, 뉴스 데이터 필터링
   const filteredItems = useMemo(() => {
-    if (!searchTerm) return fetchSearchResults;
-    return fetchSearchResults.filter(
+    if (!term || !stockData) return [];
+    return stockData.filter(
       item =>
-        item.stockName.toLowerCase().includes(searchTerm) || item.symbolCode.includes(searchTerm),
+        item.stockName.includes(searchTerm) || // "애플"
+        item.reutersCode.toLowerCase().includes(term) || // "AAPL.O"
+        item.logo.toLowerCase().includes(term), // "apple"
     );
-  }, [searchTerm]);
+  }, [searchTerm, stockData]);
+
+  console.log(stockData);
 
   const filteredNews = useMemo(() => {
-    if (!searchTerm) return news;
-    return news.filter(item => item.title.toLowerCase().includes(searchTerm));
-  }, [searchTerm]);
+    if (!term || !newsList) return [];
+    return newsList.filter(
+      item => item.tit.toLowerCase().includes(term) || item.content.includes(term),
+    );
+  }, [searchTerm, newsList]);
 
-  console.log("SearchPanel");
   return (
     <>
       <div className="flex justify-center items-start w-full h-full">

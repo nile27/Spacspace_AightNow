@@ -78,7 +78,7 @@ export default function Stock({ logo, gap, data }: TStock) {
                     compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
                   } text-xs font-normal font-['Pretendard'] leading-none`}
                 >
-                  {compareToPreviousPrice.text === "하락" ? "-" : "+"}
+                  {compareToPreviousPrice.text === "하락" ? "" : "+"}
                   {fluctuationsRatio}%
                 </div>
               </div>

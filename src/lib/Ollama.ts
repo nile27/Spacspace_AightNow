@@ -41,7 +41,7 @@ export async function agentChat(id: string) {
     }),
     func: async () => {
       try {
-        const stockInfo = await stockAction4();
+        const stockInfo = await stockAction4(id);
         return JSON.stringify(stockInfo);
       } catch (error) {
         console.error("Error fetching stock data:", error);
@@ -109,7 +109,7 @@ export async function agentEvaluation(id: string) {
     }),
     func: async () => {
       try {
-        const stockInfo = await stockAction4();
+        const stockInfo = await stockAction4(id);
         return JSON.stringify(stockInfo);
       } catch (error) {
         console.error("Error fetching stock data:", error);

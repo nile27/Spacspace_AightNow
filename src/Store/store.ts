@@ -19,10 +19,6 @@ type TCloseStore = {
   setIsClose: (isClose: boolean) => void;
 };
 
-type TRemoveStore = {
-  removeFromWatchList: (id: number) => void;
-};
-
 export type TmemberText = {
   id: string;
   email: string;

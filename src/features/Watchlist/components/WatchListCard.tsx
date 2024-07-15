@@ -1,11 +1,30 @@
-import { useShow } from "@/Store/store";
 import Icon from "@/components/Stock/Icon";
-import Stock from "@/components/Stock/Stock";
 import TextButton from "@/components/btnUi/TextButton";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function WatchListCard({ name }: { name: string }) {
+export type TStockInfo = {
+  stockName: string;
+  reutersCode: string;
+  closePrice: number;
+  compareToPreviousClosePrice: number;
+  fluctuationsRatio: number;
+};
+
+type TStockDetail = {
+  stockPriceInfo: TStockInfo;
+  name: string;
+  stockInfo: string[];
+};
+
+export default function WatchListCard({ name, stockInfo, stockPriceInfo }: TStockDetail) {
+  const { reutersCode, closePrice, compareToPreviousClosePrice, fluctuationsRatio } =
+    stockPriceInfo;
+
+  const handleDelete = () => {
+    stockInfo.filter((item, idx) => item === stockInfo[idx]);
+  };
+
   return (
     <>
       <div className={`w-[392px] h-[360px]   bg-white rounded-2xl p-4 font-pretendard`}>
@@ -13,12 +32,12 @@ export default function WatchListCard({ name }: { name: string }) {
           <div className="flex items-center gap-2 ">
             <Icon name={name} size={32} />
             <span className="font-bold">{name}</span>
-            <span className="text-scaleGray-600">AAPL</span>
+            <span className="text-scaleGray-600">{reutersCode}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span>$00.00</span>
-            <span className="text-warning">1.75</span>
-            <span className="text-warning">+0.82%</span>
+            <span>${closePrice}</span>
+            <span className="text-warning">{compareToPreviousClosePrice}</span>
+            <span className="text-warning">{fluctuationsRatio}%</span>
           </div>
         </div>
         <div className="w-[365px]  flex  justify-between ">
@@ -32,7 +51,13 @@ export default function WatchListCard({ name }: { name: string }) {
           <Image src="/result.png" alt="result" width={176} height={176} className="" />
         </div>
         <div className=" flex gap-4 justify-center items-center">
-          <TextButton size="custom" color="grayScale" width={"160px"} height={"56px"}>
+          <TextButton
+            size="custom"
+            color="grayScale"
+            width={"160px"}
+            height={"56px"}
+            onClick={handleDelete}
+          >
             삭제하기
           </TextButton>
           <Link href={`/report/${name}`}>

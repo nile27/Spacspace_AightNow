@@ -51,18 +51,19 @@ export default function MainProfile() {
               이용해보세요.
             </span>
           </div>
-
-          <TextButton
-            size="custom"
-            width="200px"
-            height="36px"
-            onClick={() => {
-              setModal(!isModal);
-              setIdx(1);
-            }}
-          >
-            계정정보 수정
-          </TextButton>
+          {user?.logintype === " none" && (
+            <TextButton
+              size="custom"
+              width="200px"
+              height="36px"
+              onClick={() => {
+                setModal(!isModal);
+                setIdx(1);
+              }}
+            >
+              계정정보 수정
+            </TextButton>
+          )}
         </div>
         <div className="w-full h-auto mt-8 mb-5 flex ">
           <span className="mr-[120px] w-[56px]">아이디</span>

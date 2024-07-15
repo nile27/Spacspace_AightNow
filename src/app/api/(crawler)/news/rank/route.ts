@@ -73,6 +73,7 @@ const fetchRankNews = async (page: Page) => {
           content: contentElement.outerHTML,
           image: imageElement?.src,
           stockName: "rank",
+          relatedItems: null,
         };
       });
 

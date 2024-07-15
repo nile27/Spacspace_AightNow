@@ -13,8 +13,8 @@ export type TStockinfo = {
   reutersCode: string;
 };
 
-type TSummary = {
-  overview: string;
+export type TSummary = {
+  overview?: string;
   stockInfo: TStockinfo;
   exchange: string;
 };

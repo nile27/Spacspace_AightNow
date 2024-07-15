@@ -12,6 +12,7 @@ type TStockData = {
 };
 
 type TNewsList = {
+  id?: string;
   stockName: string;
   subcontent: string; // 리스트에 쓰일 내용
   content: string; // 뉴스 기사

@@ -6,6 +6,7 @@ import ListNews from "../../../components/List/ListNews";
 import { useEffect, useState } from "react";
 import { useNewsStore } from "@/Store/newsStore";
 import { extractTextFromHTML } from "@/features/news/components/common";
+import { useAuthStore } from "@/Store/store";
 
 const lists = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0 },
@@ -14,18 +15,32 @@ const lists = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0 },
 ];
 
+const nameMapping: { [key: string]: string } = {
+  애플: "apple",
+  구글: "google",
+  아마존: "amazon",
+  마이크로소프트: "microsoft",
+  유니티: "unity",
+};
+
+export const convertName = (name: string) => {
+  return nameMapping[name] || name;
+};
+
 export default function News() {
   const [loading, setLoading] = useState(false);
   const fetchNewsList = useNewsStore(state => state.fetchNewsList);
   const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
-  const stockList = useNewsStore(state => state.newsList);
+  const stockList = useNewsStore(state => state.stockNewsList);
   const data = useNewsStore(state => state.newsList);
+  const { user } = useAuthStore();
+  const changeStockName = user?.stock.map(item => convertName(item));
 
   useEffect(() => {
     const fetchData = () => {
       setLoading(true);
       fetchNewsList();
-      fetchStockNewsList(["apple"]);
+      fetchStockNewsList(changeStockName as string[]);
       setLoading(false);
     };
     fetchData();

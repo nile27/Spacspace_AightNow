@@ -11,6 +11,7 @@ import { useAuthStore, useLoginStore } from "@/Store/store";
 import { stockAction2 } from "@/lib/stockAction";
 import { TStockInfo } from "../Watchlist/components/WatchListCard";
 import { useStockStore } from "@/Store/newsStore";
+import Link from "next/link";
 
 const datas = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },
@@ -69,18 +70,6 @@ const lists = [
   },
 ];
 
-const nameMapping: { [key: string]: string } = {
-  애플: "apple",
-  구글: "google",
-  아마존: "amazon",
-  마이크로소프트: "microsoft",
-  유니티: "unity",
-};
-
-const convertName = (name: string) => {
-  return nameMapping[name] || name;
-};
-
 export default function UserHome() {
   const [isShow, setIsShow] = useState(false);
   const { user, profile } = useAuthStore();
@@ -89,24 +78,15 @@ export default function UserHome() {
   // const [stockPriceInfo, setStockPriceInfo] = useState<TStockInfo | null>(null);
   useEffect(() => {
     async function fetchData() {
-      changeStockName?.map(async item => {
-        try {
-          // const stockPriceInfo = await stockAction2(item);
-          fetchStockList(); // 주식 데이터 가져오기
-        } catch (error) {
-          console.log(error);
-        }
-      });
+      try {
+        fetchStockList(); // 주식 데이터 가져오기
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     fetchData();
   }, []);
-
-  const changeStockName = user?.stock.map(item => convertName(item));
-
-  console.log();
-
-  // console.log(changeStockName);
 
   return (
     <>
@@ -170,17 +150,19 @@ export default function UserHome() {
                       .filter(item => user?.stock.includes(item.stockName))
                       .map((data, index) => (
                         <div key={index} className="flex justify-between items-center rounded-lg">
-                          <Stock
-                            data={data}
-                            logo={data.logo}
-                            gap={`${
-                              data.stockName.length < 3 && data.symbolCode.length < 5
-                                ? "gap-[291px]"
-                                : data.stockName.length < 4
-                                ? "gap-[274px]"
-                                : "gap-[210px]"
-                            }`}
-                          />
+                          <Link href={`/report/${data.logo}`}>
+                            <Stock
+                              data={data}
+                              logo={data.logo}
+                              gap={`${
+                                data.stockName.length < 3 && data.symbolCode.length < 5
+                                  ? "gap-[291px]"
+                                  : data.stockName.length < 4
+                                  ? "gap-[274px]"
+                                  : "gap-[210px]"
+                              }`}
+                            />
+                          </Link>
                         </div>
                       ))}
                   </div>

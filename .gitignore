@@ -6,8 +6,8 @@
 .pnp.js
 .yarn/install-state.gz
 
-/src/config/serviceAccountKey.json
-/src/config/serviceAccountKey1.json
+src/config/serviceAccountKey1.json
+
 
 
 # testing

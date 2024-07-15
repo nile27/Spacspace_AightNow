@@ -4,7 +4,7 @@ import StockList from "@/components/Stock/StockList";
 import WatchInput from "./WatchInput";
 import Header from "@/components/Header";
 import BasicIcon from "@/components/Icon/BasicIcons";
-import { useClose, useShow } from "@/Store/store";
+import { useClose, useShow, useWatchList } from "@/Store/store";
 import { useState } from "react";
 import fireStore from "@/firebase/firestore";
 import { doc, updateDoc, increment } from "firebase/firestore";
@@ -20,7 +20,11 @@ export type TStockSearch = {
   view?: number;
 };
 
-export default function WatchListAdd() {
+type TWatchListAddProps = {
+  onAddStock?: (stock: TStockSearch) => void;
+};
+
+export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
   const { isClose, setIsClose } = useClose();
   const { isShow, setIsShow } = useShow();
   const [searchResults, setSearchResults] = useState<TStockSearch[]>([]);
@@ -40,6 +44,8 @@ export default function WatchListAdd() {
 
   const handleSelectStock = async (stock: TStockSearch) => {
     await handleItemClick(stock);
+
+    if (onAddStock) onAddStock(stock);
   };
 
   const handleItemClick = async (stock: TStockSearch) => {
@@ -51,9 +57,9 @@ export default function WatchListAdd() {
       });
 
       // 로컬 상태 업데이트
-      setSearchResults(prevResults =>
-        prevResults.map(s => (s.id === stock.id ? { ...s, view: (s.view || 0) + 1 } : s)),
-      );
+      // setSearchResults(prevResults =>
+      //   prevResults.map(s => (s.id === stock.id ? { ...s, view: (s.view || 0) + 1 } : s)),
+      // );
 
       // 관심 목록에 추가 (중복 체크)
       setWatchList(prevList => {
@@ -84,7 +90,7 @@ export default function WatchListAdd() {
 
           {searchResults.length > 0 ? (
             <div className="w-[714px] mt-12">
-              <h2 className="text-lg text-mainNavy-900">검색 결과</h2>
+              <h2 className="text-lg text-mainNavy-900 ">검색 결과</h2>
               <ul className="w-[712px] bg-white border border-scaleGray-400 rounded-lg">
                 {searchResults.map(stock => (
                   <li key={stock.id} className="p-4  flex items-center rounded-lg">

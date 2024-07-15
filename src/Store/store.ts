@@ -74,6 +74,11 @@ type TExchangeStore = {
   setIsChange: (isChange: boolean) => void;
 };
 
+type TStockSearch = {
+  stockWatchList: string;
+  setStockWatchList: (watchList: string) => void;
+};
+
 export const useShow = create<TShoStore>()(set => ({
   isShow: false,
   setIsShow: isShow => set({ isShow }),
@@ -173,4 +178,9 @@ export const useStockStore = create<TStockStore>(set => ({
 export const useExchange = create<TExchangeStore>(set => ({
   isChange: false,
   setIsChange: isChange => set({ isChange }),
+}));
+
+export const useWatchList = create<TStockSearch>(set => ({
+  stockWatchList: "",
+  setStockWatchList: stockWatchList => set({ stockWatchList }),
 }));

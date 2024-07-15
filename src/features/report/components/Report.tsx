@@ -5,8 +5,7 @@ import Chart from "./Chart";
 
 import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
-import { addDoc, collection, getDoc, deleteDoc } from "firebase/firestore";
-import fireStore from "@/firebase/firestore";
+
 import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";
 import { stockRealTime } from "@/app/api/stock/route";
 import AIReport from "./AIReport";
@@ -20,6 +19,7 @@ export default async function Report({ id }: TParams) {
   const appleStock = await stockAction(id);
   const appleStock2 = await stockAction2(id);
   const { stockName, reutersCode } = appleStock2;
+  console.log(appleStock2);
   const stockCode = reutersCode.split(".")[0];
   const stockHistory = await stockRealTime(id);
 

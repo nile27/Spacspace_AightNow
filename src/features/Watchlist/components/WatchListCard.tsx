@@ -14,15 +14,15 @@ export type TStockInfo = {
 type TStockDetail = {
   stockPriceInfo: TStockInfo;
   name: string;
-  stockInfo: string[];
+  onDelete: () => void;
 };
 
-export default function WatchListCard({ name, stockInfo, stockPriceInfo }: TStockDetail) {
+export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStockDetail) {
   const { reutersCode, closePrice, compareToPreviousClosePrice, fluctuationsRatio } =
     stockPriceInfo;
 
   const handleDelete = () => {
-    stockInfo.filter((item, idx) => item === stockInfo[idx]);
+    onDelete();
   };
 
   return (
@@ -51,15 +51,17 @@ export default function WatchListCard({ name, stockInfo, stockPriceInfo }: TStoc
           <Image src="/result.png" alt="result" width={176} height={176} className="" />
         </div>
         <div className=" flex gap-4 justify-center items-center">
-          <TextButton
-            size="custom"
-            color="grayScale"
-            width={"160px"}
-            height={"56px"}
-            onClick={handleDelete}
-          >
-            삭제하기
-          </TextButton>
+          <div className="hover:opacity-80">
+            <TextButton
+              size="custom"
+              color="grayScale"
+              width={"160px"}
+              height={"56px"}
+              onClick={handleDelete}
+            >
+              삭제하기
+            </TextButton>
+          </div>
           <Link href={`/report/${name}`}>
             <TextButton size="custom" width={"160px"} height={"56px"}>
               자세히 보기

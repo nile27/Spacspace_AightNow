@@ -2,28 +2,45 @@
 
 import TextButton from "@/components/btnUi/TextButton";
 import WatchListCard, { TStockInfo } from "./WatchListCard";
-import { useClose, useShow } from "@/Store/store";
+import { useClose, useShow, useWatchList } from "@/Store/store";
 import Header from "@/components/Header";
-import WatchListAdd from "./WatchListAdd";
+import WatchListAdd, { TStockSearch } from "./WatchListAdd";
 import { stockAction2 } from "@/lib/stockAction";
 import { useEffect, useState } from "react";
+import fireStore from "@/firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 export default function WatchList() {
   const { isShow, setIsShow } = useShow();
   const { isClose, setIsClose } = useClose();
   const [stockPriceInfo, setStockPriceInfo] = useState<TStockInfo | null>(null);
+  const [wathchList, setWatchList] = useState<TStockSearch[]>([]);
+  const db = collection(fireStore, "stockSearchList");
+
+  const { stockWatchList } = useWatchList();
 
   const handleAdd = () => {
     setIsShow(!isShow);
     setIsClose(!isClose);
   };
 
-  const testArr = ["apple", "google", "microsoft", "amazon", "unity", "tesla"];
+  const handleAddStock = (stock: TStockSearch) => {
+    setWatchList(prev => {
+      if (!prev.some(item => item.symbol === stock.symbol)) {
+        return [...prev, stock];
+      }
+      return prev;
+    });
+  };
+
+  const handleDelete = (stockToDelete: TStockSearch) => {
+    setWatchList(prev => prev.filter(stock => stock.id !== stockToDelete.id));
+  };
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const stockPriceInfo = await stockAction2("apple");
+        const stockPriceInfo = await stockAction2(stockWatchList);
         setStockPriceInfo(stockPriceInfo);
       } catch (error) {
         console.log(error);
@@ -46,13 +63,13 @@ export default function WatchList() {
               </TextButton>
             </div>
             <div className={"my-6 grid grid-cols-3  gap-5"}>
-              {testArr.map(
+              {wathchList.map(
                 (item, idx) =>
                   stockPriceInfo && (
                     <WatchListCard
                       key={idx}
-                      name={item}
-                      stockInfo={testArr}
+                      name={item.nameEn}
+                      onDelete={() => handleDelete(item)}
                       stockPriceInfo={stockPriceInfo}
                     />
                   ),
@@ -60,7 +77,7 @@ export default function WatchList() {
             </div>
           </div>
         </div>
-        {isClose ? "" : <WatchListAdd />}
+        {isClose ? "" : <WatchListAdd onAddStock={handleAddStock} />}
       </div>
     </>
   );

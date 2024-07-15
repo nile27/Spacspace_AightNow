@@ -4,6 +4,9 @@ import BasicIcon from "@/components/Icon/BasicIcons";
 import { getStockSearch } from "@/lib/getStockSearch";
 import { useEffect, useRef, useState } from "react";
 import { TStockSearch } from "./WatchListAdd";
+import { useWatchList } from "@/Store/store";
+import { collection, setDoc } from "firebase/firestore";
+import fireStore from "@/firebase/firestore";
 
 type WatchInputProps = {
   onSearch: (results: TStockSearch[]) => void;
@@ -47,13 +50,18 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
   };
 
   const handleItemClick = (stock: TStockSearch) => {
-    setSearch(stock.name);
+    setSearch(stock.nameEn);
     setIsShow(false);
     onSelectStock(stock);
   };
 
   const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
+    const db = collection(fireStore, "userStockWatchList");
+    setDoc.doc(db, "userStockWatchList", {
+      name: search,
+      id: "test1234",
+    });
     onSearch(filteredStocks);
     setIsShow(false);
   };
@@ -94,7 +102,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
           </ul>
         )}
       </form>
-      <h2 className="text-mainNavy-900 text-xl">최근 검색한 종목</h2>
+      {search.length === 0 && <h2 className="text-mainNavy-900 text-xl">최근 검색한 종목</h2>}
     </>
   );
 }

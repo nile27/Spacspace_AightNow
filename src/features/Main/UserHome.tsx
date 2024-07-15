@@ -4,9 +4,13 @@ import { BadgeBlack } from "../../components/Badge/Badge";
 import News from "./components/News";
 import Report from "./components/Report";
 import IconButton from "@/components/btnUi/IconButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Warning from "../../../public/icons/Warning.svg";
 import ChatBot from "../chatbot/ChatBot";
+import { useAuthStore, useLoginStore } from "@/Store/store";
+import { stockAction2 } from "@/lib/stockAction";
+import { TStockInfo } from "../Watchlist/components/WatchListCard";
+import { useStockStore } from "@/Store/newsStore";
 
 const datas = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },
@@ -65,8 +69,45 @@ const lists = [
   },
 ];
 
+const nameMapping: { [key: string]: string } = {
+  애플: "apple",
+  구글: "google",
+  아마존: "amazon",
+  마이크로소프트: "microsoft",
+  유니티: "unity",
+};
+
+const convertName = (name: string) => {
+  return nameMapping[name] || name;
+};
+
 export default function UserHome() {
   const [isShow, setIsShow] = useState(false);
+  const { user, profile } = useAuthStore();
+  const fetchStockList = useStockStore(state => state.fetchStockData);
+  const stockData = useStockStore(state => state.stockData);
+  // const [stockPriceInfo, setStockPriceInfo] = useState<TStockInfo | null>(null);
+  useEffect(() => {
+    async function fetchData() {
+      changeStockName?.map(async item => {
+        try {
+          // const stockPriceInfo = await stockAction2(item);
+          fetchStockList(); // 주식 데이터 가져오기
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    }
+
+    fetchData();
+  }, []);
+
+  const changeStockName = user?.stock.map(item => convertName(item));
+
+  console.log();
+
+  // console.log(changeStockName);
+
   return (
     <>
       <div className="flex justify-center items-start w-full mt-[139px]">
@@ -125,21 +166,23 @@ export default function UserHome() {
                 <div className="text-scaleGray-900 text-3xl font-bold leading-9">관심 종목</div>
                 <div className="px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
                   <div className="w-full min-h-[300px] flex flex-col justify-center items-center gap-4">
-                    {lists.map((data, index) => (
-                      <div key={index} className="flex justify-between items-center rounded-lg">
-                        <Stock
-                          data={data}
-                          logo={data.logo}
-                          gap={`${
-                            data.stockName.length < 3 && data.symbolCode.length < 5
-                              ? "gap-[291px]"
-                              : data.stockName.length < 4
-                              ? "gap-[274px]"
-                              : "gap-[210px]"
-                          }`}
-                        />
-                      </div>
-                    ))}
+                    {stockData
+                      .filter(item => user?.stock.includes(item.stockName))
+                      .map((data, index) => (
+                        <div key={index} className="flex justify-between items-center rounded-lg">
+                          <Stock
+                            data={data}
+                            logo={data.logo}
+                            gap={`${
+                              data.stockName.length < 3 && data.symbolCode.length < 5
+                                ? "gap-[291px]"
+                                : data.stockName.length < 4
+                                ? "gap-[274px]"
+                                : "gap-[210px]"
+                            }`}
+                          />
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -155,11 +198,11 @@ export default function UserHome() {
           </div>
         </div>
         <div className="fixed bottom-4 right-4 py-2 px-4">
-          {isShow ? (
+          {/* {isShow ? (
             <ChatBot onClick={() => setIsShow(false)} />
           ) : (
             <IconButton size="chatBot" icon="ChatBot" onClick={() => setIsShow(true)} />
-          )}
+          )} */}
         </div>
       </div>
     </>

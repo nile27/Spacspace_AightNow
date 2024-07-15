@@ -5,7 +5,7 @@ import France from "../../../public/icons/France.svg";
 import Japan from "../../../public/icons/Japan.svg";
 import Korea from "../../../public/icons/Korea.svg";
 type TIconButton = React.ComponentProps<"button"> & {
-  style: "en" | "ch" | "fr" | "jp" | "kr";
+  style: "en-US" | "ZH" | "FR" | "JA" | "KO";
   focusBtn: boolean;
 };
 
@@ -15,15 +15,15 @@ export default function LanguageButton(props: TIconButton) {
   // 국기 조건 스타일링
   const renderIcon = (style: TIconButton["style"]) => {
     switch (style) {
-      case "kr":
+      case "KO":
         return <Korea width="72" height="72" />;
-      case "en":
+      case "en-US":
         return <English width="72" height="72" />;
-      case "ch":
+      case "ZH":
         return <China width="72" height="72" />;
-      case "fr":
+      case "FR":
         return <France width="72" height="72" />;
-      case "jp":
+      case "JA":
         return <Japan width="72" height="72" />;
       default:
         return null;
@@ -33,15 +33,15 @@ export default function LanguageButton(props: TIconButton) {
   // 텍스트 조건 스타일링
   const renderButtonText = (style: TIconButton["style"]) => {
     switch (style) {
-      case "kr":
+      case "KO":
         return "한국어";
-      case "en":
+      case "en-US":
         return "영어";
-      case "ch":
+      case "ZH":
         return "중국어";
-      case "fr":
+      case "FR":
         return "프랑스어";
-      case "jp":
+      case "JA":
         return "일본어";
       default:
         return "";

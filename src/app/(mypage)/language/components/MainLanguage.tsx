@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function MainLanguage() {
   const focusBtn = useAuthStore.getState().user?.language;
-  const [focus, setFocus] = useState(focusBtn || "kr");
+  const [focus, setFocus] = useState(focusBtn || "KO");
 
   const handleLanguageChange = async (language: string) => {
     try {
@@ -29,29 +29,29 @@ export default function MainLanguage() {
       </div>
       <div className="w-full h-auto flex gap-[20px] flex-wrap">
         <LanguageButton
-          style={"kr"}
-          onClick={() => handleLanguageChange("kr")}
-          focusBtn={focus === "kr"}
+          style={"KO"}
+          onClick={() => handleLanguageChange("KO")}
+          focusBtn={focus === "KO"}
         />
         <LanguageButton
-          style={"en"}
-          onClick={() => handleLanguageChange("en")}
-          focusBtn={focus === "en"}
+          style={"en-US"}
+          onClick={() => handleLanguageChange("en-US")}
+          focusBtn={focus === "en-US"}
         />
         <LanguageButton
-          style={"ch"}
-          onClick={() => handleLanguageChange("ch")}
-          focusBtn={focus === "ch"}
+          style={"ZH"}
+          onClick={() => handleLanguageChange("ZH")}
+          focusBtn={focus === "ZH"}
         />
         <LanguageButton
-          style={"jp"}
-          onClick={() => handleLanguageChange("jp")}
-          focusBtn={focus === "jp"}
+          style={"JA"}
+          onClick={() => handleLanguageChange("JA")}
+          focusBtn={focus === "JA"}
         />
         <LanguageButton
-          style={"fr"}
-          onClick={() => handleLanguageChange("fr")}
-          focusBtn={focus === "fr"}
+          style={"FR"}
+          onClick={() => handleLanguageChange("FR")}
+          focusBtn={focus === "FR"}
         />
       </div>
     </main>

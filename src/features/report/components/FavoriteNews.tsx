@@ -8,7 +8,7 @@ export default function FavoriteNews() {
   const [loading, setLoading] = useState(false);
 
   const fetchRankNewsList = useNewsStore(state => state.fetchRankNewsList);
-  const rankNewsList = useNewsStore(state => state.newsList);
+  const rankNewsList = useNewsStore(state => state.rankList);
   useEffect(() => {
     const fetchData = () => {
       setLoading(true);
@@ -23,7 +23,7 @@ export default function FavoriteNews() {
   return (
     <>
       <div className="w-[1200px] h-[480px] font-['pretendard'] ">
-        <h1 className="font-bold text-2xl">오늘 인기 있는 뉴스</h1>
+        <h1 className="font-bold text-2xl mb-6">오늘 인기 있는 뉴스</h1>
         <div className="flex justify-between">
           {rankNewsList.slice(0, 1).map(data => (
             <Link

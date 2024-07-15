@@ -49,7 +49,11 @@ import { join } from "path";
 
 const serviceAccountPath = process.env.FIREBASE_ADMIN_SDK_KEY as string;
 console.log(`Using service account key file at: ${serviceAccountPath}`);
-const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, "utf8"));
+// const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, "utf8"));
+const base64EncodedKey = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+const serviceAccount = JSON.parse(
+  Buffer.from(base64EncodedKey as string, "base64").toString("utf8"),
+);
 
 if (!admin.apps.length) {
   console.log("Initializing Firebase Admin SDK...");

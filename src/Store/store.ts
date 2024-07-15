@@ -46,6 +46,7 @@ export type TInputState = {
 
 export type TUserData = {
   id: string;
+  userId?: string;
   email: string;
   name: string;
   nickname: string;
@@ -54,10 +55,12 @@ export type TUserData = {
   stock: string[];
   profile_image?: string;
   logintype?: string;
+  language: string;
 };
 
 export type AuthStore = {
   user: TUserData | null;
+
   profile: string | null;
   setUser: (user: TUserData) => void;
   setProfile: (profile: string) => void;

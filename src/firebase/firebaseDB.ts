@@ -43,6 +43,16 @@ const firebaseConfig = {
 //   measurementId: "G-GMBX9WMFYP",
 // };
 
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAP2FAj8Mp6wvH5k9mIJiHrMl_oWJw0qms",
+//   authDomain: "new-aight-now.firebaseapp.com",
+//   projectId: "new-aight-now",
+//   storageBucket: "new-aight-now.appspot.com",
+//   messagingSenderId: "869300930084",
+//   appId: "1:869300930084:web:26108287f1efcbee27fab1",
+//   measurementId: "G-E7SPD9JQC9",
+// };
+console.log(firebaseConfig.projectId);
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
 const auth = getAuth(app);

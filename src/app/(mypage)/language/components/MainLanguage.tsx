@@ -1,6 +1,22 @@
+"use client";
 import LanguageButton from "@/components/btnUi/LanguageButton";
+import { updateLanguage } from "../../utills/updateLanguage";
+import { useAuthStore } from "@/Store/store";
+import { useState } from "react";
 
 export default function MainLanguage() {
+  const focusBtn = useAuthStore.getState().user?.language;
+  const [focus, setFocus] = useState(focusBtn || "kr");
+
+  const handleLanguageChange = async (language: string) => {
+    try {
+      await updateLanguage(language);
+      setFocus(language);
+    } catch (error) {
+      console.error("언어 업데이트 중 오류 발생:", error);
+    }
+  };
+
   return (
     <main className="w-full h-auto rounded-2xl p-[32px] min-h-[500px] bg-white ">
       <div className="w-full h-auto flex justify-between items-center mb-[24px]">
@@ -12,11 +28,31 @@ export default function MainLanguage() {
         </div>
       </div>
       <div className="w-full h-auto flex gap-[20px] flex-wrap">
-        <LanguageButton style={"kr"} />
-        <LanguageButton style={"en"} />
-        <LanguageButton style={"ch"} />
-        <LanguageButton style={"jp"} />
-        <LanguageButton style={"fr"} />
+        <LanguageButton
+          style={"kr"}
+          onClick={() => handleLanguageChange("kr")}
+          focusBtn={focus === "kr"}
+        />
+        <LanguageButton
+          style={"en"}
+          onClick={() => handleLanguageChange("en")}
+          focusBtn={focus === "en"}
+        />
+        <LanguageButton
+          style={"ch"}
+          onClick={() => handleLanguageChange("ch")}
+          focusBtn={focus === "ch"}
+        />
+        <LanguageButton
+          style={"jp"}
+          onClick={() => handleLanguageChange("jp")}
+          focusBtn={focus === "jp"}
+        />
+        <LanguageButton
+          style={"fr"}
+          onClick={() => handleLanguageChange("fr")}
+          focusBtn={focus === "fr"}
+        />
       </div>
     </main>
   );

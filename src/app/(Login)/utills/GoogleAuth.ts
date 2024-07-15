@@ -32,16 +32,25 @@ export const googleLogin = async (): Promise<LoginResponse | undefined> => {
         email: user.email || "",
         logintype: "google",
       };
+      const userProfile = userSnap.data();
+
       console.log(userSnap.data());
       if (!userSnap.exists()) {
         const imgFile = user.photoURL;
+        console.log(imgFile);
 
         return { isSign: false, data: userData, img: user.photoURL || "", imgFile: imgFile };
       } else {
+        const profileImage = userProfile?.profile_image;
+
+        await updateProfile(user, {
+          photoURL: profileImage,
+        });
+
         return {
           isSign: true,
           data: userSnap.data() as TUserData,
-          img: user.photoURL || "",
+          img: "",
           imgFile: user.photoURL,
         };
       }

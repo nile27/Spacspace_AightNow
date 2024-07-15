@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { TmemberText } from "@/Store/store";
 import { ChangeEvent } from "react";
+
 export const handleNickNameCheck = async (
   nickname: string,
   setNickNameErr: React.Dispatch<React.SetStateAction<boolean>>,
@@ -87,6 +88,8 @@ export const handleSignUp = async (
         email: email,
         phone: phone,
         birth: birth,
+        profile_image: photoURL,
+        language: "kr",
         createTime: Timestamp.now(),
         logintype: "none",
       });
@@ -117,6 +120,7 @@ export const handleSignUp = async (
         email: email,
         phone: phone,
         birth: birth,
+        language: "kr",
         createTime: Timestamp.now(),
         logintype: logintype,
       });
@@ -148,6 +152,8 @@ export const handleSignUp = async (
         email: email,
         phone: phone,
         birth: birth,
+        language: "kr",
+        profile_image: photoURL,
         createTime: Timestamp.now(),
         logintype: logintype,
       });

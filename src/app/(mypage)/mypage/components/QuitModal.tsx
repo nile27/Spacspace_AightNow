@@ -5,7 +5,7 @@ import { useState } from "react";
 import QuitSelect from "./QuitSelect";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { deleteUserAccount } from "../../utills/deleteUser";
+import { deleteUserAccount, deleteUserOauth } from "../../utills/deleteUser";
 import { useAuthStore, useLoginStore } from "@/Store/store";
 import { signOut } from "next-auth/react";
 
@@ -19,11 +19,16 @@ export default function QuitModal() {
   const { setLogout } = useLoginStore();
   const { user, clearUser } = useAuthStore();
   const navi = useRouter();
+  const isDisabled =
+    user?.logintype === "none"
+      ? !(inputText.pw && inputText.quit !== "탈퇴사유를 선택해주세요.")
+      : inputText.quit === "탈퇴사유를 선택해주세요.";
+
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...inputText, [key]: e.target.value });
   };
   const handleQuit = async () => {
-    if (user && user.email) {
+    if (user && user.email && inputText.pw) {
       const result = await deleteUserAccount({ email: user.email, password: inputText.pw });
 
       if (result.success) {
@@ -33,7 +38,20 @@ export default function QuitModal() {
 
         signOut({ callbackUrl: "/quit" });
       } else {
-        alert("회원 탈퇴 중 오류가 발생했습니다: " + result.error);
+        alert("비밀번호를 확인해주세요. " + result.error);
+      }
+    }
+    if (user && user.email && !inputText.pw) {
+      const result = await deleteUserOauth(user.email);
+
+      if (result.success) {
+        clearUser();
+        setLogout();
+        window.sessionStorage.clear();
+
+        signOut({ callbackUrl: "/quit" });
+      } else {
+        alert("비밀번호를 확인해주세요. " + result.error);
       }
     }
   };
@@ -61,25 +79,25 @@ export default function QuitModal() {
           )}
         </div>
 
-        <NewInput
-          type="password"
-          placeholder="비밀번호를 입력해주세요"
-          autoComplete="current-password"
-          label="현재 비밀번호 입력"
-          id="password"
-          value={inputText.pw}
-          onChange={handleInputValue("pw")}
-        />
+        {user?.logintype === "none" && (
+          <NewInput
+            type="password"
+            placeholder="비밀번호를 입력해주세요"
+            autoComplete="current-password"
+            label="현재 비밀번호 입력"
+            id="password"
+            value={inputText.pw}
+            onChange={handleInputValue("pw")}
+          />
+        )}
         <div className="w-full h-auto mt-5 mb-10 ">
-          {inputText.pw && inputText.quit !== "탈퇴사유를 선택해주세요." ? (
-            <TextButton onClick={handleQuit} size="full">
-              회원탈퇴
-            </TextButton>
-          ) : (
-            <TextButton size="full" color="disable">
-              회원탈퇴
-            </TextButton>
-          )}
+          <TextButton
+            onClick={isDisabled ? undefined : handleQuit}
+            size="full"
+            color={isDisabled ? "disable" : undefined}
+          >
+            회원탈퇴
+          </TextButton>
         </div>
       </div>
     </>

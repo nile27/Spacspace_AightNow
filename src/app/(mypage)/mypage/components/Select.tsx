@@ -22,7 +22,7 @@ export default function Select({ inputText, setSelect, setInput }: TProp) {
     "# 아마존 ・ AMZN",
     "# 테슬라 ・ TSLA",
     "# 구글 ・ GOOGL",
-    "# MS ・ MSFT",
+    "# 마이크로소프트 ・ MSFT",
   ];
 
   const handlerOnclick = (item: string) => {

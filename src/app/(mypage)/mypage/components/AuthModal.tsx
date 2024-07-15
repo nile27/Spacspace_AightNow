@@ -19,7 +19,7 @@ export default function AuthModal({
 }) {
   const { user, setUser } = useAuthStore();
   const [inputText, setInput] = useState({
-    id: user?.id || "",
+    id: user?.id || user?.userId || "",
     pw: currentPw || "",
     pwCheck: currentPw || "",
     phone: user?.phone || "",
@@ -40,7 +40,7 @@ export default function AuthModal({
       errHandler(0);
       return;
     }
-    if (inputText.id === user?.id) {
+    if (inputText.id === user?.id || inputText.id === user?.userId) {
       const copy = Array.from({ length: 5 }, () => true);
       copy[0] = true;
       setErrArr(copy);
@@ -77,14 +77,16 @@ export default function AuthModal({
 
     if (!idCheck) {
       alert("아이디 중복확인을 눌러주세요.");
+
       return;
     }
 
-    if (!regexPw.test(inputText.pw)) {
+    if (currentPw && !regexPw.test(inputText.pw)) {
       errHandler(1);
       return;
     }
-    if (inputText.pw !== inputText.pwCheck) {
+    console.log(currentPw);
+    if (currentPw && inputText.pw !== inputText.pwCheck) {
       errHandler(2);
       return;
     }
@@ -157,28 +159,32 @@ export default function AuthModal({
             </TextButton>
           )}
         </NewInput>
-        <NewInput
-          type="password"
-          placeholder="비밀번호를 입력해주세요"
-          autoComplete="current-password"
-          label="비밀번호 입력"
-          id="password"
-          caption="* 8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합"
-          value={inputText.pw}
-          style={!errArr[1] ? "error" : undefined}
-          onChange={handleInputValue("pw")}
-        />
-        <NewInput
-          type="password"
-          placeholder="비밀번호를 다시 입력해주세요"
-          autoComplete="current-password"
-          label="비밀번호 확인"
-          id="passwordCheck"
-          style={!errArr[2] ? "error" : undefined}
-          caption={!errArr[2] ? "비밀번호가 맞지 않습니다." : undefined}
-          value={inputText.pwCheck}
-          onChange={handleInputValue("pwCheck")}
-        />
+        {user?.logintype === "none" && (
+          <>
+            <NewInput
+              type="password"
+              placeholder="비밀번호를 입력해주세요"
+              autoComplete="current-password"
+              label="비밀번호 입력"
+              id="password"
+              caption="* 8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합"
+              value={inputText.pw}
+              style={!errArr[1] ? "error" : undefined}
+              onChange={handleInputValue("pw")}
+            />
+            <NewInput
+              type="password"
+              placeholder="비밀번호를 다시 입력해주세요"
+              autoComplete="current-password"
+              label="비밀번호 확인"
+              id="passwordCheck"
+              style={!errArr[2] ? "error" : undefined}
+              caption={!errArr[2] ? "비밀번호가 맞지 않습니다." : undefined}
+              value={inputText.pwCheck}
+              onChange={handleInputValue("pwCheck")}
+            />{" "}
+          </>
+        )}
 
         <NewInput
           type="tel"
@@ -204,11 +210,21 @@ export default function AuthModal({
         />
 
         <div className="w-full h-auto mt-6">
-          {inputText.id &&
-          inputText.birth &&
-          inputText.phone &&
-          inputText.pw &&
-          inputText.pwCheck ? (
+          {user?.logintype === "none" ? (
+            inputText.id &&
+            inputText.birth &&
+            inputText.phone &&
+            inputText.pw &&
+            inputText.pwCheck ? (
+              <TextButton size="full" onClick={handleAllCheck}>
+                수정하기
+              </TextButton>
+            ) : (
+              <TextButton size="full" color="disable">
+                수정하기
+              </TextButton>
+            )
+          ) : inputText.id && inputText.birth && inputText.phone ? (
             <TextButton size="full" onClick={handleAllCheck}>
               수정하기
             </TextButton>

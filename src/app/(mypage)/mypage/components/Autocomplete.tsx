@@ -25,7 +25,7 @@ export default function Autocomplete({
       "# 아마존 ・ AMZN",
       "# 테슬라 ・ TSLA",
       "# 구글 ・ GOOGL",
-      "# MS ・ MSFT",
+      "# 마이크로소프트 ・ MSFT",
     ];
 
     const filterArr = selectText.filter(item => item.toLowerCase().includes(tag.toLowerCase()));
@@ -107,16 +107,6 @@ export default function Autocomplete({
                 {suggestion}
               </li>
             ))}
-
-        {suggestions.map((suggestion, index) => (
-          <li
-            className="text-start cursor-pointer w-full h-auto flex justify-start items-center p-4 hover:bg-gray-100"
-            key={index}
-            onClick={() => handleSelectSuggestion(suggestion)}
-          >
-            {suggestion}
-          </li>
-        ))}
       </ul>
     </div>
   );

@@ -1,5 +1,5 @@
 import { TNewsList } from "@/app/api/(crawler)/type";
-import { formatRelativeTime } from "@/features/News/components/common";
+import { formatRelativeTime } from "@/features/news/components/common";
 
 type TFindNewsProps = {
   data: TNewsList;

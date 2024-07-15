@@ -1,11 +1,9 @@
+import { useEffect } from "react";
+import { useFindStore } from "./findStore";
 import Ranking from "./Ranking";
 import SearchCurrent from "./SearchCurrent";
-
-const items = [
-  { name: "테슬라", date: "06.14" },
-  { name: "테슬라", date: "06.14" },
-  { name: "테슬라", date: "06.14" },
-];
+import Link from "next/link";
+import { useAuthStore } from "@/Store/store";
 
 const rankings = [
   { rank: 1, name: "테슬라" },
@@ -20,8 +18,24 @@ const rankings = [
   { rank: 10, name: "테슬라" },
 ];
 
+export type TFindHistory = {
+  id: string;
+  userId: string;
+  term: string;
+  time: string;
+  isNews: boolean;
+  slug: string;
+};
+
 export default function SearchEmpty() {
-  console.log("SearchEmpty");
+  const searchHistory = useFindStore(state => state.searchHistory);
+  const getSearchHistory = useFindStore(state => state.getSearchHistory);
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    getSearchHistory(user?.userId ?? "");
+  }, [getSearchHistory]);
+
   return (
     <>
       <div className="flex-col justify-start items-start gap-8 flex">
@@ -36,8 +50,16 @@ export default function SearchEmpty() {
           </div>
           <div className="w-full p-6 bg-white rounded-2xl flex-col justify-start items-start gap-2.5 flex">
             <div className="flex-col justify-start items-start flex">
-              {items.map((item, index) => (
-                <SearchCurrent key={index} data={item} />
+              {searchHistory.map((item, index) => (
+                // <Link
+                //   key={index}
+                //   href={item.isNews ? `/news/${item.slug}` : `/report/${item.slug}`}
+                //   legacyBehavior
+                // >
+                //   <a>
+                <SearchCurrent key={item.id} data={item} />
+                //   </a>
+                // </Link>
               ))}
             </div>
           </div>

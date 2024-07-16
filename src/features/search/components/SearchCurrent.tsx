@@ -10,7 +10,13 @@ function formatDate(dateString: string) {
   return `${month}-${day}`;
 }
 
-export default function SearchCurrent({ data }: { data: TFindHistory }) {
+export default function SearchCurrent({
+  data,
+  onClick,
+}: {
+  data: TFindHistory;
+  onClick: () => void;
+}) {
   const deleteSearchHistory = useFindStore(state => state.deleteSearchHistory);
   const handleClick = () => {
     deleteSearchHistory(data.id);
@@ -18,21 +24,11 @@ export default function SearchCurrent({ data }: { data: TFindHistory }) {
   };
   return (
     <div className="w-full py-2 flex justify-between items-center">
-      <div
-        className={`flex justify-between items-center
-          ${
-            data.term.length < 3 && data.term.length < 5
-              ? "gap-[417px]"
-              : data.term.length < 4
-              ? "gap-[400px]"
-              : "gap-[150px]"
-          }
-            `}
-      >
-        <div className="flex items-center gap-2">
+      <div className={`flex justify-between items-center gap-[150px]`}>
+        <div className="flex items-center gap-2" onClick={onClick}>
           <Time color="#18254C" width={24} height={24} />
           <div
-            className="text-scaleGray-600 text-base font-medium leading-normal max-w-[293.938px] truncate"
+            className="text-scaleGray-600 text-base font-medium leading-normal w-[293.938px] truncate"
             dangerouslySetInnerHTML={{ __html: data.term }}
           ></div>
         </div>

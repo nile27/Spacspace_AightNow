@@ -8,6 +8,7 @@ import { useAuthStore } from "@/Store/store";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import Spinner from "./components/Spinner";
 
 const nameMapping: { [key: string]: string } = {
   애플: "apple",
@@ -84,7 +85,14 @@ export default function NewsPage() {
                 <ListNews data={news} />
               </Link>
             ))}
-            <div ref={ref} />
+            <div ref={ref}>
+              {loading && (
+                <div className="flex justify-center items-center">
+                  {/* <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" /> */}
+                  <Spinner />
+                </div>
+              )}
+            </div>
             {!hasMore && (
               <p className="text-scaleGray-400 text-base leading-normal text-center">
                 마지막 기사입니다

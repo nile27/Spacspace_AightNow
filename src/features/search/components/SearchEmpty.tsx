@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFindStore } from "./findStore";
 import Ranking from "./Ranking";
 import SearchCurrent from "./SearchCurrent";
@@ -27,19 +27,25 @@ export type TFindHistory = {
   slug: string;
 };
 
-export default function SearchEmpty() {
+export default function SearchEmpty({ setSearch }: { setSearch: (term: string) => void }) {
   const searchHistory = useFindStore(state => state.searchHistory);
   const getSearchHistory = useFindStore(state => state.getSearchHistory);
   const deleteAllSearchHistory = useFindStore(state => state.deleteAllSearchHistory);
+  const updateSearchHistory = useFindStore(state => state.updateSearchHistory);
   const { user } = useAuthStore();
 
+  const userId = user?.userId ?? user?.id ?? "";
+
   useEffect(() => {
-    getSearchHistory(user?.userId ?? user?.id ?? "");
+    getSearchHistory(userId);
   }, [getSearchHistory]);
 
   const handleClick = () => {
-    deleteAllSearchHistory(user?.userId ?? user?.id ?? "");
-    console.log("Delete all search history");
+    deleteAllSearchHistory(userId);
+  };
+  const handleSearchTerm = (term: string) => {
+    updateSearchHistory(userId, term, new Date().toISOString());
+    setSearch(term);
   };
 
   return (
@@ -61,17 +67,21 @@ export default function SearchEmpty() {
             </div>
             <div className="w-full p-6 bg-white rounded-2xl flex-col justify-start items-start gap-2.5 flex">
               <div className="flex-col justify-start items-start flex">
-                {searchHistory.map((item, index) => (
-                  // <Link
-                  //   key={index}
-                  //   href={item.isNews ? `/news/${item.slug}` : `/report/${item.slug}`}
-                  //   legacyBehavior
-                  // >
-                  //   <a>
-                  <SearchCurrent key={item.id} data={item} />
-                  //   </a>
-                  // </Link>
-                ))}
+                {searchHistory.map((item, index) =>
+                  item.isNews ? (
+                    <Link key={index} href={`/news/${item.slug}`} legacyBehavior>
+                      <a>
+                        <SearchCurrent data={item} onClick={() => handleSearchTerm(item.term)} />
+                      </a>
+                    </Link>
+                  ) : (
+                    <SearchCurrent
+                      key={index}
+                      data={item}
+                      onClick={() => handleSearchTerm(item.term)}
+                    />
+                  ),
+                )}
               </div>
             </div>
           </div>

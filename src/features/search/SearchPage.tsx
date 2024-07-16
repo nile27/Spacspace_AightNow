@@ -7,7 +7,6 @@ import SearchPanel from "./components/SearchPanel";
 
 function SearchPage() {
   const [search, setSearch] = useState("");
-  console.log("searchPage");
   return (
     <>
       <div className="flex justify-center items-start w-full h-full mt-[136px]">
@@ -24,7 +23,11 @@ function SearchPage() {
                 />
               </div>
             </div>
-            {search.trim() === "" ? <SearchEmpty /> : <SearchPanel searchTerm={search} />}
+            {search.trim() === "" ? (
+              <SearchEmpty setSearch={setSearch} />
+            ) : (
+              <SearchPanel searchTerm={search} />
+            )}
           </div>
         </div>
       </div>

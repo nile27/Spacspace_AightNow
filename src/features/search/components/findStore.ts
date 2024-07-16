@@ -10,6 +10,7 @@ import {
   doc,
   orderBy,
   limit,
+  updateDoc,
 } from "firebase/firestore";
 import { create } from "zustand";
 
@@ -27,6 +28,7 @@ type TFindStore = {
   getSearchStockHistory: (userId: string) => void;
   deleteSearchHistory: (id: string) => void;
   deleteAllSearchHistory: (userId: string) => void;
+  updateSearchHistory: (userId: string, term: string, time: string) => void;
 };
 
 export const useFindStore = create<TFindStore>(set => ({
@@ -81,5 +83,16 @@ export const useFindStore = create<TFindStore>(set => ({
     const querySnapshot = await getDocs(q);
     querySnapshot.docs.forEach(doc => deleteDoc(doc.ref));
     set({ searchHistory: [] });
+  },
+  updateSearchHistory: async (userId: string, term: string, time: string) => {
+    const historyRef = collection(fireStore, "searchHistory");
+    const q = query(historyRef, where("userId", "==", userId), where("term", "==", term));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docId = querySnapshot.docs[0].id;
+      const docRef = doc(fireStore, "searchHistory", docId);
+      await updateDoc(docRef, { time });
+    }
   },
 }));

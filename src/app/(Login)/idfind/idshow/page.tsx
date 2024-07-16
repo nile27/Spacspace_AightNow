@@ -10,7 +10,7 @@ type TLogotype = {
   style?: "kakao" | "naver" | "google" | undefined | "none";
 };
 
-export default function IdShow({ style }: TLogotype) {
+export default function IdShow() {
   const params = useSearchParams();
   const id = params.get("id");
   const createdata: string[] | undefined = params.get("createdata")?.split("-");

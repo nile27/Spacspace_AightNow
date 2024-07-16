@@ -34,45 +34,48 @@ export default function SearchEmpty() {
   const { user } = useAuthStore();
 
   useEffect(() => {
-    getSearchHistory(user?.userId ?? "");
+    getSearchHistory(user?.userId ?? user?.id ?? "");
   }, [getSearchHistory]);
 
   const handleClick = () => {
-    deleteAllSearchHistory(user?.userId ?? "");
+    deleteAllSearchHistory(user?.userId ?? user?.id ?? "");
     console.log("Delete all search history");
   };
 
   return (
     <>
       <div className="flex-col justify-start items-start gap-8 flex">
-        <div className="flex-col justify-start items-center gap-2 flex">
-          <div className="items-center gap-[431px] inline-flex w-full">
-            <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
-              최근 검색어
+        {searchHistory.length > 0 && (
+          <div className="flex-col justify-start items-center gap-2 flex">
+            <div className="items-center gap-[431px] inline-flex w-full">
+              <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
+                최근 검색어
+              </div>
+
+              <button
+                className="text-scaleGray-600 text-sm font-medium font-['Pretendard'] underline leading-tight"
+                onClick={handleClick}
+              >
+                전체삭제
+              </button>
             </div>
-            <button
-              className="text-scaleGray-600 text-sm font-medium font-['Pretendard'] underline leading-tight"
-              onClick={handleClick}
-            >
-              전체삭제
-            </button>
-          </div>
-          <div className="w-full p-6 bg-white rounded-2xl flex-col justify-start items-start gap-2.5 flex">
-            <div className="flex-col justify-start items-start flex">
-              {searchHistory.map((item, index) => (
-                // <Link
-                //   key={index}
-                //   href={item.isNews ? `/news/${item.slug}` : `/report/${item.slug}`}
-                //   legacyBehavior
-                // >
-                //   <a>
-                <SearchCurrent key={item.id} data={item} />
-                //   </a>
-                // </Link>
-              ))}
+            <div className="w-full p-6 bg-white rounded-2xl flex-col justify-start items-start gap-2.5 flex">
+              <div className="flex-col justify-start items-start flex">
+                {searchHistory.map((item, index) => (
+                  // <Link
+                  //   key={index}
+                  //   href={item.isNews ? `/news/${item.slug}` : `/report/${item.slug}`}
+                  //   legacyBehavior
+                  // >
+                  //   <a>
+                  <SearchCurrent key={item.id} data={item} />
+                  //   </a>
+                  // </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <div className="flex-col justify-start items-start gap-2 flex w-full">
           <div className="items-center gap-4 inline-flex w-full">
             <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">

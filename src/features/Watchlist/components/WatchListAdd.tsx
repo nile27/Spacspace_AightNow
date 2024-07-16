@@ -4,10 +4,19 @@ import StockList from "@/components/Stock/StockList";
 import WatchInput from "./WatchInput";
 import Header from "@/components/Header";
 import BasicIcon from "@/components/Icon/BasicIcons";
-import { useClose, useShow, useWatchList } from "@/Store/store";
+import { useAuthStore, useClose, useShow } from "@/Store/store";
 import { useState } from "react";
 import fireStore from "@/firebase/firestore";
-import { doc, updateDoc, increment } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  increment,
+  arrayUnion,
+  getDocs,
+  where,
+  collection,
+  query,
+} from "firebase/firestore";
 import { stockAction2 } from "@/lib/stockAction";
 import { TStockinfo } from "@/features/report/components/Summary";
 import Icon from "@/components/Stock/Icon";
@@ -18,18 +27,19 @@ export type TStockSearch = {
   nameEn: string;
   symbol: string;
   view?: number;
+  priceInfo?: TStockinfo | null;
 };
 
 type TWatchListAddProps = {
-  onAddStock?: (stock: TStockSearch) => void;
+  onAddStock?: (stock: string) => void;
 };
 
 export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
   const { isClose, setIsClose } = useClose();
   const { isShow, setIsShow } = useShow();
   const [searchResults, setSearchResults] = useState<TStockSearch[]>([]);
-  const [stockPriceInfo, setStockPriceInfo] = useState<TStockinfo | null>(null);
   const [watchList, setWatchList] = useState<TStockSearch[]>([]);
+  const { user } = useAuthStore();
 
   const handleClose = () => {
     setIsShow(!isShow);
@@ -37,15 +47,52 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
   };
 
   const handleSearch = async (results: TStockSearch[]) => {
-    const result = await stockAction2("apple");
-    setStockPriceInfo(result);
-    setSearchResults(results);
+    const updatedResults = await Promise.all(
+      results.map(async stock => {
+        const lowCase = stock.nameEn.toLowerCase();
+        const priceInfo = await stockAction2(lowCase);
+
+        return { ...stock, priceInfo };
+      }),
+    );
+    setSearchResults(updatedResults);
   };
 
   const handleSelectStock = async (stock: TStockSearch) => {
+    console.log("handleSelectStock called with:", stock);
     await handleItemClick(stock);
+    if (!user || !user.userId) return;
 
-    if (onAddStock) onAddStock(stock);
+    try {
+      // users 컬렉션 참조
+      const usersRef = collection(fireStore, "users");
+
+      // userId로 사용자 문서 찾기
+      const q = query(usersRef, where("userId", "==", user.userId));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        console.log("User not found");
+        return;
+      }
+
+      // 첫 번째 일치하는 문서 사용
+      const userDoc = querySnapshot.docs[0];
+
+      // 문서 업데이트
+      await updateDoc(userDoc.ref, {
+        stock: arrayUnion(stock.name), // 또는 필요한 stock 정보
+      });
+
+      console.log("Stock added successfully");
+
+      if (onAddStock) {
+        onAddStock(stock.name);
+      }
+    } catch (error) {
+      console.error("Error adding stock:", error);
+    }
+    handleClose();
   };
 
   const handleItemClick = async (stock: TStockSearch) => {
@@ -95,23 +142,23 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
                 {searchResults.map(stock => (
                   <li key={stock.id} className="p-4  flex items-center rounded-lg">
                     <div className="flex items-center flex-grow">
-                      <Icon name="apple" size={32} className="mr-4" />
+                      <Icon name={stock.name} size={32} className="mr-4" />
                       <div>
                         <div className="font-bold">{stock.name}</div>
                         <div className="text-gray-600">{stock.symbol}</div>
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <span className=" mr-4">${stockPriceInfo?.closePrice}</span>
+                      <span className=" mr-4">${stock.priceInfo?.closePrice}</span>
                       <span
                         className={`mr-4 ${
-                          stockPriceInfo?.compareToPreviousPrice.code === "2"
+                          stock.priceInfo?.compareToPreviousPrice.code === "2"
                             ? "text-rose-500"
                             : "text-blue-500"
                         }`}
                       >
-                        {stockPriceInfo?.compareToPreviousPrice.code === "2" ? "▲" : "▼"}{" "}
-                        {stockPriceInfo?.fluctuationsRatio}%
+                        {stock.priceInfo?.compareToPreviousPrice.code === "2" ? "▲" : "▼"}{" "}
+                        {stock.priceInfo?.fluctuationsRatio}%
                       </span>
                       <button
                         className="bg-mainNavy-900 hover:opacity-80 text-white px-4 py-2 rounded"

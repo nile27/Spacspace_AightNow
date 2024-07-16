@@ -4,9 +4,6 @@ import BasicIcon from "@/components/Icon/BasicIcons";
 import { getStockSearch } from "@/lib/getStockSearch";
 import { useEffect, useRef, useState } from "react";
 import { TStockSearch } from "./WatchListAdd";
-import { useWatchList } from "@/Store/store";
-import { collection, setDoc } from "firebase/firestore";
-import fireStore from "@/firebase/firestore";
 
 type WatchInputProps = {
   onSearch: (results: TStockSearch[]) => void;
@@ -45,26 +42,25 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     } else if (e.key === "ArrowUp") {
       setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
     } else if (e.key === "Enter" && selectedIndex >= 0) {
+      e.preventDefault();
       handleSubmit();
+      setSearch("");
     }
   };
 
-  const handleItemClick = (stock: TStockSearch) => {
-    setSearch(stock.nameEn);
-    setIsShow(false);
-    onSelectStock(stock);
+  const handleItemClick = (stock: TStockSearch, e?: React.MouseEvent<HTMLElement>) => {
+    if (e) e.preventDefault();
+    handleSubmit();
+    setSearch("");
   };
 
   const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
-    const db = collection(fireStore, "userStockWatchList");
-    setDoc.doc(db, "userStockWatchList", {
-      name: search,
-      id: "test1234",
-    });
     onSearch(filteredStocks);
     setIsShow(false);
   };
+
+  console.log(filteredStocks);
 
   return (
     <>
@@ -84,7 +80,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
           </button>
         </div>
         {isShow && filteredStocks.length > 0 && (
-          <ul className="w-[712px] bg-white border border-scaleGray-400 rounded-lg absolute z-10">
+          <ul className="w-[712px] bg-white border border-scaleGray-400 rounded-lg  ">
             {filteredStocks.map((stock, index) => (
               <li
                 key={stock.id}

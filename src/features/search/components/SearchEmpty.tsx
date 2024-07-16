@@ -30,11 +30,17 @@ export type TFindHistory = {
 export default function SearchEmpty() {
   const searchHistory = useFindStore(state => state.searchHistory);
   const getSearchHistory = useFindStore(state => state.getSearchHistory);
+  const deleteAllSearchHistory = useFindStore(state => state.deleteAllSearchHistory);
   const { user } = useAuthStore();
 
   useEffect(() => {
     getSearchHistory(user?.userId ?? "");
   }, [getSearchHistory]);
+
+  const handleClick = () => {
+    deleteAllSearchHistory(user?.userId ?? "");
+    console.log("Delete all search history");
+  };
 
   return (
     <>
@@ -44,7 +50,10 @@ export default function SearchEmpty() {
             <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
               최근 검색어
             </div>
-            <button className="text-scaleGray-600 text-sm font-medium font-['Pretendard'] underline leading-tight">
+            <button
+              className="text-scaleGray-600 text-sm font-medium font-['Pretendard'] underline leading-tight"
+              onClick={handleClick}
+            >
               전체삭제
             </button>
           </div>

@@ -77,9 +77,14 @@ export default function NewsDetail({ params }: TPageProps) {
   function handleTranslate(content: string, targetLang: string) {
     if (!article.translations[targetLang]) {
       fetchTranslate(content, targetLang, id);
+      setTimeout(() => {
+        fetchNewsArticle({ id });
+      }, 4000);
     }
     setIsTranslated(!isTranslated);
   }
+
+  console.log(article);
   return (
     <>
       <Header />

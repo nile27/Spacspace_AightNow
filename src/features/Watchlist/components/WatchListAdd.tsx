@@ -5,7 +5,7 @@ import WatchInput from "./WatchInput";
 import Header from "@/components/Header";
 import BasicIcon from "@/components/Icon/BasicIcons";
 import { useAuthStore, useClose, useShow } from "@/Store/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import fireStore from "@/firebase/firestore";
 import {
   doc,
@@ -16,6 +16,8 @@ import {
   where,
   collection,
   query,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 import { stockAction2 } from "@/lib/stockAction";
 import { TStockinfo } from "@/features/report/components/Summary";
@@ -40,6 +42,7 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
   const [searchResults, setSearchResults] = useState<TStockSearch[]>([]);
   const [watchList, setWatchList] = useState<TStockSearch[]>([]);
   const { user } = useAuthStore();
+  const [popularStocks, setPopularStocks] = useState<TStockSearch[]>([]);
 
   const handleClose = () => {
     setIsShow(!isShow);
@@ -103,11 +106,6 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
         view: increment(1),
       });
 
-      // 로컬 상태 업데이트
-      // setSearchResults(prevResults =>
-      //   prevResults.map(s => (s.id === stock.id ? { ...s, view: (s.view || 0) + 1 } : s)),
-      // );
-
       // 관심 목록에 추가 (중복 체크)
       setWatchList(prevList => {
         if (!prevList.some(item => item.id === stock.id)) {
@@ -119,6 +117,28 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
       console.error("Error updating stock view count:", error);
     }
   };
+
+  useEffect(() => {
+    fetchPopularStocks();
+  }, []);
+
+  const fetchPopularStocks = async () => {
+    try {
+      const stockRef = collection(fireStore, "stockSearchList");
+      const q = query(stockRef, orderBy("view", "desc"), limit(5));
+      const querySnapshot = await getDocs(q);
+
+      const popularStockData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as TStockSearch[];
+      setPopularStocks(popularStockData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(popularStocks);
 
   return (
     <>
@@ -174,21 +194,15 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
           ) : (
             <div className="w-[714px] h-[332px] mt-12">
               <h2 className="text-lg text-mainNavy-900">인기검색어</h2>
-              <div className="w-[714px] h-[288px] flex justify-center items-center gap-6 border border-scaleGray-400 rounded-2xl">
-                <div>
-                  <StockList name={"apple"} size={32} />
-                  <StockList name={"google"} size={32} />
-                  <StockList name={"amazon"} size={32} />
-                  <StockList name={"unity"} size={32} />
-                  <StockList name={"tesla"} size={32} />
-                </div>
-                <div>
-                  <StockList name={"apple"} size={32} />
-                  <StockList name={"google"} size={32} />
-                  <StockList name={"amazon"} size={32} />
-                  <StockList name={"unity"} size={32} />
-                  <StockList name={"tesla"} size={32} />
-                </div>
+              <div className="w-[714px] h-[288px]  justify-center items-center gap-6 border border-scaleGray-400 rounded-2xl">
+                {popularStocks.map((stock, idx) => (
+                  <div className="flex  flex-col">
+                    <div className=" w-96  flex justify-around items-end">
+                      <span className="mb-1">{idx + 1}위</span>
+                      <StockList key={idx} name={stock.nameEn.toLowerCase()} />
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

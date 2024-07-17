@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import TextButton from "@/components/btnUi/TextButton";
 import ModalContainer from "../../components/ModalContainer";
 import { useAuthStore } from "@/Store/store";
-import Icon from "@/components/Stock/Icon";
+import Icon from "@/components/Icon/Icons";
+
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
 

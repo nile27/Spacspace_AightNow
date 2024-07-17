@@ -86,7 +86,7 @@ export default function SearchEmpty({ setSearch }: { setSearch: (term: string) =
             </div>
           </div>
         )}
-        <div className="flex-col justify-start items-start gap-2 flex w-full">
+        {/* <div className="flex-col justify-start items-start gap-2 flex w-full">
           <div className="items-center gap-4 inline-flex w-full">
             <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
               인기 검색어
@@ -109,7 +109,7 @@ export default function SearchEmpty({ setSearch }: { setSearch: (term: string) =
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

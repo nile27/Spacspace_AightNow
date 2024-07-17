@@ -39,6 +39,7 @@ export const useFindStore = create<TFindStore>(set => ({
   searchHistory: [],
   stockHistory: [],
   searchRank: [],
+
   addSearchHistory: async (
     userId: string,
     term: string,
@@ -46,26 +47,31 @@ export const useFindStore = create<TFindStore>(set => ({
     isNews: boolean,
     slug: string,
   ) => {
-    const historyRef = collection(fireStore, "searchHistory");
-    //   const timestamp = Timestamp.fromDate(new Date(time)); // time을 Date 객체로 변환하여 Timestamp로 저장
-    await addDoc(historyRef, { userId, term, time, isNews, slug });
+    try {
+      // 검색 기록 추가
+      const historyRef = collection(fireStore, "searchHistory");
+      await addDoc(historyRef, { userId, term, time, isNews, slug });
 
-    // 검색어 랭킹 업데이트
-    const rankRef = doc(fireStore, "searchRank", term);
-    const docSnap = await getDoc(rankRef);
-    if (docSnap.exists()) {
-      // 문서가 존재하면 view를 증가
-      await updateDoc(rankRef, {
-        view: docSnap.data().view + 1,
-      });
-    } else {
-      // 문서가 존재하지 않으면 새 문서를 생성
-      await setDoc(rankRef, {
-        term,
-        isNews,
-        slug,
-        view: 1,
-      });
+      // 검색어 랭킹 업데이트
+      const rankRef = doc(fireStore, "searchRank", term);
+      const docSnap = await getDoc(rankRef);
+
+      if (docSnap.exists()) {
+        // 문서가 존재하면 view를 증가
+        await updateDoc(rankRef, {
+          view: docSnap.data().view + 1,
+        });
+      } else {
+        // 문서가 존재하지 않으면 새 문서를 생성
+        await setDoc(rankRef, {
+          term,
+          isNews,
+          slug,
+          view: 1,
+        });
+      }
+    } catch (error) {
+      console.error("Error updating search history or rank:", error);
     }
   },
 

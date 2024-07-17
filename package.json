@@ -12,11 +12,13 @@
     "@svgr/webpack": "^8.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "deepl-node": "^1.13.0",
     "firebase": "^10.12.2",
     "firebase-admin": "^12.2.0",
     "i18next": "^23.11.5",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-resources-to-backend": "^1.2.1",
+    "jsdom": "^24.1.0",
     "lucide-react": "^0.395.0",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
@@ -29,6 +31,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

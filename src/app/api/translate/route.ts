@@ -14,56 +14,40 @@ const extractTextNodes = (node: Node, texts: string[] = []): string[] => {
   if (node.nodeType === node.TEXT_NODE) {
     texts.push(node.nodeValue || "");
   } else if (node.nodeType === node.ELEMENT_NODE) {
-    node.childNodes.forEach((child) => extractTextNodes(child, texts));
+    node.childNodes.forEach(child => extractTextNodes(child, texts));
   }
   return texts;
 };
 
-const replaceTextNodes = (
-  node: Node,
-  translations: string[],
-  index: { value: number }
-) => {
+const replaceTextNodes = (node: Node, translations: string[], index: { value: number }) => {
   if (node.nodeType === node.TEXT_NODE) {
     node.nodeValue = translations[index.value++] || node.nodeValue;
   } else if (node.nodeType === node.ELEMENT_NODE) {
-    node.childNodes.forEach((child) =>
-      replaceTextNodes(child, translations, index)
-    );
+    node.childNodes.forEach(child => replaceTextNodes(child, translations, index));
   }
 };
 
 export async function POST(req: NextRequest) {
   "use server";
   if (req.method !== "POST") {
-    return NextResponse.json(
-      { error: "Only POST requests are allowed" },
-      { status: 405 }
-    );
+    return NextResponse.json({ error: "Only POST requests are allowed" }, { status: 405 });
   }
 
   try {
     const { html, targetLang } = await req.json();
 
     if (!html || !targetLang) {
-      return NextResponse.json(
-        { error: "Missing required parameters" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }
 
     const dom = new JSDOM(html);
     const textNodes = extractTextNodes(dom.window.document.body);
 
     const translations = await Promise.all(
-      textNodes.map(async (text) => {
-        const result = await translator.translateText(
-          text,
-          null,
-          targetLang as TargetLanguageCode
-        );
+      textNodes.map(async text => {
+        const result = await translator.translateText(text, null, targetLang as TargetLanguageCode);
         return result.text;
-      })
+      }),
     );
 
     replaceTextNodes(dom.window.document.body, translations, { value: 0 });

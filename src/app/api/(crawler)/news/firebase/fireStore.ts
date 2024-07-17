@@ -1,5 +1,5 @@
 import fireStore from "@/firebase/firestore";
-import { collection, doc, increment, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { TNewsList } from "../../type";
 
 async function addNewsToFirestore(stockName: string, newsList: TNewsList[]) {
@@ -13,6 +13,8 @@ async function addNewsToFirestore(stockName: string, newsList: TNewsList[]) {
         ...newsData,
         stockName: stockName,
         views: 0, // 조회수 필드
+        translated: false, // 번역 여부 필드
+        translations: { "en-US": "", ZH: "", JA: "", FR: "" }, // 번역된 내용
       });
     }
     console.log(`News added to Firestore for ${stockName}`);
@@ -34,4 +36,39 @@ async function increaseNewsViews(articleId: string) {
   }
 }
 
-export { addNewsToFirestore, increaseNewsViews };
+async function handleTranslate(content: string, targetLang: string, newsArticleId: string) {
+  try {
+    const response = await fetch("/api/translate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ html: content, targetLang }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error);
+    }
+
+    const result = await response.json();
+
+    const articleRef = doc(fireStore, "news", newsArticleId);
+    const docSnap = await getDoc(articleRef);
+
+    if (docSnap.exists()) {
+      const articleData = docSnap.data();
+      let translations = articleData.translations || {};
+      translations[targetLang] = result.translatedHTML;
+
+      await updateDoc(articleRef, {
+        translated: true,
+        translations: translations,
+      });
+    }
+  } catch (error) {
+    console.error("Error translating HTML:", error);
+    throw error; // 에러를 다시 throw하여 상위 컴포넌트에서 처리
+  }
+}
+export { addNewsToFirestore, increaseNewsViews, handleTranslate };

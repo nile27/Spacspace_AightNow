@@ -6,37 +6,53 @@ import ListNews from "../../../components/List/ListNews";
 import { useEffect, useState } from "react";
 import { useNewsStore } from "@/Store/newsStore";
 import { extractTextFromHTML } from "@/features/news/components/common";
+import { useAuthStore } from "@/Store/store";
+import { TNewsList } from "@/app/api/(crawler)/type";
+import { getRandomStocks, getUniqueRandomStocks } from "./common";
 
-const lists = [
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0 },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0 },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0 },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0 },
-];
+const nameMapping: { [key: string]: string } = {
+  애플: "apple",
+  구글: "google",
+  아마존: "amazon",
+  마이크로소프트: "microsoft",
+  유니티: "unity",
+};
+// 주식 종목 이름을 변환하는 함수
+const convertName = (name: string) => {
+  return nameMapping[name] || name;
+};
 
 export default function News() {
   const [loading, setLoading] = useState(false);
   const fetchNewsList = useNewsStore(state => state.fetchNewsList);
   const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
-  const stockList = useNewsStore(state => state.newsList);
+  const stockList = useNewsStore(state => state.stockNewsList);
   const data = useNewsStore(state => state.newsList);
+  const { user } = useAuthStore();
+  const changeStockName = user?.stock.map(item => convertName(item));
 
   useEffect(() => {
     const fetchData = () => {
       setLoading(true);
       fetchNewsList();
-      fetchStockNewsList(["apple"]);
+      fetchStockNewsList(changeStockName as string[]);
       setLoading(false);
     };
     fetchData();
   }, []);
+
+  const [interStockNewsList, stockNewsList] =
+    stockList.length > 5
+      ? getUniqueRandomStocks(stockList, 3, 3)
+      : [getRandomStocks(stockList, 3), getRandomStocks(stockList, 3)];
+
   return (
     <>
       <div className="w-full p-4 gap-12 sm:p-8 md:p-12 bg-white rounded-3xl flex flex-col justify-start items-start mt-6">
         <div className="w-full">
           <div className="text-mainNavy-900 text-2xl font-semibold leading-9 pb-4">관심 종목</div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 rounded-3xl">
-            {stockList.slice(0, 3).map(data => (
+            {interStockNewsList.map(data => (
               <Link
                 key={data.id}
                 href={{
@@ -85,7 +101,7 @@ export default function News() {
         <div className="w-full">
           <div className="text-mainNavy-900 text-2xl font-semibold leading-9 pb-4">최신 뉴스</div>
           <div className="border border-mainNavy-100 rounded-3xl">
-            {data.slice(1, 4).map((news, index) => (
+            {stockNewsList.map((news, index) => (
               <div key={news.id}>
                 <div className="flex rounded-lg pt-12 px-12">
                   <Link

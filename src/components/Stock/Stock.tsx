@@ -71,7 +71,7 @@ export default function Stock({ logo, gap, data }: TStock) {
                   } text-xs font-normal font-['Pretendard'] leading-none`}
                 >
                   {compareToPreviousPrice.text === "하락" ? "▼" : "▲"}
-                  {compareToPreviousClosePrice}
+                  {compareToPreviousClosePrice.toString().replace("-", "")}
                 </div>
                 <div
                   className={`text-right ${

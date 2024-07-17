@@ -78,6 +78,7 @@ export default function UserHome() {
             <div className="flex justify-between mt-4">
               {stockData
                 .filter(item => userStock.includes(item.stockName))
+                .slice(0, 3)
                 .map((data, index) => (
                   <div key={index} className="">
                     <Report data={data} />
@@ -99,8 +100,8 @@ export default function UserHome() {
                         </div>
                       </div>
                     ) : (
-                      data.map((data, index) => (
-                        <div key={index} className="flex justify-between items-center rounded-lg">
+                      data.slice(0, 4).map((data, index) => (
+                        <div key={index} className="flex justify-between items-center rounded-lg ">
                           <Link href={`/report/${data.logo}`}>
                             <Stock
                               data={data}
@@ -126,6 +127,7 @@ export default function UserHome() {
                   <div className="w-full min-h-[300px] flex flex-col  items-center gap-4">
                     {stockData
                       .filter(item => userStock.includes(item.stockName))
+                      .slice(0, 4)
                       .map((data, index) => (
                         <div key={index} className="flex justify-between items-center rounded-lg">
                           <Link href={`/report/${data.logo}`}>

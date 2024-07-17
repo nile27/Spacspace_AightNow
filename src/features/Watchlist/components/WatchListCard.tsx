@@ -1,5 +1,6 @@
 import Icon from "@/components/Stock/Icon";
 import TextButton from "@/components/btnUi/TextButton";
+import { stockTranslate } from "@/lib/stockTranslate";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,18 +13,21 @@ export type TStockInfo = {
 };
 
 type TStockDetail = {
-  stockPriceInfo: TStockInfo;
+  stockPriceInfo: TStockInfo | null;
   name: string;
-  stockInfo: string[];
+  onDelete: () => void;
 };
 
-export default function WatchListCard({ name, stockInfo, stockPriceInfo }: TStockDetail) {
+export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStockDetail) {
+  if (!stockPriceInfo) return null;
   const { reutersCode, closePrice, compareToPreviousClosePrice, fluctuationsRatio } =
     stockPriceInfo;
 
   const handleDelete = () => {
-    stockInfo.filter((item, idx) => item === stockInfo[idx]);
+    onDelete();
   };
+
+  const stockEn = stockTranslate(name);
 
   return (
     <>
@@ -32,7 +36,7 @@ export default function WatchListCard({ name, stockInfo, stockPriceInfo }: TStoc
           <div className="flex items-center gap-2 ">
             <Icon name={name} size={32} />
             <span className="font-bold">{name}</span>
-            <span className="text-scaleGray-600">{reutersCode}</span>
+            <span className="text-scaleGray-600">{reutersCode.slice(0, 4)}</span>
           </div>
           <div className="flex items-center gap-2">
             <span>${closePrice}</span>
@@ -51,16 +55,18 @@ export default function WatchListCard({ name, stockInfo, stockPriceInfo }: TStoc
           <Image src="/result.png" alt="result" width={176} height={176} className="" />
         </div>
         <div className=" flex gap-4 justify-center items-center">
-          <TextButton
-            size="custom"
-            color="grayScale"
-            width={"160px"}
-            height={"56px"}
-            onClick={handleDelete}
-          >
-            삭제하기
-          </TextButton>
-          <Link href={`/report/${name}`}>
+          <div className="hover:opacity-80">
+            <TextButton
+              size="custom"
+              color="grayScale"
+              width={"160px"}
+              height={"56px"}
+              onClick={handleDelete}
+            >
+              삭제하기
+            </TextButton>
+          </div>
+          <Link href={`/report/${stockEn}`}>
             <TextButton size="custom" width={"160px"} height={"56px"}>
               자세히 보기
             </TextButton>

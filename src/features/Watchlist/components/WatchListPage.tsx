@@ -1,8 +1,9 @@
 "use client";
 
 import { useClose, useShow } from "@/Store/store";
-import WatchList from "./WatchList";
+
 import WatchListAdd from "./WatchListAdd";
+import WatchList from "./Watchlist";
 
 export default function WatchListPage() {
   const { isShow } = useShow();

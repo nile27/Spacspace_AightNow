@@ -42,14 +42,16 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     } else if (e.key === "ArrowUp") {
       setSelectedIndex(prev => (prev > 0 ? prev - 1 : prev));
     } else if (e.key === "Enter" && selectedIndex >= 0) {
+      e.preventDefault();
       handleSubmit();
+      setSearch("");
     }
   };
 
-  const handleItemClick = (stock: TStockSearch) => {
-    setSearch(stock.name);
-    setIsShow(false);
-    onSelectStock(stock);
+  const handleItemClick = (stock: TStockSearch, e?: React.MouseEvent<HTMLElement>) => {
+    if (e) e.preventDefault();
+    handleSubmit();
+    setSearch("");
   };
 
   const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
@@ -57,6 +59,8 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     onSearch(filteredStocks);
     setIsShow(false);
   };
+
+  console.log(filteredStocks);
 
   return (
     <>
@@ -76,7 +80,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
           </button>
         </div>
         {isShow && filteredStocks.length > 0 && (
-          <ul className="w-[712px] bg-white border border-scaleGray-400 rounded-lg absolute z-10">
+          <ul className="w-[712px] bg-white border border-scaleGray-400 rounded-lg  ">
             {filteredStocks.map((stock, index) => (
               <li
                 key={stock.id}
@@ -94,7 +98,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
           </ul>
         )}
       </form>
-      <h2 className="text-mainNavy-900 text-xl">최근 검색한 종목</h2>
+      {search.length === 0 && <h2 className="text-mainNavy-900 text-xl">최근 검색한 종목</h2>}
     </>
   );
 }

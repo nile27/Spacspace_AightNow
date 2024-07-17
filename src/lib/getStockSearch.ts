@@ -30,6 +30,6 @@ export async function getStockSearch(search: string): Promise<TStockSearch[]> {
   const [querySnapshot1, querySnapshot2] = await Promise.all([getDocs(q), getDocs(q2)]);
   const results1 = querySnapshot1.docs.map(doc => convertToTStockSearch(doc.data()));
   const results2 = querySnapshot2.docs.map(doc => convertToTStockSearch(doc.data()));
-
+  console.log("results2", results2);
   return [...results1, ...results2];
 }

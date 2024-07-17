@@ -138,8 +138,6 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
     }
   };
 
-  console.log(popularStocks);
-
   return (
     <>
       <Header />

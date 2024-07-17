@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import ArticleIcon from "@/features/news/components/ArticleIcon.svg";
 import Stock from "@/components/Stock/Stock";
 import Link from "next/link";
+import { useAuthStore } from "@/Store/store";
 
 type TPageProps = {
   params: { id: string };
@@ -43,6 +44,33 @@ export default function NewsDetail({ params }: TPageProps) {
   const stockData = useStockStore(state => state.stockData);
   const stockNewsList = useNewsStore(state => state.stockNewsList);
   const article = useNewsStore(state => state.newsArticle);
+  const [translatedHtml, setTranslatedHtml] = useState<string>("");
+  const [translated, setTranslated] = useState(false);
+  const { user } = useAuthStore();
+
+  const handleTranslate = async (html: string, targetLang: string) => {
+    try {
+      const response = await fetch("/api/translate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ html, targetLang }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const result = await response.json();
+      console.log(result.translatedHTML);
+      setTranslatedHtml(result.translatedHTML);
+      setTranslated(!translated);
+    } catch (error) {
+      console.error("Error translating HTML:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,7 +119,13 @@ export default function NewsDetail({ params }: TPageProps) {
                 <div className="text-right">조회수 {view}회</div>
               </div>
               <div className="mt-3">
-                <TextButton size="custom" width="176px" height="36px" icon="Translate">
+                <TextButton
+                  size="custom"
+                  width="176px"
+                  height="36px"
+                  icon="Translate"
+                  onClick={() => handleTranslate(article.content, user?.language ?? "en")}
+                >
                   번역하기
                 </TextButton>
               </div>
@@ -117,7 +151,11 @@ export default function NewsDetail({ params }: TPageProps) {
               {article.image && (
                 <img src={article.image} alt="image" width={728} height={370} className="my-8" />
               )}
-              <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
+              {translated ? (
+                <div dangerouslySetInnerHTML={{ __html: article.translatedHtml }}></div>
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
+              )}
             </div>
           </div>
 

@@ -3,20 +3,57 @@ import { useEffect, useState } from "react";
 import TextButton from "@/components/btnUi/TextButton";
 import ModalContainer from "../../components/ModalContainer";
 import { useAuthStore } from "@/Store/store";
+import Icon from "@/components/Stock/Icon";
+import { cn } from "@/lib/utils";
+import { cva } from "class-variance-authority";
+
+type TLogotype = {
+  style?: "kakao" | "naver" | "google" | undefined | "none";
+};
+
 export default function MainProfile() {
   const [isModal, setModal] = useState(false);
   const [modalIdx, setIdx] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const { user, profile } = useAuthStore();
+  const logintype = user?.logintype as TLogotype["style"];
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const IconRenderIcon = (icon: "none" | "kakao" | "naver" | "google" | undefined) => {
+    switch (icon) {
+      case "kakao":
+        return <Icon name="KakaoTalk" size={15} />;
+
+      case "naver":
+        return <Icon name="Naver" size={10} />;
+      case "google":
+        return <Icon name="Google" size={15} />;
+
+      default:
+        return null;
+    }
+  };
+  const buttonVariants = cva(`w-[20px] h-[20px] rounded-full flex justify-center items-center`, {
+    variants: {
+      style: {
+        default: "hidden",
+        kakao: "bg-[#FFE812]",
+        none: "hidden",
+        naver: "bg-[#00C337]",
+        google: "bg-[white]",
+      },
+    },
+    defaultVariants: {
+      style: `default`,
+    },
+  });
 
   return (
     <main className="w-full h-auto rounded-2xl p-[32px] min-h-[720px]  bg-white ">
       {isClient && (
         <>
-          {" "}
           <figure className="w-full h-auto mb-10">
             <div className="w-full h-auto flex justify-between items-center">
               <div className="w-auto h-auto">
@@ -77,7 +114,16 @@ export default function MainProfile() {
             <div className="w-full h-auto mt-8 mb-5 flex ">
               <span className="mr-[120px] w-[56px]">아이디</span>
               <div className="flex justify-center items-center gap-[16px]">
-                <span>{user?.userId ? user?.userId : user?.id}</span>
+                {user?.logintype === "none" ? (
+                  <span>{user?.userId ? user?.userId : user?.id}</span>
+                ) : (
+                  <div className=" flex justify-center items-center gap-2">
+                    <div className={cn(buttonVariants({ style: logintype }), ` `)}>
+                      {logintype && IconRenderIcon(logintype)}
+                    </div>
+                    <span>{user?.userId ? user?.userId : user?.id}</span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="w-full h-auto mb-5  flex ">

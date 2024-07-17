@@ -89,7 +89,7 @@ export default function NewsDetail({ params }: TPageProps) {
     }
     if (stockData && article.relatedItems) {
       const orderedStockData = article.relatedItems
-        .map(item => stockData.find(stock => stock.logo === item))
+        .map((item: string) => stockData.find(stock => stock.logo === item))
         .filter(Boolean); // undefined 요소 제거
 
       setStockDataList(orderedStockData);
@@ -152,7 +152,7 @@ export default function NewsDetail({ params }: TPageProps) {
                 <img src={article.image} alt="image" width={728} height={370} className="my-8" />
               )}
               {translated ? (
-                <div dangerouslySetInnerHTML={{ __html: article.translatedHtml }}></div>
+                <div dangerouslySetInnerHTML={{ __html: translatedHtml }}></div>
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
               )}

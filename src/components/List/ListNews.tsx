@@ -11,7 +11,7 @@ export default function ListNews(props: TListNews) {
   return (
     <>
       <div className="justify-start mb-8 items-start gap-5 inline-flex">
-        {data.hasImage ? (
+        {data.image ? (
           <img className="w-[252px] h-[148px] rounded-2xl" src={data.thumbUrl} />
         ) : (
           <></>

@@ -1,15 +1,16 @@
+import { TStockData } from "@/app/api/(crawler)/type";
 import Icon from "@/components/Stock/Icon";
 
-type TReportdata = {
-  name: string;
-  code: string;
-  price: number;
-  change: number;
-  percent: number;
-  reutersCode: string;
-};
-
-export default function Report({ data }: { data: TReportdata }) {
+export default function Report({ data }: { data: TStockData }) {
+  const {
+    logo,
+    stockName,
+    symbolCode,
+    closePrice,
+    compareToPreviousPrice,
+    compareToPreviousClosePrice,
+    fluctuationsRatio,
+  } = data;
   return (
     <>
       <div className="w-[400px] p-8 bg-white rounded-2xl flex-col justify-start items-start gap-4 inline-flex">
@@ -17,24 +18,38 @@ export default function Report({ data }: { data: TReportdata }) {
           <div className="justify-start items-center gap-2 inline-flex">
             {/* 기업 아이콘 */}
             <div>
-              <Icon name={data.reutersCode} size={50} />
+              <Icon name={logo} size={50} />
             </div>
             <div className="justify-start items-center gap-2 flex">
               <div className="text-neutral-900 text-2xl font-bold font-['Pretendard'] leading-loose">
-                {data.name}
+                {stockName}
               </div>
               <div className="text-zinc-600 text-lg font-normal font-['Pretendard'] leading-7">
-                {data.code}
+                {symbolCode}
               </div>
             </div>
           </div>
           <div className="justify-end items-center gap-2 inline-flex">
             <div className="justify-start items-center gap-2 flex">
-              <div className="text-right text-neutral-900 text-base font-bold leading-normal">
-                ${data.price.toFixed(2)}
+              <div className="text-right text-neutral-900 text-base font-semibold leading-normal">
+                ${closePrice}
               </div>
-              <div className="text-right text-warning text-base font-normal">▲{data.change}</div>
-              <div className="text-right text-warning text-base font-normal">+{data.percent}% </div>
+              <div
+                className={`text-right ${
+                  compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
+                } text-base font-normal`}
+              >
+                {compareToPreviousPrice.text === "하락" ? "▼" : "▲"}
+                {compareToPreviousClosePrice.replace("-", "")}
+              </div>
+              <div
+                className={`text-right ${
+                  compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
+                } text-base font-normal`}
+              >
+                {compareToPreviousPrice.text === "하락" ? "" : "+"}
+                {fluctuationsRatio}%{" "}
+              </div>
             </div>
           </div>
         </div>

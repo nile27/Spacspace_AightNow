@@ -11,12 +11,15 @@ import {
   orderBy,
   limit,
   updateDoc,
+  setDoc,
+  getDoc,
 } from "firebase/firestore";
 import { create } from "zustand";
 
 type TFindStore = {
   searchHistory: any[];
   stockHistory: any[];
+  searchRank: any[];
   addSearchHistory: (
     userId: string,
     term: string,
@@ -26,6 +29,7 @@ type TFindStore = {
   ) => void;
   getSearchHistory: (userId: string) => void;
   getSearchStockHistory: (userId: string) => void;
+  getSearchRank: () => void;
   deleteSearchHistory: (id: string) => void;
   deleteAllSearchHistory: (userId: string) => void;
   updateSearchHistory: (userId: string, term: string, time: string) => void;
@@ -34,6 +38,7 @@ type TFindStore = {
 export const useFindStore = create<TFindStore>(set => ({
   searchHistory: [],
   stockHistory: [],
+  searchRank: [],
   addSearchHistory: async (
     userId: string,
     term: string,
@@ -44,6 +49,24 @@ export const useFindStore = create<TFindStore>(set => ({
     const historyRef = collection(fireStore, "searchHistory");
     //   const timestamp = Timestamp.fromDate(new Date(time)); // time을 Date 객체로 변환하여 Timestamp로 저장
     await addDoc(historyRef, { userId, term, time, isNews, slug });
+
+    // 검색어 랭킹 업데이트
+    const rankRef = doc(fireStore, "searchRank", term);
+    const docSnap = await getDoc(rankRef);
+    if (docSnap.exists()) {
+      // 문서가 존재하면 view를 증가
+      await updateDoc(rankRef, {
+        view: docSnap.data().view + 1,
+      });
+    } else {
+      // 문서가 존재하지 않으면 새 문서를 생성
+      await setDoc(rankRef, {
+        term,
+        isNews,
+        slug,
+        view: 1,
+      });
+    }
   },
 
   getSearchHistory: async (userId: string) => {
@@ -67,6 +90,15 @@ export const useFindStore = create<TFindStore>(set => ({
     const querySnapshot = await getDocs(q);
     const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     set({ stockHistory: data });
+  },
+
+  getSearchRank: async () => {
+    const rankRef = collection(fireStore, "searchRank");
+    const q = query(rankRef, orderBy("view", "desc"), limit(10));
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map(doc => doc.data());
+
+    set({ searchRank: data });
   },
 
   deleteSearchHistory: async (id: string) => {

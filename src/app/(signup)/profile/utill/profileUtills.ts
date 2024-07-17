@@ -89,7 +89,7 @@ export const handleSignUp = async (
         phone: phone,
         birth: birth,
         profile_image: photoURL,
-        language: "kr",
+        language: "KO",
         createTime: Timestamp.now(),
         logintype: "none",
       });
@@ -120,7 +120,7 @@ export const handleSignUp = async (
         email: email,
         phone: phone,
         birth: birth,
-        language: "kr",
+        language: "KO",
         createTime: Timestamp.now(),
         logintype: logintype,
       });
@@ -152,7 +152,7 @@ export const handleSignUp = async (
         email: email,
         phone: phone,
         birth: birth,
-        language: "kr",
+        language: "KO",
         profile_image: photoURL,
         createTime: Timestamp.now(),
         logintype: logintype,

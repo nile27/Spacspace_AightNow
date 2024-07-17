@@ -127,7 +127,7 @@ export const authConfig: NextAuthOptions = {
         token.nickname = "";
         token.stock = [];
         token.logintype = user.logintype;
-        token.language = "kr";
+        token.language = "KO";
         token.profile_image = user.profile_image;
         token.isNewUser = false;
 
@@ -161,7 +161,7 @@ export const authConfig: NextAuthOptions = {
               token.language = userData.language;
               token.profile_image = existUser.photoURL;
               token.isNewUser = false;
-              console.log("sss");
+
               return token;
             }
           }

@@ -10,6 +10,7 @@ import Stock from "@/components/Stock/Stock";
 import Link from "next/link";
 import { useAuthStore } from "@/Store/store";
 import ChatBotPage from "@/features/chatbot/ChatBotPage";
+import { summaryAI } from "@/lib/summaryAI";
 
 type TPageProps = {
   params: { id: string };
@@ -48,6 +49,7 @@ export default function NewsDetail({ params }: TPageProps) {
   const article = useNewsStore(state => state.newsArticle);
   const [isTranslated, setIsTranslated] = useState(false);
   const { user } = useAuthStore();
+  const [summary, setSummary] = useState<string>("");
 
   const userLanguage: any = user?.language ?? "KO";
 
@@ -85,7 +87,17 @@ export default function NewsDetail({ params }: TPageProps) {
     setIsTranslated(!isTranslated);
   }
 
-  console.log(article);
+  useEffect(() => {
+    async function fetchSummary() {
+      try {
+        const results = await summaryAI({ newsContent: article.content });
+        setSummary(results.toString() || JSON.stringify(results));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchSummary();
+  }, [id]);
   return (
     <>
       <Header />
@@ -131,12 +143,7 @@ export default function NewsDetail({ params }: TPageProps) {
 
             <div className="flex flex-col">
               <div className="p-4 rounded-lg mb-4">
-                바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성 바이오 연구의 첨단,인공
-                유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생
-                가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공
-                유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생
-                가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공
-                유전자로 인간 피부 재생 가능성바이오 연구의 첨단,인공 유전자로 인간 피부 재생 가능성
+                {summary.replace(/^Here is a 5-line summary of the article in Korean:\s*/, "")}
               </div>
               {article.image && (
                 <img src={article.image} alt="image" width={728} height={370} className="my-8" />

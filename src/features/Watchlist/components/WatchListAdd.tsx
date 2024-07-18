@@ -66,7 +66,7 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
     console.log("handleSelectStock called with:", stock);
     await handleItemClick(stock);
     const userId = user?.userId || user?.id;
-    if (!user || userId) return;
+    if (!userId) return;
 
     try {
       // users 컬렉션 참조

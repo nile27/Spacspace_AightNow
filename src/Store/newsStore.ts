@@ -141,7 +141,6 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
         where("stockName", "in", stockNames),
         orderBy("dt", "desc"),
         orderBy("stockName"),
-        limit(4),
       );
       const querySnapshot = await getDocs(q);
 
@@ -152,7 +151,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
 
       set({ stockNewsList: data });
     } catch (error) {
-      console.error("Failed to fetch rank news:", error);
+      console.error("Failed to fetch stock news:", error);
     }
   },
 
@@ -163,6 +162,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       const q = query(
         rankRef,
         where("stockName", "==", "rank"),
+        where("isVideo", "==", false),
         orderBy("dt", "desc"),
         orderBy("stockName"),
         limit(3),

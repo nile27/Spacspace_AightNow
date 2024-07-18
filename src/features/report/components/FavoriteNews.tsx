@@ -27,8 +27,6 @@ export default function FavoriteNews() {
     fetchData();
   }, []);
 
-  console.log(rankNewsList);
-
   return (
     <>
       <div className="w-[1200px] h-[480px] font-['pretendard'] ">

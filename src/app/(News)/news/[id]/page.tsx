@@ -41,8 +41,8 @@ export default function NewsDetail({ params }: TPageProps) {
   const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
   const fetchUpdateViews = useNewsStore(state => state.fetchUpdateViews);
   const fetchTranslate = useNewsStore(state => state.fetchTranslate);
-  const view = useNewsStore(state => state.view);
   const fetchStockData = useStockStore(state => state.fetchStockData);
+  const view = useNewsStore(state => state.view);
   const stockData = useStockStore(state => state.stockData);
   const stockNewsList = useNewsStore(state => state.stockNewsList);
   const article = useNewsStore(state => state.newsArticle);
@@ -75,8 +75,9 @@ export default function NewsDetail({ params }: TPageProps) {
     }
   }, [stockData, article.relatedItems]);
 
+  // 번역 요청
   function handleTranslate(content: string, targetLang: string) {
-    if (!article.translations[targetLang]) {
+    if (!article.translations[targetLang] || targetLang !== "KO") {
       fetchTranslate(content, targetLang, id);
       setTimeout(() => {
         fetchNewsArticle({ id });
@@ -85,7 +86,6 @@ export default function NewsDetail({ params }: TPageProps) {
     setIsTranslated(!isTranslated);
   }
 
-  console.log(article);
   return (
     <>
       <Header />
@@ -120,6 +120,7 @@ export default function NewsDetail({ params }: TPageProps) {
                 </TextButton>
               </div>
             </div>
+
             <div className="w-[138px] h-6 flex justify-between my-8">
               <div className="w-6 h-6 pt-[5.2px] pb-[6.34px] pl-[4.82px] pr-[4.4px] bg-mainNavy-900 rounded-md flex items-center justify-center">
                 <div className="relative">

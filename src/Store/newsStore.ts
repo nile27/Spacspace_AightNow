@@ -162,6 +162,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       const q = query(
         rankRef,
         where("stockName", "==", "rank"),
+        where("isVideo", "==", false),
         orderBy("dt", "desc"),
         orderBy("stockName"),
         limit(3),

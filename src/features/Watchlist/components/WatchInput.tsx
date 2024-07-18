@@ -21,7 +21,12 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const debouncedSearch = useDebounce(search, 300);
-  const { recentSearches, addRecentSearch, deleteRecentSearch } = useRecentSearches();
+  const { recentSearches, addRecentSearch, deleteRecentSearch, clearAllRecentSearches } =
+    useRecentSearches();
+
+  useEffect(() => {
+    console.log("RecentSearches", recentSearches);
+  }, [recentSearches]);
 
   useEffect(() => {
     if (search === "") {
@@ -38,11 +43,19 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
   }, [debouncedSearch]);
 
   const handleAllDelete = () => {
-    localStorage.removeItem("recentSearches");
+    clearAllRecentSearches();
   };
 
-  const handleSelectDelete = () => {
-    deleteRecentSearch(recentSearches[selectedIndex + 1]);
+  const handleSelectDelete = (stock: TStockSearch) => {
+    deleteRecentSearch(stock);
+  };
+
+  const handleRecentSearchClick = async (stock: TStockSearch) => {
+    setSearch(stock.name);
+    const results = await getStockSearch(stock.name);
+    setFilteredStocks(results);
+    setIsShow(true);
+    onSearch(results);
   };
 
   const searchHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,8 +71,16 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     } else if (e.key === "Enter" && selectedIndex >= 0) {
       e.preventDefault();
       handleSubmit();
+      handleSelectStock(filteredStocks[selectedIndex]);
       setSearch("");
     }
+  };
+
+  const handleSelectStock = (stock: TStockSearch) => {
+    onSelectStock(stock);
+    addRecentSearch(stock);
+    handleSubmit();
+    setSearch("");
   };
 
   const handleItemClick = (stock: TStockSearch, e?: React.MouseEvent<HTMLElement>) => {
@@ -127,6 +148,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
               <li
                 key={stock.id}
                 className="p-2 hover:bg-gray-100 cursor-pointer flex gap-4 items-center rounded-lg"
+                onClick={() => handleRecentSearchClick(stock)}
               >
                 <div className=" flex items-center flex-grow ml-2">
                   <Icon name={stock.name} size={32}></Icon>
@@ -144,7 +166,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
                         : "text-blue-500"
                     }`}
                   ></span>
-                  <button onClick={handleSelectDelete}>
+                  <button onClick={() => handleSelectDelete(stock)}>
                     <BasicIcon name="Close" size={32} color="#575757"></BasicIcon>
                   </button>
                 </div>

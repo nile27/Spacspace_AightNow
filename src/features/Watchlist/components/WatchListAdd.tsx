@@ -65,14 +65,15 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
   const handleSelectStock = async (stock: TStockSearch) => {
     console.log("handleSelectStock called with:", stock);
     await handleItemClick(stock);
-    if (!user || !user.userId || !user.id) return;
+    const userId = user?.userId || user?.id;
+    if (!user || userId) return;
 
     try {
       // users 컬렉션 참조
       const usersRef = collection(fireStore, "users");
 
       // userId로 사용자 문서 찾기
-      const q = query(usersRef, where("userId", "==", user.userId || user.id));
+      const q = query(usersRef, where("userId", "==", userId));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {

@@ -12,18 +12,26 @@ export default function useRecentSearches() {
   }, []);
 
   const addRecentSearch = (stock: TStockSearch) => {
-    const updatedSearches = [
-      stock,
-      ...recentSearches.filter(s => s.id !== stock.id).slice(0, MAX_RECENT_SEARCHES),
-    ];
-    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
-    setRecentSearches(updatedSearches);
+    setRecentSearches(prev => {
+      const updatedSearches = [
+        stock,
+        ...prev.filter(s => s.id !== stock.id).slice(0, MAX_RECENT_SEARCHES),
+      ];
+      localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
+      return updatedSearches;
+    });
   };
 
   const deleteRecentSearch = (stock: TStockSearch) => {
     const updatedSearches = recentSearches.filter(s => s.name !== stock.name);
+    localStorage.setItem("recentSearches", JSON.stringify(updatedSearches));
     setRecentSearches(updatedSearches);
   };
 
-  return { recentSearches, addRecentSearch, deleteRecentSearch };
+  const clearAllRecentSearches = () => {
+    localStorage.removeItem("recentSearches");
+    setRecentSearches([]);
+  };
+
+  return { recentSearches, addRecentSearch, deleteRecentSearch, clearAllRecentSearches };
 }

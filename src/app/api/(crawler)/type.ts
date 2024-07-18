@@ -2,12 +2,12 @@ type TStockData = {
   reutersCode: string;
   stockName: string;
   symbolCode: string;
-  closePrice: number;
+  closePrice: string;
   compareToPreviousPrice: {
     text: string;
   };
-  compareToPreviousClosePrice: number;
-  fluctuationsRatio: number;
+  compareToPreviousClosePrice: string;
+  fluctuationsRatio: string;
   logo: string;
 };
 

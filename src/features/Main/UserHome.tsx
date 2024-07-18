@@ -1,32 +1,51 @@
 "use client";
 import Stock from "@/components/Stock/Stock";
-import Badge, { BadgeBlack } from "../../components/Badge/Badge";
+import Badge from "../../components/Badge/Badge";
 import News from "./components/News";
 import Report from "./components/Report";
 import IconButton from "@/components/btnUi/IconButton";
 import { useEffect, useState } from "react";
 import Warning from "../../../public/icons/Warning.svg";
 import ChatBot from "../chatbot/ChatBot";
-import { useAuthStore, useLoginStore } from "@/Store/store";
-import { stockAction2 } from "@/lib/stockAction";
-import { TStockInfo } from "../Watchlist/components/WatchListCard";
+import { useAuthStore } from "@/Store/store";
 import { useStockStore } from "@/Store/newsStore";
 import Link from "next/link";
 import { useFindStore } from "../search/components/findStore";
-
-const datas = [
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "microsoft" },
-  { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "amazon" },
-];
+import { collection, getDocs, query, where } from "firebase/firestore";
+import fireStore from "@/firebase/firestore";
 
 export default function UserHome() {
   const [isShow, setIsShow] = useState(false);
-  const { user, profile } = useAuthStore();
+  const { user } = useAuthStore();
+  const [userStock, setUserStock] = useState<string[]>([]);
+
   const fetchStockList = useStockStore(state => state.fetchStockData);
   const stockData = useStockStore(state => state.stockData);
+
   const getSearchStockHistory = useFindStore(state => state.getSearchStockHistory);
   const stockHistory = useFindStore(state => state.stockHistory);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const userRef = collection(fireStore, "users");
+        const q = query(userRef, where("userId", "==", user?.userId));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userDocs = querySnapshot.docs[0];
+          const userData = userDocs.data();
+          setUserStock(userData.stock || []);
+        } else {
+          console.log("사용자를 찾을 수 없습니다");
+          setUserStock([]);
+        }
+      } catch (error) {
+        console.error("Error fetching userStock:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -57,19 +76,22 @@ export default function UserHome() {
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              {datas.slice(0, 3).map((data, index) => (
-                <div key={index} className="">
-                  <Report data={data} />
-                </div>
-              ))}
+              {stockData
+                .filter(item => userStock.includes(item.stockName))
+                .slice(0, 3)
+                .map((data, index) => (
+                  <div key={index} className="">
+                    <Report data={data} />
+                  </div>
+                ))}
             </div>
           </div>
           <div className="flex flex-col gap-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               <div className="flex flex-col justify-start">
                 <div className="text-mainNavy-900 text-3xl font-bold leading-9">최근 조회</div>
-                <div className="px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
-                  <div className="w-full min-h-[300px] flex flex-col justify-center items-center gap-4">
+                <div className="h-[384px] px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
+                  <div className="w-full min-h-[300px] flex flex-col items-center gap-4">
                     {data.length === 0 ? (
                       <div className="w-full h-full flex flex-col justify-center items-center text-center flex-grow">
                         <Warning />
@@ -78,8 +100,8 @@ export default function UserHome() {
                         </div>
                       </div>
                     ) : (
-                      data.map((data, index) => (
-                        <div key={index} className="flex justify-between items-center rounded-lg">
+                      data.slice(0, 4).map((data, index) => (
+                        <div key={index} className="flex justify-between items-center rounded-lg ">
                           <Link href={`/report/${data.logo}`}>
                             <Stock
                               data={data}
@@ -101,10 +123,11 @@ export default function UserHome() {
               </div>
               <div className="flex flex-col justify-start">
                 <div className="text-mainNavy-900 text-3xl font-bold leading-9">관심 종목</div>
-                <div className="px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
-                  <div className="w-full min-h-[300px] flex flex-col justify-center items-center gap-4">
+                <div className="h-[384px] px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
+                  <div className="w-full min-h-[300px] flex flex-col  items-center gap-4">
                     {stockData
-                      .filter(item => user?.stock.includes(item.stockName))
+                      .filter(item => userStock.includes(item.stockName))
+                      .slice(0, 4)
                       .map((data, index) => (
                         <div key={index} className="flex justify-between items-center rounded-lg">
                           <Link href={`/report/${data.logo}`}>
@@ -137,11 +160,11 @@ export default function UserHome() {
           </div>
         </div>
         <div className="fixed bottom-4 right-4 py-2 px-4">
-          {/* {isShow ? (
+          {isShow ? (
             <ChatBot onClick={() => setIsShow(false)} />
           ) : (
             <IconButton size="chatBot" icon="ChatBot" onClick={() => setIsShow(true)} />
-          )} */}
+          )}
         </div>
       </div>
     </>

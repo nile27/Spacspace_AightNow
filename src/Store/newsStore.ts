@@ -28,9 +28,12 @@ export const useStockStore = create<TStockStore>(set => ({
   stockData: [],
   fetchStockData: async () => {
     try {
-      const response = await fetch(`/api/news/stock`);
-      const data: TStockData[] = await response.json();
+      const response = await fetch(`/api/news/stock`, { next: { revalidate: 6000 } });
+      if (!response.ok) {
+        throw new Error("Failed to fetch stock data");
+      }
 
+      const data: TStockData[] = await response.json();
       set({ stockData: data });
     } catch (error) {
       console.error("Failed to fetch stock data:", error);

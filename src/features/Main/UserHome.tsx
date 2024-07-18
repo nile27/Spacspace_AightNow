@@ -158,13 +158,6 @@ export default function UserHome() {
             </div>
           </div>
         </div>
-        <div className="fixed bottom-4 right-4 py-2 px-4">
-          {isShow ? (
-            <ChatBot />
-          ) : (
-            <IconButton size="chatBot" icon="ChatBot" onClick={() => setIsShow(true)} />
-          )}
-        </div>
       </div>
     </>
   );

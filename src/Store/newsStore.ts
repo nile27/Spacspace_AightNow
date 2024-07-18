@@ -16,6 +16,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import { StringFormat } from "firebase/storage";
 import { create } from "zustand";
 
 type TStockStore = {
@@ -56,6 +57,7 @@ type TNewsStore = {
   fetchRankNewsList: () => void;
   fetchNewsArticle: (params: { id: string }) => void;
   fetchUpdateViews: (id: string) => void;
+  fetchTranslate: (html: string, targetLang: string, articleId: string) => void;
 };
 
 export const useNewsStore = create<TNewsStore>((set, get) => ({
@@ -130,6 +132,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
     }
   },
 
+  // 관심 종목 뉴스 리스트 가져오기
   fetchStockNewsList: async (stockNames: string[]) => {
     try {
       const rankRef = collection(fireStore, "news");
@@ -206,6 +209,46 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
       }
     } catch (error) {
       console.error("Failed to update views:", error);
+    }
+  },
+
+  fetchTranslate: async (html: string, targetLang: string, newsArticleId: string) => {
+    try {
+      const response = await fetch("/api/translate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ html, targetLang }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const result = await response.json();
+
+      const articleRef = doc(fireStore, "news", newsArticleId);
+
+      const docSnap = await getDoc(articleRef);
+      if (docSnap.exists()) {
+        const articleData = docSnap.data();
+        // 현재 언어별 번역
+        let translations = articleData.translations || {};
+
+        // 언어별로 번역된 HTML 추가
+        translations[targetLang] = result.translatedHTML;
+
+        // 기사 문서 업데이트
+        await updateDoc(articleRef, {
+          translated: true,
+          translations: translations,
+        });
+      }
+    } catch (error) {
+      console.error("Error translating HTML:", error);
+      throw error; // 에러를 다시 throw하여 상위 컴포넌트에서 처리
     }
   },
 }));

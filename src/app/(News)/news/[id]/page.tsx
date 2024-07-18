@@ -40,38 +40,16 @@ export default function NewsDetail({ params }: TPageProps) {
   const fetchNewsArticle = useNewsStore(state => state.fetchNewsArticle);
   const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
   const fetchUpdateViews = useNewsStore(state => state.fetchUpdateViews);
+  const fetchTranslate = useNewsStore(state => state.fetchTranslate);
   const view = useNewsStore(state => state.view);
   const fetchStockData = useStockStore(state => state.fetchStockData);
   const stockData = useStockStore(state => state.stockData);
   const stockNewsList = useNewsStore(state => state.stockNewsList);
   const article = useNewsStore(state => state.newsArticle);
-  const [translatedHtml, setTranslatedHtml] = useState<string>("");
-  const [translated, setTranslated] = useState(false);
+  const [isTranslated, setIsTranslated] = useState(false);
   const { user } = useAuthStore();
 
-  const handleTranslate = async (html: string, targetLang: string) => {
-    try {
-      const response = await fetch("/api/translate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ html, targetLang }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error);
-      }
-
-      const result = await response.json();
-      console.log(result.translatedHTML);
-      setTranslatedHtml(result.translatedHTML);
-      setTranslated(!translated);
-    } catch (error) {
-      console.error("Error translating HTML:", error);
-    }
-  };
+  const userLanguage: any = user?.language ?? "KO";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,13 +68,24 @@ export default function NewsDetail({ params }: TPageProps) {
     }
     if (stockData && article.relatedItems) {
       const orderedStockData = article.relatedItems
-        .map(item => stockData.find(stock => stock.logo === item))
+        .map((item: string) => stockData.find(stock => stock.logo === item))
         .filter(Boolean); // undefined 요소 제거
 
       setStockDataList(orderedStockData);
     }
   }, [stockData, article.relatedItems]);
 
+  function handleTranslate(content: string, targetLang: string) {
+    if (!article.translations[targetLang]) {
+      fetchTranslate(content, targetLang, id);
+      setTimeout(() => {
+        fetchNewsArticle({ id });
+      }, 4000);
+    }
+    setIsTranslated(!isTranslated);
+  }
+
+  console.log(article);
   return (
     <>
       <Header />
@@ -152,8 +141,8 @@ export default function NewsDetail({ params }: TPageProps) {
               {article.image && (
                 <img src={article.image} alt="image" width={728} height={370} className="my-8" />
               )}
-              {translated ? (
-                <div dangerouslySetInnerHTML={{ __html: article.translatedHtml }}></div>
+              {isTranslated ? (
+                <div dangerouslySetInnerHTML={{ __html: article.translations[userLanguage] }}></div>
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: article.content }}></div>
               )}

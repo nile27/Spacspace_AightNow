@@ -21,4 +21,4 @@ const getUniqueRandomStocks = (stockList: string[], count1: number, count2: numb
   return [list1, list2];
 };
 
-export { getRandomStocks, getUniqueRandomStocks };
+export { shuffleArray, getRandomStocks, getUniqueRandomStocks };

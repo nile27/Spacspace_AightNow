@@ -25,6 +25,10 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     useRecentSearches();
 
   useEffect(() => {
+    setIsShow(search !== "" && filteredStocks.length > 0);
+  }, [search, filteredStocks]);
+
+  useEffect(() => {
     console.log("RecentSearches", recentSearches);
   }, [recentSearches]);
 
@@ -54,13 +58,12 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     setSearch(stock.name);
     const results = await getStockSearch(stock.name);
     setFilteredStocks(results);
-    setIsShow(true);
+
     onSearch(results);
   };
 
   const searchHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    setIsShow(true);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -94,10 +97,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
   const handleSubmit = async (e?: React.FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
     onSearch(filteredStocks);
-    setIsShow(false);
   };
-
-  console.log(`recentSearches`, recentSearches);
 
   return (
     <>

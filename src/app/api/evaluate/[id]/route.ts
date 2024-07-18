@@ -1,6 +1,4 @@
-import { agentEvaluation } from "@/lib/Ollama";
-import { agentEvaluationApi } from "@/lib/OllamaTest";
-import { agentEvaluationTogether } from "@/lib/TogetherTest";
+import { agentEvaluationTogether } from "@/lib/agentTogetherAI";
 
 import { NextResponse } from "next/server";
 

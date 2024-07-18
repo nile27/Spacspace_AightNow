@@ -1,6 +1,7 @@
 import fireStore from "@/firebase/firestore";
 import { collection, doc, setDoc } from "firebase/firestore";
 
+// 관심 종목 주식 db에 추가
 export async function stockSearchAdd(stocksToAdd: any[]) {
   const stockList = collection(fireStore, "stockSearchList");
   for (const stock of stocksToAdd) {

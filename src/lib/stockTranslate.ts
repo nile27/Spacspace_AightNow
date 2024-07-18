@@ -7,6 +7,7 @@ const STOCK_NAME_KO_TO_EN: { [key: string]: string } = {
   유니티: "unity",
 };
 
+// 주식 영어이름 변환
 export function stockTranslate(stock: string) {
   return STOCK_NAME_KO_TO_EN[stock];
 }

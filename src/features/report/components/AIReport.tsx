@@ -1,4 +1,4 @@
-import { agentEvaluationTogether } from "@/lib/TogetherTest";
+import { agentEvaluationTogether } from "@/lib/agentTogetherAI";
 
 export default async function AIReport({ id }: { id: string }) {
   const score = await agentEvaluationTogether(id);

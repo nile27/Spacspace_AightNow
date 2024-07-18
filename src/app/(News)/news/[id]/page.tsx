@@ -9,6 +9,7 @@ import ArticleIcon from "@/features/news/components/ArticleIcon.svg";
 import Stock from "@/components/Stock/Stock";
 import Link from "next/link";
 import { useAuthStore } from "@/Store/store";
+import ChatBotPage from "@/features/chatbot/ChatBotPage";
 
 type TPageProps = {
   params: { id: string };
@@ -193,6 +194,7 @@ export default function NewsDetail({ params }: TPageProps) {
           </div>
         </div>
       </div>
+      <ChatBotPage />
     </>
   );
 }

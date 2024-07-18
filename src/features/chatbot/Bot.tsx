@@ -1,7 +1,5 @@
 import IconLight from "../../../public/icons/IconLight.svg";
 
-type TBotProps = {};
-
 export default function Bot({ children }: { children: React.ReactNode }) {
   return (
     <>

@@ -11,7 +11,7 @@ export type Message = {
   content: string;
 };
 
-export default function ChatBot() {
+export default function ChatBot({ onClose }: { onClose: () => void }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [sessionId, setSessionId] = useState("");
@@ -52,7 +52,9 @@ export default function ChatBot() {
           <div className="w-full h-[64px] bg-mainNavy-900 rounded-t-3xl flex items-center justify-between px-4 pl-[29px]">
             <div className="text-scaleGray-0 text-xl font-bold leading-loose">나우챗봇</div>
             <div className="w-8 h-8 relative">
-              <IconButton icon="Close" size="auto" style={{ border: "0" }} />
+              <button onClick={onClose}>
+                <IconButton icon="Close" size="auto" style={{ border: "0" }} />
+              </button>
             </div>
           </div>
           <div className="overflow-y-scroll h-[488px]">

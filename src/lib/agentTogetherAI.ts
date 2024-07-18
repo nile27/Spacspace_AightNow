@@ -56,7 +56,7 @@ export async function agentChatTogether(id: string) {
   return cleanOutput;
 }
 
-// --------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------
 
 // ai 점수 평가
 export async function agentEvaluationTogether(id: string) {

@@ -10,6 +10,9 @@ export type TStockInfo = {
   closePrice: number;
   compareToPreviousClosePrice: number;
   fluctuationsRatio: number;
+  compareToPreviousPrice: {
+    code: string;
+  };
 };
 
 type TStockDetail = {
@@ -20,8 +23,13 @@ type TStockDetail = {
 
 export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStockDetail) {
   if (!stockPriceInfo) return null;
-  const { reutersCode, closePrice, compareToPreviousClosePrice, fluctuationsRatio } =
-    stockPriceInfo;
+  const {
+    reutersCode,
+    closePrice,
+    compareToPreviousClosePrice,
+    fluctuationsRatio,
+    compareToPreviousPrice,
+  } = stockPriceInfo;
 
   const handleDelete = () => {
     onDelete();
@@ -40,8 +48,17 @@ export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStock
           </div>
           <div className="flex items-center gap-2">
             <span>${closePrice}</span>
-            <span className="text-warning">{compareToPreviousClosePrice}</span>
-            <span className="text-warning">{fluctuationsRatio}%</span>
+            <span
+              className={`${
+                compareToPreviousPrice.code === "2" ? "text-warning" : "text-blue-500"
+              }`}
+            >
+              <span className="">
+                {compareToPreviousPrice.code === "2" ? "▲" : "▼"}
+                {compareToPreviousClosePrice}
+              </span>
+              <span className="ml-2">{fluctuationsRatio}%</span>
+            </span>
           </div>
         </div>
         <div className="w-[365px]  flex  justify-between ">

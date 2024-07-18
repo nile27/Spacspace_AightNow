@@ -51,7 +51,7 @@ export default function NewsDetail({ params }: TPageProps) {
   const { user } = useAuthStore();
   const [summary, setSummary] = useState<string>("");
 
-  const userLanguage: any = user?.language ?? "KO";
+  const userLanguage: string = user?.language ?? "KO";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +89,6 @@ export default function NewsDetail({ params }: TPageProps) {
     }
     setIsTranslated(!isTranslated);
   }
-
   useEffect(() => {
     async function fetchSummary() {
       try {

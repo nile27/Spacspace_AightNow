@@ -13,7 +13,6 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
 
 export default function UserHome() {
-  const [isShow, setIsShow] = useState(false);
   const { user } = useAuthStore();
   const [userStock, setUserStock] = useState<string[]>([]);
 

@@ -28,7 +28,7 @@ type TFindStore = {
     slug: string,
   ) => void;
   getSearchHistory: (userId: string) => void;
-  getSearchStockHistory: (userId: string) => void;
+  getSearchStockHistory: (userId?: string) => void;
   getSearchRank: () => void;
   deleteSearchHistory: (id: string) => void;
   deleteAllSearchHistory: (userId: string) => void;
@@ -84,7 +84,7 @@ export const useFindStore = create<TFindStore>(set => ({
     set({ searchHistory: data });
   },
 
-  getSearchStockHistory: async (userId: string) => {
+  getSearchStockHistory: async (userId?: string) => {
     const historyRef = collection(fireStore, "searchHistory");
     const q = query(
       historyRef,

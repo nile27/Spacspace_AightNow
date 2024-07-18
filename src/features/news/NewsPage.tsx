@@ -57,7 +57,7 @@ export default function NewsPage() {
     }
   }, [inView, hasMore]);
 
-  const randomStockNews = getRandomImageNews(stockNewsList, 3);
+  // const randomStockNews = getRandomImageNews(stockNewsList, 3);
 
   return (
     <>
@@ -66,11 +66,14 @@ export default function NewsPage() {
         <div className="my-12">
           <h2 className="font-bold text-2xl py-4">관심종목과 관련된 뉴스</h2>
           <div className="grid grid-cols-3 gap-5">
-            {randomStockNews.map(news => (
-              <Link key={news.id} href={`/news/${news.id}`}>
-                <Card data={news} />
-              </Link>
-            ))}
+            {stockNewsList
+              .filter(data => data.image)
+              .slice(0, 3)
+              .map(news => (
+                <Link key={news.id} href={`/news/${news.id}`}>
+                  <Card data={news} />
+                </Link>
+              ))}
           </div>
         </div>
         <h2 className="font-bold text-2xl py-4">최신뉴스 </h2>

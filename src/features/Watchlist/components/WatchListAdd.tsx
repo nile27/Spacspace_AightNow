@@ -54,24 +54,25 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
       results.map(async stock => {
         const lowCase = stock.nameEn.toLowerCase();
         const priceInfo = await stockAction2(lowCase);
-
         return { ...stock, priceInfo };
       }),
     );
     setSearchResults(updatedResults);
   };
 
+  console.log(searchResults);
+
   const handleSelectStock = async (stock: TStockSearch) => {
     console.log("handleSelectStock called with:", stock);
     await handleItemClick(stock);
-    if (!user || !user.userId) return;
+    if (!user || !user.userId || !user.id) return;
 
     try {
       // users 컬렉션 참조
       const usersRef = collection(fireStore, "users");
 
       // userId로 사용자 문서 찾기
-      const q = query(usersRef, where("userId", "==", user.userId));
+      const q = query(usersRef, where("userId", "==", user.userId || user.id));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
@@ -194,10 +195,13 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
               <h2 className="text-lg text-mainNavy-900">인기검색어</h2>
               <div className="w-[714px] h-[288px]  justify-center items-center gap-6 border border-scaleGray-400 rounded-2xl">
                 {popularStocks.map((stock, idx) => (
-                  <div className="flex  flex-col">
+                  <div className="flex  flex-col" key={idx}>
                     <div className=" w-96  flex justify-around items-end">
                       <span className="mb-1">{idx + 1}위</span>
-                      <StockList key={idx} name={stock.nameEn.toLowerCase()} />
+                      <StockList
+                        name={stock.nameEn.toLowerCase()}
+                        onClick={() => handleSelectStock(stock)}
+                      />
                     </div>
                   </div>
                 ))}

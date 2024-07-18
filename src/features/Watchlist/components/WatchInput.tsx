@@ -4,6 +4,10 @@ import BasicIcon from "@/components/Icon/BasicIcons";
 import { getStockSearch } from "@/lib/getStockSearch";
 import { useEffect, useRef, useState } from "react";
 import { TStockSearch } from "./WatchListAdd";
+import { useDebounce } from "@/hooks/useDebounce";
+
+import Icon from "@/components/Stock/Icon";
+import useRecentSearches from "@/hooks/useRecentSearches";
 
 type WatchInputProps = {
   onSearch: (results: TStockSearch[]) => void;
@@ -16,6 +20,8 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
   const [filteredStocks, setFilteredStocks] = useState<TStockSearch[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const debouncedSearch = useDebounce(search, 300);
+  const { recentSearches, addRecentSearch, deleteRecentSearch } = useRecentSearches();
 
   useEffect(() => {
     if (search === "") {
@@ -29,7 +35,15 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     };
 
     fetchStocks();
-  }, [search]);
+  }, [debouncedSearch]);
+
+  const handleAllDelete = () => {
+    localStorage.removeItem("recentSearches");
+  };
+
+  const handleSelectDelete = () => {
+    deleteRecentSearch(recentSearches[selectedIndex + 1]);
+  };
 
   const searchHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -50,6 +64,8 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
 
   const handleItemClick = (stock: TStockSearch, e?: React.MouseEvent<HTMLElement>) => {
     if (e) e.preventDefault();
+    onSelectStock(stock);
+    addRecentSearch(stock);
     handleSubmit();
     setSearch("");
   };
@@ -60,7 +76,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
     setIsShow(false);
   };
 
-  console.log(filteredStocks);
+  console.log(`recentSearches`, recentSearches);
 
   return (
     <>
@@ -98,7 +114,45 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
           </ul>
         )}
       </form>
-      {search.length === 0 && <h2 className="text-mainNavy-900 text-xl">최근 검색한 종목</h2>}
+      {search.length === 0 && recentSearches.length > 0 && (
+        <div className="w-[714px] ">
+          <div className="w-full flex justify-between">
+            <h2 className="text-mainNavy-900 text-xl">최근 검색한 종목</h2>
+            <button onClick={handleAllDelete}>
+              <span className="text-scaleGray-600 underline">전체삭제</span>
+            </button>
+          </div>
+          <ul className="w-[712px] bg-white border border-scaleGray-400 rounded-lg">
+            {recentSearches.map(stock => (
+              <li
+                key={stock.id}
+                className="p-2 hover:bg-gray-100 cursor-pointer flex gap-4 items-center rounded-lg"
+              >
+                <div className=" flex items-center flex-grow ml-2">
+                  <Icon name={stock.name} size={32}></Icon>
+                  <div className="ml-4">
+                    <div className="font-bold">{stock.name}</div>
+                    <div className="text-gray-600">{stock.symbol}</div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <span className="mr-4">{stock.priceInfo?.closePrice}</span>
+                  <span
+                    className={`mr-4 ${
+                      stock.priceInfo?.compareToPreviousPrice.code === "2"
+                        ? "text-rose-500"
+                        : "text-blue-500"
+                    }`}
+                  ></span>
+                  <button onClick={handleSelectDelete}>
+                    <BasicIcon name="Close" size={32} color="#575757"></BasicIcon>
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </>
   );
 }

@@ -28,11 +28,11 @@ export default function WatchList() {
   const user = useAuthStore(state => state.user);
 
   const fetchWatchList = async () => {
-    if (!user?.userId) return;
+    if (!user?.userId || user?.id) return;
 
     try {
       const userRef = collection(fireStore, "users");
-      const q = query(userRef, where("userId", "==", user.userId));
+      const q = query(userRef, where("userId", "==", user.userId || user.id));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
@@ -65,11 +65,11 @@ export default function WatchList() {
   );
 
   const handleDelete = async (stockToDelete: string) => {
-    if (!user?.userId) return;
+    if (!user?.userId || user.id) return;
 
     try {
       const useRef = collection(fireStore, "users");
-      const q = query(useRef, where("userId", "==", user.userId));
+      const q = query(useRef, where("userId", "==", user.userId || user.id));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
@@ -91,10 +91,10 @@ export default function WatchList() {
   };
 
   useEffect(() => {
-    if (user?.userId) {
+    if (user?.userId || user?.id) {
       fetchWatchList();
     }
-  }, [user?.userId]);
+  }, [user?.userId || user?.id]);
 
   useEffect(() => {
     async function fetchStockPrices() {

@@ -1,11 +1,9 @@
-import ChatBot from "@/features/chatbot/ChatBot";
-import ChatBotTest from "@/features/report/components/test/ChatbotTest";
+import ChatBotPage from "@/features/chatbot/ChatBotPage";
 
 export default function page() {
   return (
     <>
-      <ChatBotTest />
-      <ChatBot />
+      <ChatBotPage />
     </>
   );
 }

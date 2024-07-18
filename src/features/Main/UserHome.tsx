@@ -12,7 +12,7 @@ import { stockAction2 } from "@/lib/stockAction";
 import { TStockInfo } from "../Watchlist/components/WatchListCard";
 import { useStockStore } from "@/Store/newsStore";
 import Link from "next/link";
-// import { useFindStore } from "../search/components/findStore";
+import { useFindStore } from "../search/components/findStore";
 
 const datas = [
   { name: "애플", code: "AAPL", price: 0.0, change: 0.0, percent: 0.0, reutersCode: "apple" },

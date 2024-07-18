@@ -21,11 +21,11 @@ type TFindStore = {
   stockHistory: any[];
   searchRank: any[];
   addSearchHistory: (
-    userId: string,
     term: string,
     time: string,
     isNews: boolean,
     slug: string,
+    userId?: string,
   ) => void;
   getSearchHistory: (userId: string) => void;
   getSearchStockHistory: (userId: string) => void;
@@ -41,14 +41,17 @@ export const useFindStore = create<TFindStore>(set => ({
   searchRank: [],
 
   addSearchHistory: async (
-    userId: string,
     term: string,
     time: string,
     isNews: boolean,
     slug: string,
+    userId?: string,
   ) => {
     try {
       // 검색 기록 추가
+      if (userId === undefined) {
+        return;
+      }
       const historyRef = collection(fireStore, "searchHistory");
       await addDoc(historyRef, { userId, term, time, isNews, slug });
 

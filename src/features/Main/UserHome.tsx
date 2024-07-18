@@ -28,8 +28,9 @@ export default function UserHome() {
   useEffect(() => {
     async function fetchData() {
       try {
+        const userDataId = (user?.userId as string) ? user?.userId : user?.id;
         const userRef = collection(fireStore, "users");
-        const q = query(userRef, where("userId", "==", user?.userId));
+        const q = query(userRef, where("userId", "==", userDataId));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -161,7 +162,7 @@ export default function UserHome() {
         </div>
         <div className="fixed bottom-4 right-4 py-2 px-4">
           {isShow ? (
-            <ChatBot onClick={() => setIsShow(false)} />
+            <ChatBot />
           ) : (
             <IconButton size="chatBot" icon="ChatBot" onClick={() => setIsShow(true)} />
           )}

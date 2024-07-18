@@ -151,7 +151,7 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
 
       set({ stockNewsList: data });
     } catch (error) {
-      console.error("Failed to fetch rank news:", error);
+      console.error("Failed to fetch stock news:", error);
     }
   },
 

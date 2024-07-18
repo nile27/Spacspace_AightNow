@@ -75,6 +75,8 @@ export default function NewsDetail({ params }: TPageProps) {
     }
   }, [stockData, article.relatedItems]);
 
+  const filteredStockData = stockDataList.filter(data => data.stockName !== "rank");
+
   // 번역 요청
   function handleTranslate(content: string, targetLang: string) {
     if (!article.translations[targetLang] || targetLang !== "KO") {
@@ -150,38 +152,40 @@ export default function NewsDetail({ params }: TPageProps) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-y-4">
-            <div className="w-[384px] bg-white rounded-2xl font-pretendard p-8">
-              <h2 className="text-xl mb-3">현재 뉴스와 관련된 주식</h2>
-              <div className="flex flex-col">
-                {stockDataList.map((data, index) => (
-                  <Link href={`/report/${data.logo}`} key={index}>
-                    <Stock
-                      data={data}
-                      logo={article.relatedItems[index]}
-                      gap={`${
-                        data.stockName.length < 3 && data.symbolCode.length < 5
-                          ? "gap-32"
-                          : data.stockName.length < 4
-                          ? "gap-[113px]"
-                          : "gap-[49px]"
-                      }`}
-                    />
-                  </Link>
-                ))}
+          {filteredStockData.length > 0 && (
+            <div className="flex flex-col gap-y-4">
+              <div className="w-[384px] bg-white rounded-2xl font-pretendard p-8">
+                <h2 className="text-xl mb-3">현재 뉴스와 관련된 주식</h2>
+                <div className="flex flex-col">
+                  {stockDataList.map((data, index) => (
+                    <Link href={`/report/${data.logo}`} key={index}>
+                      <Stock
+                        data={data}
+                        logo={article.relatedItems[index]}
+                        gap={`${
+                          data.stockName.length < 3 && data.symbolCode.length < 5
+                            ? "gap-32"
+                            : data.stockName.length < 4
+                            ? "gap-[113px]"
+                            : "gap-[49px]"
+                        }`}
+                      />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div className="w-[388px] h-[488px] p-8 bg-white rounded-2xl font-pretendard">
+                <h2 className="font-bold text-xl">관련기사</h2>
+                <div className="flex flex-col gap-y-5 mt-[10px]">
+                  {stockNewsList.slice(0, 4).map(news => (
+                    <Link href={`/news/${news.id}`} key={news.id}>
+                      <CardSmallNews data={news} />
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="w-[388px] h-[488px] p-8 bg-white rounded-2xl font-pretendard">
-              <h2 className="font-bold text-xl">관련기사</h2>
-              <div className="flex flex-col gap-y-5 mt-[10px]">
-                {stockNewsList.slice(0, 4).map(news => (
-                  <Link href={`/news/${news.id}`} key={news.id}>
-                    <CardSmallNews data={news} />
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
       <ChatBotPage />

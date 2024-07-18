@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import puppeteer, { Page } from "puppeteer";
-import { addNewsToFirestore } from "../firebase/fireStore";
+import { addNewsToFirestore, handleTranslate } from "../firebase/fireStore";
 import { TNewsList } from "../../type";
 
 const symbols = ["AAPL.O", "TSLA.O", "MSFT.O", "AMZN.O", "GOOGL.O", "U"];
 const relatedItem = ["애플", "테슬라", "마이크로소프트", "아마존", "구글", "유니티"];
 const stockNames = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
+const languages = ["en-US", "ZH", "JA", "FR"];
 
 const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => {
   const url = `https://api.stock.naver.com/news/stock/${symbol}?pageSize=20&page=1`;
@@ -20,21 +21,22 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
 
     const itemsArray = data.flatMap((item: any) => item.items);
 
-    const list = itemsArray.map((item: any) => {
-      return {
-        aid: item.articleId,
-        tit: item.title,
-        subcontent: item.body,
-        oid: item.officeId,
-        ohnm: item.officeName,
-        dt: item.datetime,
-        thumbUrl: item.imageOriginLink,
-        type: item.photoType,
-        stockName: stockName,
-        isVideo: item.photoType === 2,
-        hasImage: item.photoType === 1,
-      };
-    });
+    const list = itemsArray
+      .filter((item: any) => item.photoType !== 2)
+      .map((item: any) => {
+        return {
+          aid: item.articleId,
+          tit: item.title,
+          subcontent: item.body,
+          oid: item.officeId,
+          ohnm: item.officeName,
+          dt: item.datetime,
+          thumbUrl: item.imageOriginLink,
+          type: item.photoType,
+          stockName: stockName,
+          hasImage: item.photoType === 1,
+        };
+      });
 
     // 뉴스 기사
     for (const news of list) {
@@ -84,9 +86,6 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
           }
 
           return {
-            // articleId: "",
-            // title: titleElement.innerText,
-            // provider: providerElement,
             published: timeElement.innerText,
             content: contentElement.outerHTML,
             image: imageElement?.src,
@@ -97,12 +96,24 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
         stockNames,
       );
 
-      articles.push({
+      const content = {
         ...news,
         ...article,
-      });
+        translations: { "en-US": "", ZH: "", JA: "", FR: "" },
+      };
+
+      for (const lang of languages) {
+        try {
+          const translatedContent = await handleTranslate(content.content, lang);
+          content.translations[lang] = translatedContent;
+        } catch (error) {
+          console.error(`Failed to translate content to ${lang}`, error);
+        }
+      }
+
+      articles.push(content);
     }
-    console.log(articles);
+    // console.log(articles);
 
     return articles;
   } catch (error) {
@@ -112,7 +123,7 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
 };
 
 export async function GET(request: Request) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
   const allLocalNews: TNewsList[] = [];
 
@@ -121,7 +132,7 @@ export async function GET(request: Request) {
       const newsListData = await fetchLocalNews(stockNames[i], symbols[i], page);
       if (newsListData) {
         allLocalNews.push(...newsListData);
-        await addNewsToFirestore(stockNames[i], newsListData); // Firestore에 뉴스 추가
+        await addNewsToFirestore(stockNames[i], newsListData);
       }
     }
     return NextResponse.json(allLocalNews);

@@ -141,7 +141,6 @@ export const useNewsStore = create<TNewsStore>((set, get) => ({
         where("stockName", "in", stockNames),
         orderBy("dt", "desc"),
         orderBy("stockName"),
-        limit(4),
       );
       const querySnapshot = await getDocs(q);
 

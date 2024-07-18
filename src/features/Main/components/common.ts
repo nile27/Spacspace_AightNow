@@ -1,3 +1,5 @@
+import { TNewsList } from "@/app/api/(crawler)/type";
+
 // 배열을 랜덤하게 섞는 함수
 const shuffleArray = (array: any[]) => {
   const shuffledArray = [...array];
@@ -13,6 +15,12 @@ const getRandomStocks = (stockList: string[], count: number) => {
   return shuffled.slice(0, count);
 };
 
+// 이미지가 있는 랜덤 주식 종목 뉴스를 가져오는 함수
+const getRandomImageNews = (newsList: TNewsList[], count: number) => {
+  const shuffled = shuffleArray(newsList.filter(stock => stock.image));
+  return shuffled.slice(0, count);
+};
+
 // 중복되지 않는 랜덤 주식 종목을 가져오는 함수
 const getUniqueRandomStocks = (stockList: string[], count1: number, count2: number) => {
   const shuffled = shuffleArray(stockList);
@@ -21,4 +29,4 @@ const getUniqueRandomStocks = (stockList: string[], count1: number, count2: numb
   return [list1, list2];
 };
 
-export { shuffleArray, getRandomStocks, getUniqueRandomStocks };
+export { shuffleArray, getRandomStocks, getRandomImageNews, getUniqueRandomStocks };

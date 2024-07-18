@@ -5,19 +5,6 @@ import SearchCurrent from "./SearchCurrent";
 import Link from "next/link";
 import { useAuthStore } from "@/Store/store";
 
-const rankings = [
-  { rank: 1, name: "테슬라" },
-  { rank: 2, name: "테슬라" },
-  { rank: 3, name: "테슬라" },
-  { rank: 4, name: "테슬라" },
-  { rank: 5, name: "테슬라" },
-  { rank: 6, name: "테슬라" },
-  { rank: 7, name: "테슬라" },
-  { rank: 8, name: "테슬라" },
-  { rank: 9, name: "테슬라" },
-  { rank: 10, name: "테슬라" },
-];
-
 export type TFindHistory = {
   id: string;
   userId: string;
@@ -54,20 +41,21 @@ export default function SearchEmpty({ setSearch }: { setSearch: (term: string) =
   return (
     <>
       <div className="flex-col justify-start items-start gap-8 flex">
-        {searchHistory.length > 0 && (
-          <div className="flex-col justify-start items-center gap-2 flex">
-            <div className="items-center gap-[431px] inline-flex w-full">
-              <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
-                최근 검색어
-              </div>
-
+        <div className="flex-col justify-start items-center gap-2 flex">
+          <div className="items-center gap-[431px] inline-flex w-full">
+            <div className="text-mainNavy-900 text-2xl font-bold font-['Pretendard'] leading-loose">
+              최근 검색어
+            </div>
+            {searchHistory.length > 0 && (
               <button
                 className="text-scaleGray-600 text-sm font-medium font-['Pretendard'] underline leading-tight"
                 onClick={handleClick}
               >
                 전체삭제
               </button>
-            </div>
+            )}
+          </div>
+          {searchHistory.length > 0 ? (
             <div className="w-full p-6 bg-white rounded-2xl flex-col justify-start items-start gap-2.5 flex">
               <div className="flex-col justify-start items-start flex">
                 {searchHistory.map((item, index) =>
@@ -87,8 +75,17 @@ export default function SearchEmpty({ setSearch }: { setSearch: (term: string) =
                 )}
               </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="w-[615px] p-6 bg-white rounded-2xl flex-col justify-start items-start gap-2.5 flex">
+              <div className="flex flex-col justify-start items-center gap-4 w-full">
+                <div className="text-scaleGray-400 text-base leading-normal">
+                  원하시는 검색어를 입력해주세요.
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         {searchRank.length >= 10 && (
           <div className="flex-col justify-start items-start gap-2 flex w-full">
             <div className="items-center gap-4 inline-flex w-full">

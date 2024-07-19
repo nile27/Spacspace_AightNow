@@ -101,6 +101,8 @@ export default function NewsDetail({ params }: TPageProps) {
     }
     fetchSummary();
   }, [id]);
+
+  console.log("article", article.content);
   return (
     <>
       <Header />

@@ -52,9 +52,7 @@ export default function ChatBot({ onClose }: { onClose: () => void }) {
           <div className="w-full h-[64px] bg-mainNavy-900 rounded-t-3xl flex items-center justify-between px-4 pl-[29px]">
             <div className="text-scaleGray-0 text-xl font-bold leading-loose">나우챗봇</div>
             <div className="w-8 h-8 relative">
-              <button onClick={onClose}>
-                <IconButton icon="Close" size="auto" style={{ border: "0" }} />
-              </button>
+              <IconButton onClick={onClose} icon="Close" size="auto" style={{ border: "0" }} />
             </div>
           </div>
           <div className="overflow-y-scroll h-[488px]">

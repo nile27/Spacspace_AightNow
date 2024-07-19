@@ -17,7 +17,7 @@ import {
   updateViews,
   userStockAction,
 } from "@/lib/newsAction";
-import { TNewsList, TStockData } from "@/app/api/(crawler)/type";
+import { TNewsList } from "@/app/api/(crawler)/type";
 
 type TPageProps = {
   params: { id: string };
@@ -50,7 +50,7 @@ export default function NewsDetail({ params }: TPageProps) {
   const [summary, setSummary] = useState<string>("");
 
   const [article, setArticle] = useState<any>({});
-  const [stockNews, setStockNews] = useState<any>([]);
+  const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[] | undefined>([]);
   const [stockData, setStockData] = useState<any[]>([]);
   const [view, setView] = useState<number>(0);
 
@@ -87,8 +87,7 @@ export default function NewsDetail({ params }: TPageProps) {
     const fetchRelatedData = async () => {
       if (article.relatedItems) {
         const stockNewsData = await getStockNewsList(article.relatedItems);
-        setStockNews(stockNewsData);
-
+        setStockNews(stockNewsData as (TNewsList & { id: string })[]);
         const orderedStockData = article.relatedItems
           .map((item: string) => stockData.find(stock => stock.logo === item))
           .filter(Boolean); // undefined 요소 제거

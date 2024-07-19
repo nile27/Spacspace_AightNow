@@ -1,6 +1,5 @@
 "use client";
 
-import { useNewsStore, useStockStore } from "@/Store/newsStore";
 import CardSmallNews from "@/components/Card/CardSmallNews";
 import Header from "@/components/Header";
 import TextButton from "@/components/btnUi/TextButton";
@@ -11,6 +10,14 @@ import Link from "next/link";
 import { useAuthStore } from "@/Store/store";
 import ChatBotPage from "@/features/chatbot/ChatBotPage";
 import { summaryAI } from "@/lib/summaryAI";
+import {
+  fetchTranslate,
+  getNewsArticle,
+  getStockNewsList,
+  updateViews,
+  userStockAction,
+} from "@/lib/newsAction";
+import { TNewsList } from "@/app/api/(crawler)/type";
 
 type TPageProps = {
   params: { id: string };
@@ -38,73 +45,88 @@ export default function NewsDetail({ params }: TPageProps) {
   const { id } = params;
   const [loading, setLoading] = useState(false);
   const [stockDataList, setStockDataList] = useState<any[]>([]);
-  const fetchNewsArticle = useNewsStore(state => state.fetchNewsArticle);
-  const fetchStockNewsList = useNewsStore(state => state.fetchStockNewsList);
-  const fetchUpdateViews = useNewsStore(state => state.fetchUpdateViews);
-  const fetchTranslate = useNewsStore(state => state.fetchTranslate);
-  const fetchStockData = useStockStore(state => state.fetchStockData);
-  const view = useNewsStore(state => state.view);
-  const stockData = useStockStore(state => state.stockData);
-  const stockNewsList = useNewsStore(state => state.stockNewsList);
-  const article = useNewsStore(state => state.newsArticle);
   const [isTranslated, setIsTranslated] = useState(false);
   const { user } = useAuthStore();
   const [summary, setSummary] = useState<string>("");
 
-  const userLanguage: any = user?.language ?? "KO";
+  const [article, setArticle] = useState<any>({});
+  const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[] | undefined>([]);
+  const [stockData, setStockData] = useState<any[]>([]);
+  const [view, setView] = useState<number>(0);
+
+  const userLanguage: string = user?.language ?? "KO";
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       setLoading(true);
-      await fetchNewsArticle({ id });
-      await fetchStockData();
-      await fetchUpdateViews(id);
-      setLoading(false);
+      try {
+        const [articleData, stockData, viewCount] = await Promise.all([
+          getNewsArticle(id),
+          userStockAction(),
+          updateViews(id),
+        ]);
+
+        if (articleData) {
+          setArticle(articleData);
+        }
+        if (stockData) {
+          setStockData(stockData);
+        }
+        setView(viewCount);
+      } catch (error) {
+        console.error("Error fetching initial data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchData();
-  }, [id, fetchNewsArticle, fetchStockData, fetchUpdateViews]);
+
+    fetchInitialData();
+  }, [id]);
 
   useEffect(() => {
-    if (article.relatedItems) {
-      fetchStockNewsList(article.relatedItems);
-    }
-    if (stockData && article.relatedItems) {
-      const orderedStockData = article.relatedItems
-        .map((item: string) => stockData.find(stock => stock.logo === item))
-        .filter(Boolean); // undefined 요소 제거
+    const fetchRelatedData = async () => {
+      if (article.relatedItems) {
+        const stockNewsData = await getStockNewsList(article.relatedItems);
+        setStockNews(stockNewsData as (TNewsList & { id: string })[]);
+        const orderedStockData = article.relatedItems
+          .map((item: string) => stockData.find(stock => stock.logo === item))
+          .filter(Boolean); // undefined 요소 제거
 
-      setStockDataList(orderedStockData);
-    }
-  }, [stockData, article.relatedItems]);
+        setStockDataList(orderedStockData);
+      }
+    };
 
-  const filteredStockData = stockDataList.filter(data => data.stockName !== "rank");
+    fetchRelatedData();
+  }, [article.relatedItems, stockData]);
 
   // 번역 요청
-  function handleTranslate(content: string, targetLang: string) {
+  const handleTranslate = (content: string, targetLang: string) => {
     if (!article.translations[targetLang] || targetLang !== "KO") {
       fetchTranslate(content, targetLang, id);
       setTimeout(() => {
-        fetchNewsArticle({ id });
+        getNewsArticle(id).then(updatedArticle => setArticle(updatedArticle));
       }, 4000);
     }
     setIsTranslated(!isTranslated);
-  }
+  };
 
   useEffect(() => {
-    async function fetchSummary() {
+    const fetchSummary = async () => {
       try {
         const results = await summaryAI({ newsContent: article.content });
         setSummary(results.toString() || JSON.stringify(results));
       } catch (error) {
         console.log(error);
       }
-    }
+    };
+
     if (article.content) {
       fetchSummary();
     }
-  }, [id, article.content]);
+  }, [article.content]);
 
-  console.log("article", article.content);
+  const filteredStockData = stockDataList.filter(data => data.stockName !== "rank");
+
   return (
     <>
       <Header />
@@ -189,7 +211,7 @@ export default function NewsDetail({ params }: TPageProps) {
               <div className="w-[388px] h-[488px] p-8 bg-white rounded-2xl font-pretendard">
                 <h2 className="font-bold text-xl">관련기사</h2>
                 <div className="flex flex-col gap-y-5 mt-[10px]">
-                  {stockNewsList.slice(0, 4).map(news => (
+                  {stockNews?.slice(0, 4).map(news => (
                     <Link href={`/news/${news.id}`} key={news.id}>
                       <CardSmallNews data={news} />
                     </Link>

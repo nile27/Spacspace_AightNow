@@ -36,9 +36,9 @@ async function increaseNewsViews(articleId: string) {
   }
 }
 
-async function handleTranslate(content: string, targetLang: string, newsArticleId: string) {
+async function handleTranslate(content: string, targetLang: string) {
   try {
-    const response = await fetch("/api/translate", {
+    const response = await fetch("http://localhost:3000/api/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,23 +52,11 @@ async function handleTranslate(content: string, targetLang: string, newsArticleI
     }
 
     const result = await response.json();
-
-    const articleRef = doc(fireStore, "news", newsArticleId);
-    const docSnap = await getDoc(articleRef);
-
-    if (docSnap.exists()) {
-      const articleData = docSnap.data();
-      let translations = articleData.translations || {};
-      translations[targetLang] = result.translatedHTML;
-
-      await updateDoc(articleRef, {
-        translated: true,
-        translations: translations,
-      });
-    }
+    return result.translatedHTML;
   } catch (error) {
     console.error("Error translating HTML:", error);
     throw error; // 에러를 다시 throw하여 상위 컴포넌트에서 처리
   }
 }
+
 export { addNewsToFirestore, increaseNewsViews, handleTranslate };

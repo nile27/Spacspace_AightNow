@@ -99,8 +99,10 @@ export default function NewsDetail({ params }: TPageProps) {
         console.log(error);
       }
     }
-    fetchSummary();
-  }, [id]);
+    if (article.content) {
+      fetchSummary();
+    }
+  }, [id, article.content]);
 
   console.log("article", article.content);
   return (

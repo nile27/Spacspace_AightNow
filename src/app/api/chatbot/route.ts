@@ -16,8 +16,6 @@ const STOCK_NAME: { [key: string]: string } = {
 };
 
 async function stockAction5(stock: string) {
-  // 여기서 실제로는 미국 주식 API를 사용해야 합니다.
-  // 예시를 위해 네이버 API 구조를 유지합니다.
   const res = await fetch(`https://api.stock.naver.com/stock/${stock}/basic`);
   const data = await res.json();
   return data.stockItemTotalInfos;
@@ -56,8 +54,8 @@ export async function POST(req: NextRequest) {
   const llm = new ChatTogetherAI({
     model: "meta-llama/Llama-3-70b-chat-hf",
     apiKey: process.env.TOGETHER_API_KEY,
-    temperature: 0.7,
-    topP: 0.5,
+    temperature: 0.3,
+    topP: 0.3,
   });
 
   const prompt = ChatPromptTemplate.fromMessages([
@@ -65,9 +63,9 @@ export async function POST(req: NextRequest) {
       "system",
       `너는 아잇나우라는 이름의 주식 애널리스트야. 사용자에게 자세한 주식 정보를 한글로 알려줘야 해.
        답변은 3줄을 넘지 않도록 해. Tesla, Google, Apple, Microsoft, Amazon, Unity 주식에 대해서만 정보를 제공해.
-       사용자가 특정 회사의 주식 정보를 요청하면, 그 회사의 이름만을 답변의 첫 줄에 영어로 적어줘.
-       예를 들어, "테슬라 주식에 대해 알려줘"라는 질문에는 "Tesla"라고만 첫 줄에 적어줘.
-       만약 특정 회사를 언급하지 않았다면, "None"이라고 첫 줄에 적어줘.
+       사용자가 특정 회사의 주식 정보를 요청하면, 그 회사의 이름만을 답변의 첫 줄에 영어로 적어줘. \n
+       예를 들어, "테슬라 주식에 대해 알려줘"라는 질문에는 "Tesla"라고만 첫 줄에 적어줘.\n
+       만약 특정 회사를 언급하지 않았다면, 회사이름을 알려달라고 한글로 첫 줄에 적어줘.\n
        그 다음 줄부터 주식에 대한 간단한 분석이나 조언을 해줘.`,
     ],
     ["placeholder", "{chat_history}"],

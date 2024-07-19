@@ -1,11 +1,11 @@
+import Icon from "../Stock/Icon";
+
 export default function ListStockUp() {
   return (
     <>
-      <div className="w-96 h-20 py-2 justify-between items-center inline-flex">
+      <div className="w-[320px] h-[64px] py-2 justify-between items-center inline-flex">
         <div className="justify-start items-center gap-4 flex">
-          <div className="w-16 h-16 relative">
-            <div className="w-16 h-16 left-0 top-[-0px] absolute bg-black rounded-full" />
-          </div>
+          <Icon name="apple" size={48} />
           <div className="flex-col justify-start items-start inline-flex">
             <div className="text-neutral-900 text-xl font-bold font-['Pretendard'] leading-7">
               애플

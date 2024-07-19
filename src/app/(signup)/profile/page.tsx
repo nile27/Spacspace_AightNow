@@ -1,40 +1,49 @@
 "use client";
+import React, { useState, useRef, useEffect } from "react";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import Select from "./components/Select";
-import { useState, useRef, useEffect } from "react";
 import BasicIcon from "@/components/Icon/BasicIcons";
-import SelectInput from "./components/SelectInput";
-import Link from "next/link";
+import Autocomplete from "./components/Autocomplete";
+import { useSignUp } from "@/Store/store";
+import { useRouter } from "next/navigation";
+import { handleNickNameCheck, saveImgFile, handleSignUp } from "./utill/profileUtills";
 
 export default function Profile() {
-  const [inputText, setInput] = useState({
-    id: "",
-    pw: "관심 종목을 선택해주세요.",
-  });
-  const [isSelect, setSelect] = useState(false);
-  const [imgFile, setImgFile] = useState<string | null>(null);
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+  const [nickNameErr, setNickNameErr] = useState(false);
+  const navi = useRouter();
+  const { inputText, setInput, labelImg, setLabelImg, imgFile, setImgFile } = useSignUp();
   const imgRef = useRef<HTMLInputElement>(null);
 
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput({ ...inputText, [key]: e.target.value });
+    setInput(key, e.target.value);
   };
 
-  const saveImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) {
-      return;
+  const checkNickName = () => {
+    handleNickNameCheck(inputText.nickname, setNickNameErr, setNickNameCheck);
+  };
+
+  const saveImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    saveImgFile(e, setImgFile, setLabelImg);
+  };
+
+  const handleSignUpClick = async () => {
+    try {
+      if (imgFile) {
+        await handleSignUp(inputText, imgFile, null);
+      } else {
+        await handleSignUp(inputText, null, labelImg);
+      }
+      window.sessionStorage.removeItem("signup-storage");
+      navi.push("/success");
+    } catch (error) {
+      console.error("Error signing up:", error);
+      // 에러 처리 로직 추가
     }
-    const file = files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setImgFile(reader.result as string);
-    };
   };
 
   useEffect(() => {
-    console.log(imgFile);
+    console.log(labelImg);
   });
 
   return (
@@ -45,9 +54,9 @@ export default function Profile() {
         <label
           htmlFor="profileImg"
           style={{
-            backgroundImage: imgFile ? `url(${imgFile})` : `url(/icons/Profile.svg)`,
+            backgroundImage: labelImg ? `url(${labelImg})` : `url(/icons/Profile.svg)`,
           }}
-          className={` relative w-[140px] h-[140px] bg-cover bg-center cursor-pointer rounded-full`}
+          className={`relative w-[120px] h-[120px] bg-cover bg-center cursor-pointer rounded-full`}
         >
           <div className="bg-[#9F9F9F] rounded-full absolute bottom-0 right-0">
             <BasicIcon name="Edit" size={40} color="white" />
@@ -58,7 +67,7 @@ export default function Profile() {
           type="file"
           accept="image/*"
           id="profileImg"
-          onChange={saveImgFile}
+          onChange={saveImage}
           ref={imgRef}
           className="hidden w-full h-full"
         />
@@ -69,41 +78,39 @@ export default function Profile() {
           placeholder="닉네임을 입력해주세요."
           autoComplete="off"
           label="닉네임"
-          id="id"
-          value={inputText.id}
-          onChange={handleInputValue("id")}
+          id="nickname"
+          value={inputText.nickname}
+          style={nickNameCheck ? (nickNameErr ? "success" : "error") : undefined}
+          caption={
+            nickNameCheck
+              ? !nickNameErr
+                ? "중복된 닉네임 입니다."
+                : "사용 가능한 닉네임입니다."
+              : undefined
+          }
+          onChange={handleInputValue("nickname")}
         >
-          {inputText.id ? (
-            <TextButton size="custom" width="120px" height="auto">
+          {inputText.nickname ? (
+            <TextButton onClick={checkNickName} size="custom" width="100px" height="30px">
               중복 확인
             </TextButton>
           ) : (
-            <TextButton color="disable" size="custom" width="120px" height="auto">
+            <TextButton color="disable" size="custom" width="100px" height="30px">
               중복 확인
             </TextButton>
           )}
         </NewInput>
-        <div className="w-full h-auto relative">
-          <SelectInput
-            type="button"
-            autoComplete="off"
-            value={inputText.pw}
-            onClick={() => setSelect(!isSelect)}
-            style={
-              inputText.pw === "관심 종목을 선택해주세요." ? "text-scaleGray-400" : "text-black"
-            }
-          />
-
-          {isSelect && <Select inputText={inputText} setSelect={setSelect} setInput={setInput} />}
+        <div className="w-full h-auto relative ">
+          <Autocomplete />
         </div>
 
-        <div className="w-full h-auto mt-6">
-          {inputText.id && inputText.pw !== "관심 종목을 선택해주세요." ? (
-            <Link href="/success">
-              <TextButton size="full">다음</TextButton>
-            </Link>
+        <div className="w-full h-auto  mt-6">
+          {inputText.nickname && inputText.stock.length ? (
+            <TextButton onClick={handleSignUpClick} size="custom" width="100%" height="55px">
+              다음
+            </TextButton>
           ) : (
-            <TextButton size="full" color="disable">
+            <TextButton size="custom" width="100%" height="55px" color="disable">
               다음
             </TextButton>
           )}

@@ -1,6 +1,8 @@
-import BasicIcon from "@/components/Icon/BasicIcons";
+import Main from "@/features/Main/Main";
 export default function Home() {
-  return <BasicIcon name="Downarrow" size={60} color="red" />;
+  return (
+    <>
+      <Main />
+    </>
+  );
 }
-
-// Eye , Eyehide,Translate,Calender,Edit,AI,Refresh,Rightarrow,Search,Time,Close,Plus,Downarrow

@@ -10,16 +10,16 @@ type TStyleBtn = React.ComponentProps<"button"> & {
   style?: "kakao" | "apple" | "naver" | "google";
 };
 
-export default function OauthBtn({ style }: TStyleBtn) {
+export default function OauthBtn({ style, ...restBtnProps }: TStyleBtn) {
   const IconRenderIcon = (icon: string) => {
     switch (icon) {
       case "kakao":
-        return <Icons name="KakaoTalk" width="40" height="40" />;
+        return <Icons name="KakaoTalk" width="28" height="28" />;
 
       case "naver":
-        return <Icons name="Naver" width="32" height="32" />;
+        return <Icons name="Naver" width="23" height="23" />;
       case "google":
-        return <Icons name="Google" width="40" height="40" />;
+        return <Icons name="Google" width="30" height="30" />;
 
       default:
         return null;
@@ -43,9 +43,10 @@ export default function OauthBtn({ style }: TStyleBtn) {
 
   return (
     <button
+      {...restBtnProps}
       className={cn(
         buttonVariants({ style }),
-        `  w-[72px] h-[72px] rounded-full border border-black/opacity-20 justify-center items-center gap-2 inline-flex`,
+        `  w-[50px] h-[50px] rounded-full border border-black/opacity-20 justify-center items-center gap-2 inline-flex`,
       )}
     >
       {style && IconRenderIcon(style)}

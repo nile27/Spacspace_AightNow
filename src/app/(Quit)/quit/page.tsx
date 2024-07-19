@@ -1,6 +1,22 @@
+"use client";
 import TextButton from "@/components/btnUi/TextButton";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useAuthStore, useLoginStore } from "@/Store/store";
+import { signOut } from "next-auth/react";
+
 export default function Quit() {
+  const { clearUser } = useAuthStore();
+  const { setLogout } = useLoginStore();
+
+  useEffect(() => {
+    const handleLogout = () => {
+      clearUser();
+      setLogout();
+      window.sessionStorage.clear();
+    };
+    handleLogout();
+  }, []);
   return (
     <>
       <div className="w-full h-auto flex flex-col justify-start items-center mb-[56px] gap-[24px]">
@@ -11,7 +27,7 @@ export default function Quit() {
         </div>
       </div>
       <Link href={"/"} className="w-full h-auto">
-        <TextButton size="full">확인하기</TextButton>
+        <TextButton size="full">홈으로</TextButton>
       </Link>
     </>
   );

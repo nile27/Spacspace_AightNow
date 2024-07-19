@@ -1,47 +1,90 @@
 "use client";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
-import Select from "./Select";
-import { useState, useRef, useEffect, SetStateAction, Dispatch } from "react";
-
+import { useState, useRef } from "react";
 import BasicIcon from "@/components/Icon/BasicIcons";
-import SelectInput from "./SelectInput";
+import Link from "next/link";
+import Autocomplete from "./Autocomplete";
+import { useAuthStore } from "@/Store/store";
+import { handleNickNameCheck } from "@/app/(signup)/profile/utill/profileUtills";
+import { updateUserProfile } from "../../utills/updateUserProfile";
 
 export default function ModalMain({
-  isModal,
   setIsModal,
 }: {
-  isModal: boolean;
-  setIsModal: Dispatch<SetStateAction<boolean>>;
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [inputText, setInput] = useState({
-    id: "",
-    pw: "관심 종목을 선택해주세요.",
+  const { user, profile, setProfile, setUser } = useAuthStore();
+  const [inputText, setInput] = useState<{ nickname: string; stock: string[] }>({
+    nickname: "",
+    stock: user?.stock || [],
   });
-  const [isSelect, setSelect] = useState(false);
-  const [imgFile, setImgFile] = useState<string | null>(null);
+
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+  const [nickNameErr, setNickNameErr] = useState(false);
+  const [imgFile, setImgFile] = useState<File | null>(null);
+  const [labelFile, setLabelFile] = useState<string>(profile ? profile : "/icons/Profile.svg");
   const imgRef = useRef<HTMLInputElement>(null);
 
   const handleInputValue = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ ...inputText, [key]: e.target.value });
   };
 
+  const checkNickName = () => {
+    handleNickNameCheck(inputText.nickname, setNickNameErr, setNickNameCheck);
+  };
+
   const saveImgFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+
     if (!files || files.length === 0) {
       return;
     }
     const file = files[0];
     const reader = new FileReader();
+    setImgFile(file);
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setImgFile(reader.result as string);
+      setLabelFile(reader.result as string);
     };
   };
 
-  useEffect(() => {
-    console.log(imgFile);
-  });
+  const handleUpdate = async () => {
+    if (!user) return;
+
+    try {
+      await updateUserProfile({
+        email: user.email,
+        nickname: inputText.nickname,
+        stock: inputText.stock,
+        imageFile: imgFile,
+      });
+      const updates = {
+        nickname: inputText.nickname ? inputText.nickname : user.nickname,
+        stock: inputText.stock.length ? inputText.stock : user.stock,
+      };
+
+      if (updates.nickname === user.nickname && updates.stock === user.stock && !imgFile) {
+        alert("변경된 내용이 없습니다.");
+        return;
+      }
+
+      setUser({
+        ...user,
+        nickname: updates.nickname,
+        stock: updates.stock,
+      });
+
+      setProfile(labelFile);
+
+      alert("프로필이 성공적으로 업데이트되었습니다.");
+      setIsModal(false);
+      // 필요에 따라 추가 작업 수행
+    } catch (error) {
+      console.error("프로필 업데이트 중 오류가 발생했습니다:", error);
+      alert("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    }
+  };
 
   return (
     <>
@@ -50,13 +93,13 @@ export default function ModalMain({
       <div className="pb-5 w-full h-auto flex justify-center items-center">
         <label
           htmlFor="profileImg"
+          className={`relative w-[120px] h-[120px] bg-cover bg-no-repeat bg-center cursor-pointer rounded-full`}
           style={{
-            backgroundImage: imgFile ? `url(${imgFile})` : `url(/icons/Profile.svg)`,
+            backgroundImage: `url(${labelFile})`,
           }}
-          className={` relative w-[140px] h-[140px] bg-cover bg-center cursor-pointer rounded-full`}
         >
           <div className="bg-[#9F9F9F] rounded-full absolute bottom-0 right-0">
-            <BasicIcon size={40} name="Edit" color="white" />
+            <BasicIcon name="Edit" size={40} color="white" />
           </div>
         </label>
 
@@ -76,35 +119,33 @@ export default function ModalMain({
           autoComplete="off"
           label="닉네임"
           id="id"
-          value={inputText.id}
-          onChange={handleInputValue("id")}
+          value={inputText.nickname ? inputText.nickname : user?.nickname}
+          style={nickNameCheck ? (nickNameErr ? "success" : "error") : undefined}
+          caption={
+            nickNameCheck
+              ? !nickNameErr
+                ? "중복된 닉네임 입니다."
+                : "사용 가능한 닉네임입니다."
+              : undefined
+          }
+          onChange={handleInputValue("nickname")}
         >
-          {inputText.id ? (
-            <TextButton size="custom" width="120px" height="auto">
+          {inputText.nickname ? (
+            <TextButton onClick={checkNickName} size="custom" width="100px" height="30px">
               중복 확인
             </TextButton>
           ) : (
-            <TextButton color="disable" size="custom" width="120px" height="auto">
+            <TextButton color="disable" size="custom" width="100px" height="30px">
               중복 확인
             </TextButton>
           )}
         </NewInput>
         <div className="w-full h-auto relative">
-          <SelectInput
-            type="button"
-            autoComplete="off"
-            value={inputText.pw}
-            onClick={() => setSelect(!isSelect)}
-            style={
-              inputText.pw === "관심 종목을 선택해주세요." ? "text-scaleGray-400" : "text-black"
-            }
-          />
-
-          {isSelect && <Select inputText={inputText} setSelect={setSelect} setInput={setInput} />}
+          <Autocomplete inputText={inputText} setInput={setInput} />
         </div>
 
         <div className="w-full h-auto mt-6">
-          <TextButton size="full" onClick={() => setIsModal(false)}>
+          <TextButton onClick={handleUpdate} size="full">
             수정하기
           </TextButton>
         </div>

@@ -2,43 +2,90 @@ import Icon from "./Icon";
 
 type TStock = {
   logo: string;
+  gap?: string;
+  data: {
+    reutersCode: string;
+    stockName: string;
+    symbolCode: string;
+    closePrice: string | number;
+    compareToPreviousPrice: {
+      text: string;
+    };
+    compareToPreviousClosePrice: string | number;
+    fluctuationsRatio: string | number;
+  };
 };
 
-export default function Stock({ logo }: TStock) {
+export const STOCK_NAMES: { [key: string]: string } = {
+  tesla: "테슬라",
+  google: "구글",
+  apple: "애플",
+  microsoft: "마이크로소프트",
+  amazon: "아마존",
+  unity: "유니티",
+};
+
+export const STOCK_CODE: { [key: string]: string } = {
+  tesla: "TSLA",
+  google: "GOOGL",
+  apple: "AAPL",
+  microsoft: "MSFT",
+  amazon: "AMZN",
+  unity: "U",
+};
+
+export default function Stock({ logo, gap, data }: TStock) {
+  const {
+    reutersCode,
+    closePrice,
+    compareToPreviousPrice,
+    compareToPreviousClosePrice,
+    fluctuationsRatio,
+  } = data;
   return (
     <>
-      <div className=" w-64 h-16 flex flex-col  justify-start items-start ">
+      <button className="flex flex-col  justify-start items-start ">
         <div className="flex-col justify-start items-center flex">
-          <div className="w-64 py-2 justify-between items-center flex">
-            <div className="justify-start items-center gap-4 flex">
-              <div className="w-24 h-12 flex items-center">
-                <Icon name={logo} size={50} />
+          <div className={`w-full ${gap} py-2 flex justify-between items-center`}>
+            <div className="flex justify-start items-center gap-4">
+              <div className="flex items-center">
+                <Icon name={STOCK_NAMES[logo]} size={50} />
               </div>
-              <div className="flex flex-col justify-start items-start ">
+              <div className="flex flex-col justify-start items-start">
                 <div className="text-neutral-900 text-base font-bold font-['Pretendard'] leading-normal">
-                  애플
+                  {STOCK_NAMES[logo]}
                 </div>
                 <div className="text-neutral-900 text-sm font-normal font-['Pretendard'] leading-tight">
-                  AAPL
+                  {STOCK_CODE[logo]}
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-y-2">
+            <div className="flex flex-col items-end gap-y-2">
               <div className="text-right text-neutral-900 text-sm font-medium font-['Pretendard'] leading-tight">
-                $00.00
+                ${closePrice}
               </div>
-              <div className="flex justify-between items-start gap-2 ">
-                <div className="text-right text-sky-500 text-xs font-normal font-['Pretendard'] leading-none">
-                  ▼1.75
+              <div className="flex justify-end items-start gap-2">
+                <div
+                  className={`text-right ${
+                    compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
+                  } text-xs font-normal font-['Pretendard'] leading-none`}
+                >
+                  {compareToPreviousPrice.text === "하락" ? "▼" : "▲"}
+                  {compareToPreviousClosePrice.toString().replace("-", "")}
                 </div>
-                <div className="text-right text-sky-500 text-xs font-normal font-['Pretendard'] leading-none">
-                  -0.82%
+                <div
+                  className={`text-right ${
+                    compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
+                  } text-xs font-normal font-['Pretendard'] leading-none`}
+                >
+                  {compareToPreviousPrice.text === "하락" ? "" : "+"}
+                  {fluctuationsRatio}%
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </button>
     </>
   );
 }

@@ -24,9 +24,10 @@ type TNewsList = {
   published: string; // 뉴스 기사 시간
   oid?: string;
   type?: number; // 0: 사진없음, 1: 사진있음
-  isVideo?: boolean;
   hasImage?: boolean;
   image: string | null;
+  relatedItems: string[];
+  translations: any;
 };
 
 // type TArticle = {

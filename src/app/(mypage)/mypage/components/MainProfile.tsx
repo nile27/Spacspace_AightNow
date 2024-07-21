@@ -98,7 +98,7 @@ export default function MainProfile() {
                   이용해보세요.
                 </span>
               </div>
-              {user?.logintype === " none" && (
+              {user?.logintype === "none" && (
                 <TextButton
                   size="custom"
                   width="200px"

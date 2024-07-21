@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { TNewsList } from "../../type";
-import { addNewsToFirestore } from "../firebase/fireStore";
+import { addNewsToFirestore, handleTranslate } from "../firebase/fireStore";
 
 const symbols = ["AAPL.O", "TSLA.O", "MSFT.O", "AMZN.O", "GOOGL.O", "U"];
 const stockNames = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
+const languages = ["en-US", "ZH", "JA", "FR"];
 
 const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
   const url = `https://api.stock.naver.com/news/worldStock/${symbole}?pageSize=20&page=1`;
@@ -17,11 +18,9 @@ const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
 
     if (Array.isArray(data)) {
       data.forEach(item => {
-        item.isVideo = false;
         item.hasImage = item.type === 1;
       });
     } else {
-      data.isVideo = false;
       data.hasImage = data.type === 1;
     }
     const articleList = [];
@@ -38,17 +37,28 @@ const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
         ...article,
         published: articleData.article.dt,
         content: articleData.article.content.replace(/class=/g, "className="),
-        // .replace(/<p class="tr-advisory">.*?<\/p>/gs, ""),
         stockName: stockName,
         image: null,
         relatedItems: articleData.article.relatedItems
           .filter((item: any) => symbols.includes(item.reutersCode))
-          .map((item: any) => item.reutersCode),
+          .map((relatedItem: any) => stockNames[symbols.indexOf(relatedItem.reutersCode)]),
+        translations: { "en-US": "", ZH: "", JA: "", FR: "" },
       };
+
+      for (const lang of languages) {
+        try {
+          const translatedContent = await handleTranslate(content.content, lang);
+          content.translations[lang] = translatedContent;
+        } catch (error) {
+          console.error(`Failed to translate content to ${lang}`, error);
+        }
+      }
+
+      content.translated = true;
+
       articleList.push(content);
     }
 
-    // console.log(articleList);
     return articleList;
   } catch (error) {
     console.error(`Error fetching news for ${stockName}:`, error);

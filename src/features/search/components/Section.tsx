@@ -23,7 +23,7 @@ export default function Section(props: TSectionProps) {
     const time = new Date().toISOString();
 
     if (userId) {
-      addSearchHistory(term, time, isNews, slug, userId);
+      addSearchHistory(userId, term, time, isNews, slug);
     }
   };
 

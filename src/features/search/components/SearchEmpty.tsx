@@ -105,7 +105,7 @@ export default function SearchEmpty({ setSearch }: { setSearch: (term: string) =
                 </div>
                 <div className="flex-col justify-start items-start gap-4 inline-flex w-1/2">
                   {searchRank.slice(5).map((item, index) => (
-                    <Ranking key={item.rank} data={{ ...item, rank: index + 1 }} />
+                    <Ranking key={item.rank} data={{ ...item, rank: index + 6 }} />
                   ))}
                 </div>
               </div>

@@ -13,6 +13,7 @@ import {
   updateDoc,
   setDoc,
   getDoc,
+  increment,
 } from "firebase/firestore";
 import { create } from "zustand";
 
@@ -50,16 +51,32 @@ export const useFindStore = create<TFindStore>(set => ({
     try {
       // 검색 기록 추가
       const historyRef = collection(fireStore, "searchHistory");
-      await addDoc(historyRef, { userId, term, time, isNews, slug });
+      const q = query(historyRef, where("userId", "==", userId), where("term", "==", term));
+      const querySnapshot = await getDocs(q);
 
-      // 검색어 랭킹 업데이트
+      if (!querySnapshot.empty) {
+        // 동일한 term이 있는 경우, 시간만 업데이트
+        const docId = querySnapshot.docs[0].id;
+        const docRef = doc(fireStore, "searchHistory", docId);
+        await updateDoc(docRef, { time });
+      } else {
+        // 동일한 term이 없는 경우, 새로운 문서 추가
+        await addDoc(historyRef, {
+          userId,
+          term,
+          time,
+          isNews,
+          slug,
+        });
+      }
+
       const rankRef = doc(fireStore, "searchRank", term);
       const docSnap = await getDoc(rankRef);
 
       if (docSnap.exists()) {
         // 문서가 존재하면 view를 증가
         await updateDoc(rankRef, {
-          view: docSnap.data().view + 1,
+          view: increment(1),
         });
       } else {
         // 문서가 존재하지 않으면 새 문서를 생성

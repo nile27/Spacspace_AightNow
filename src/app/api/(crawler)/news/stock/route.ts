@@ -8,11 +8,12 @@ const stockName = ["애플", "테슬라", "마이크로소프트", "아마존", 
 const logo = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
 
 type StockData = {
-  reutersCode: string;
+  reutersCode?: string;
   stockName: string;
   symbolCode: string;
-  closePrice: number;
+  closePrice: number | string;
   compareToPreviousPrice: {
+    code: string;
     text: string;
   };
   compareToPreviousClosePrice: number;
@@ -35,6 +36,7 @@ const fetchStockInfo = async (logo: string, symbol: string): Promise<StockData |
       symbolCode: data.datas[0].symbolCode,
       closePrice: data.datas[0].closePrice,
       compareToPreviousPrice: {
+        code: data.datas[0].compareToPreviousPrice.code,
         text: data.datas[0].compareToPreviousPrice.text,
       },
       compareToPreviousClosePrice: data.datas[0].compareToPreviousClosePrice,

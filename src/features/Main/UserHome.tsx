@@ -6,26 +6,37 @@ import Report from "./components/Report";
 import { useEffect, useState } from "react";
 import Warning from "../../../public/icons/Warning.svg";
 import { useAuthStore } from "@/Store/store";
-import { useStockStore } from "@/Store/newsStore";
 import Link from "next/link";
-import { useFindStore } from "../search/components/findStore";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
+import { getSearchStockHistory, getStockInfo } from "@/lib/newsAction";
+import { StockData } from "@/app/api/(crawler)/news/stock/[stock]/route";
+
+const nameMapping: { [key: string]: string } = {
+  애플: "AAPL.O",
+  테슬라: "TSLA.O",
+  구글: "GOOGL.O",
+  아마존: "AMZN.O",
+  마이크로소프트: "MSFT.O",
+  유니티: "U",
+};
+
+// 주식 종목 이름을 변환하는 함수
+const convertName = (name: string) => {
+  return nameMapping[name] || name;
+};
 
 export default function UserHome() {
   const { user } = useAuthStore();
   const [userStock, setUserStock] = useState<string[]>([]);
+  const [stockData, setStockData] = useState<StockData[]>([]); // 최근 조회 주식 정보
+  const [stockPriceInfoMap, setStockPriceInfoMap] = useState<Map<string, StockData>>(new Map()); // 리포트에서 사용할 주식 가격 정보
 
-  const fetchStockList = useStockStore(state => state.fetchStockData);
-  const stockData = useStockStore(state => state.stockData);
-
-  const getSearchStockHistory = useFindStore(state => state.getSearchStockHistory);
-  const stockHistory = useFindStore(state => state.stockHistory);
+  const userDataId = (user?.userId as string) ? user?.userId : user?.id;
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const userDataId = (user?.userId as string) ? user?.userId : user?.id;
         const userRef = collection(fireStore, "users");
         const q = query(userRef, where("userId", "==", userDataId));
         const querySnapshot = await getDocs(q);
@@ -45,20 +56,48 @@ export default function UserHome() {
     fetchData();
   }, []);
 
+  // 최근 조회 주식 정보를 가져오는 함수
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        getSearchStockHistory(user?.userId ?? user?.id ?? "");
-        fetchStockList(); // 주식 데이터 가져오기
+        const stockHistoryData = await getSearchStockHistory(userDataId as string);
+        if (stockHistoryData && stockHistoryData.length > 0) {
+          // setStockHistory(stockHistoryData as TFindHistory[]);
+          const stockInfoPromises = stockHistoryData.map(stock =>
+            getStockInfo(convertName(stock.term)),
+          );
+
+          const stockInfoData = await Promise.all(stockInfoPromises);
+          setStockData(stockInfoData);
+        }
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     fetchData();
-  }, []);
+  }, [user]);
 
-  const data = stockData.filter(stock => stockHistory.some(history => history.slug === stock.logo));
+  // console.log("stockData", stockData);
+
+  // 사용자 관심 종목의 주식 가격 정보를 가져오는 함수
+  useEffect(() => {
+    async function fetchStockPrices() {
+      for (const stockName of userStock) {
+        if (!stockPriceInfoMap.has(stockName)) {
+          try {
+            const stockEn = convertName(stockName);
+            const stockPriceInfo = await getStockInfo(stockEn);
+            setStockPriceInfoMap(prev => new Map(prev).set(stockName, stockPriceInfo));
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    }
+
+    fetchStockPrices();
+  }, [userStock]);
 
   return (
     <>
@@ -74,14 +113,13 @@ export default function UserHome() {
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              {stockData
-                .filter(item => userStock.includes(item.stockName))
-                .slice(0, 3)
-                .map((data, index) => (
-                  <div key={index} className="">
-                    <Report data={data} />
-                  </div>
-                ))}
+              {userStock.map((stockName, index) => (
+                <div key={index} className="">
+                  <Link href={`/report/${stockPriceInfoMap.get(stockName)?.logo}`}>
+                    <Report name={stockName} data={stockPriceInfoMap.get(stockName) || null} />
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
           <div className="flex flex-col gap-12">
@@ -90,7 +128,7 @@ export default function UserHome() {
                 <div className="text-mainNavy-900 text-3xl font-bold leading-9">최근 조회</div>
                 <div className="h-[384px] px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
                   <div className="w-full min-h-[300px] flex flex-col items-center gap-4">
-                    {data.length === 0 ? (
+                    {stockData.length === 0 ? (
                       <div className="w-full h-full flex flex-col justify-center items-center text-center flex-grow">
                         <Warning />
                         <div className="text-mainNavy-900 text-body2 font-semibold mt-4">
@@ -98,7 +136,7 @@ export default function UserHome() {
                         </div>
                       </div>
                     ) : (
-                      data.slice(0, 4).map((data, index) => (
+                      stockData.slice(0, 4).map((data, index) => (
                         <div key={index} className="flex justify-between items-center rounded-lg ">
                           <Link href={`/report/${data.logo}`}>
                             <Stock
@@ -123,26 +161,24 @@ export default function UserHome() {
                 <div className="text-mainNavy-900 text-3xl font-bold leading-9">관심 종목</div>
                 <div className="h-[384px] px-8 sm:px-6 md:px-12 py-4 sm:py-6 md:py-8 bg-white rounded-2xl flex flex-col justify-start items-start mt-4">
                   <div className="w-full min-h-[300px] flex flex-col  items-center gap-4">
-                    {stockData
-                      .filter(item => userStock.includes(item.stockName))
-                      .slice(0, 4)
-                      .map((data, index) => (
-                        <div key={index} className="flex justify-between items-center rounded-lg">
-                          <Link href={`/report/${data.logo}`}>
-                            <Stock
-                              data={data}
-                              logo={data.logo}
-                              gap={`${
-                                data.stockName.length < 3 && data.symbolCode.length < 5
-                                  ? "gap-[291px]"
-                                  : data.stockName.length < 4
-                                  ? "gap-[274px]"
-                                  : "gap-[210px]"
-                              }`}
-                            />
-                          </Link>
-                        </div>
-                      ))}
+                    {userStock.slice(0, 4).map((stockName, index) => (
+                      <div key={index} className="flex justify-between items-center rounded-lg">
+                        <Link href={`/report/${stockPriceInfoMap.get(stockName)?.logo}`}>
+                          <Stock
+                            data={stockPriceInfoMap.get(stockName) || null}
+                            logo={stockPriceInfoMap.get(stockName)?.logo as string}
+                            gap={`${
+                              stockName.length < 3 &&
+                              stockPriceInfoMap.get(stockName)?.symbolCode.toString().length! < 5
+                                ? "gap-[291px]"
+                                : stockName.length < 4
+                                ? "gap-[274px]"
+                                : "gap-[210px]"
+                            }`}
+                          />
+                        </Link>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

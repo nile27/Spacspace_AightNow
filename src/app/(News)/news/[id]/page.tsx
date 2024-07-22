@@ -101,11 +101,6 @@ export default function NewsDetail({ params }: TPageProps) {
 
   // 번역 요청
   const handleTranslate = (content: string, targetLang: string) => {
-    fetchTranslate(content, targetLang, id);
-    setTimeout(() => {
-      getNewsArticle(id).then(updatedArticle => setArticle(updatedArticle));
-    }, 4000);
-
     setIsTranslated(!isTranslated);
   };
 

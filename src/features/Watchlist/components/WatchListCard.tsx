@@ -3,6 +3,7 @@ import TextButton from "@/components/btnUi/TextButton";
 import { stockTranslate } from "@/lib/stockTranslate";
 import Image from "next/image";
 import Link from "next/link";
+import RadarChart from "./RadarChart";
 
 export type TStockInfo = {
   stockName: string;
@@ -62,14 +63,7 @@ export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStock
           </div>
         </div>
         <div className="w-[365px]  flex  justify-between ">
-          <Image
-            src="/aichart.png"
-            alt="aichart"
-            width={176}
-            height={176}
-            className="p-[13px] border"
-          />
-          <Image src="/result.png" alt="result" width={176} height={176} className="" />
+          <RadarChart stockName={stockEn} />
         </div>
         <div className=" flex gap-4 justify-center items-center">
           <div className="hover:opacity-80">

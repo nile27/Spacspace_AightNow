@@ -14,7 +14,7 @@ type WatchInputProps = {
   onSelectStock: (stock: TStockSearch) => void;
 };
 
-export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps) {
+export default function WatchInput({ onSearch }: WatchInputProps) {
   const [isShow, setIsShow] = useState(false);
   const [search, setSearch] = useState("");
   const [filteredStocks, setFilteredStocks] = useState<TStockSearch[]>([]);
@@ -48,6 +48,8 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
 
   const handleAllDelete = () => {
     clearAllRecentSearches();
+    setSearch("");
+    if (inputRef.current) inputRef.current.value = "";
   };
 
   const handleSelectDelete = (stock: TStockSearch) => {
@@ -80,7 +82,6 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
   };
 
   const handleSelectStock = (stock: TStockSearch) => {
-    onSelectStock(stock);
     addRecentSearch(stock);
     handleSubmit();
     setSearch("");
@@ -88,7 +89,7 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
 
   const handleItemClick = (stock: TStockSearch, e?: React.MouseEvent<HTMLElement>) => {
     if (e) e.preventDefault();
-    onSelectStock(stock);
+
     addRecentSearch(stock);
     handleSubmit();
     setSearch("");
@@ -166,7 +167,12 @@ export default function WatchInput({ onSearch, onSelectStock }: WatchInputProps)
                         : "text-blue-500"
                     }`}
                   ></span>
-                  <button onClick={() => handleSelectDelete(stock)}>
+                  <button
+                    onClick={e => {
+                      e.stopPropagation();
+                      handleSelectDelete(stock);
+                    }}
+                  >
                     <BasicIcon name="Close" size={32} color="#575757"></BasicIcon>
                   </button>
                 </div>

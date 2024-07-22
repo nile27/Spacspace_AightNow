@@ -1,6 +1,7 @@
+import { agentChatTogether } from "@/lib/agentTogetherAI";
 import { agentChat } from "@/lib/Ollama";
 import { agentChatApi } from "@/lib/OllamaTest";
-import { agentChatTogether } from "@/lib/TogetherTest";
+
 import { NextResponse } from "next/server";
 
 export async function GET(res: NextResponse) {

@@ -17,6 +17,7 @@ export default function GuestHome() {
         const userDocSnap = await getDocs(q);
         if (!userDocSnap.empty) {
           useAuthStore.getState().setUser(userDocSnap.docs[0].data() as TUserData);
+
           setLogin();
         }
       } catch (error) {

@@ -54,7 +54,6 @@ export default function Login() {
     const checked = e.target.checked;
     setAuto(checked);
     sessionStorage.setItem("autoLogin", JSON.stringify(checked));
-    console.log(typeof sessionStorage.getItem("autoLogin"));
   };
 
   const handleGoogle = async () => {
@@ -113,7 +112,7 @@ export default function Login() {
         language: session?.user.language ?? "",
         logintype: session?.user.logintype ?? "",
       };
-
+      console.log(status);
       const imgFile = session?.user.profile_image ?? "";
       nextAuthLogin();
       useAuthStore.getState().setProfile(imgFile);

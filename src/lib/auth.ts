@@ -99,9 +99,9 @@ export const authConfig: NextAuthOptions = {
           const userDocSnap = await getDocs(q);
 
           if (userDocSnap.empty) {
-            console.log("No user found with the provided email.");
-            return false;
+            throw Error("no user");
           }
+
           return true;
         }
       } catch (err: any) {
@@ -110,6 +110,7 @@ export const authConfig: NextAuthOptions = {
         )}&name=${encodeURIComponent(user.name || "")}&email=${encodeURIComponent(
           user.email || "",
         )}&profile_image=${encodeURIComponent(user.profile_image || "")}`;
+
         return redirectPath;
       }
       return true;

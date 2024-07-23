@@ -1,11 +1,9 @@
 import { NextAuthOptions, User, DefaultSession } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
-import { signInWithCustomToken } from "firebase/auth";
 import { JWT } from "next-auth/jwt";
-import { adminAuth, db } from "@/firebase/firebaseAdmin";
-import { app, auth, firestore } from "@/firebase/firebaseDB";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { adminAuth } from "@/firebase/firebaseAdmin";
+import { firestore } from "@/firebase/firebaseDB";
 import { Timestamp } from "firebase-admin/firestore";
 import { collection, query, getDocs, getDoc, where, doc } from "firebase/firestore";
 
@@ -104,22 +102,15 @@ export const authConfig: NextAuthOptions = {
             console.log("No user found with the provided email.");
             return false;
           }
-
-          // const uid = userDocSnap.docs[0].id;
-          // const customToken = await adminAuth.createCustomToken(uid);
-          // const userCredential = await signInWithCustomToken(auth, customToken);
-          // const tokenUser = userCredential.user;
-          // console.log("user", tokenUser);
           return true;
         }
       } catch (err: any) {
-        console.log(err);
-        // const redirectPath = `/signup?type=${encodeURIComponent(
-        //   user.logintype || "",
-        // )}&name=${encodeURIComponent(user.name || "")}&email=${encodeURIComponent(
-        //   user.email || "",
-        // )}&profile_image=${encodeURIComponent(user.profile_image || "")}`;
-        // return redirectPath;
+        const redirectPath = `/signup?type=${encodeURIComponent(
+          user.logintype || "",
+        )}&name=${encodeURIComponent(user.name || "")}&email=${encodeURIComponent(
+          user.email || "",
+        )}&profile_image=${encodeURIComponent(user.profile_image || "")}`;
+        return redirectPath;
       }
       return true;
     },

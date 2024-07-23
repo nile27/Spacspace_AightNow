@@ -62,7 +62,6 @@ export const authConfig: NextAuthOptions = {
       clientId: process.env.NAVER_CLIENT_ID as string,
       clientSecret: process.env.NAVER_CLIENT_SECRET as string,
       profile(profile) {
-        // console.log("Naver profile data:", profile);
         return {
           id: profile.response.id,
           name: profile.response.name,
@@ -90,8 +89,8 @@ export const authConfig: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: "jwt", // 'jwt' 전략을 사용하여 세션 관리
-    maxAge: 60, // 1시간
+    strategy: "jwt",
+    maxAge: 1,
   },
   callbacks: {
     async signIn({ user }: { user: User }) {
@@ -99,25 +98,32 @@ export const authConfig: NextAuthOptions = {
         if (user && user.email) {
           const usersCollectionRef = collection(firestore, "users");
           const q = query(usersCollectionRef, where("email", "==", user.email));
-          console.log("query", q);
           const userDocSnap = await getDocs(q);
-          console.log("user:", userDocSnap.docs[0].data());
 
+          if (userDocSnap.empty) {
+            console.log("No user found with the provided email.");
+            return false;
+          }
+
+          const uid = userDocSnap.docs[0].id;
+          const customToken = await adminAuth.createCustomToken(uid);
+          const userCredential = await signInWithCustomToken(auth, customToken);
+          const tokenUser = userCredential.user;
+          console.log("user", tokenUser);
           return true;
         }
       } catch (err: any) {
-        const redirectPath = `/signup?type=${encodeURIComponent(
-          user.logintype || "",
-        )}&name=${encodeURIComponent(user.name || "")}&email=${encodeURIComponent(
-          user.email || "",
-        )}&profile_image=${encodeURIComponent(user.profile_image || "")}`;
-        return redirectPath;
+        console.log(err);
+        // const redirectPath = `/signup?type=${encodeURIComponent(
+        //   user.logintype || "",
+        // )}&name=${encodeURIComponent(user.name || "")}&email=${encodeURIComponent(
+        //   user.email || "",
+        // )}&profile_image=${encodeURIComponent(user.profile_image || "")}`;
+        // return redirectPath;
       }
       return true;
     },
     async jwt({ token, user }: { token: JWT; user: User }) {
-      console.log("toekn", token);
-      console.log("tokenuser", user);
       if (user) {
         token.id = "";
         token.name = user.name;
@@ -139,10 +145,8 @@ export const authConfig: NextAuthOptions = {
         token.firebaseToken = firebaseToken;
 
         try {
-          console.log(user.email);
-          console.log(adminAuth);
           const existUser = await adminAuth.getUserByEmail(user.email as string);
-          console.log("exust", existUser);
+
           if (existUser) {
             const userRef = doc(firestore, "users", existUser.uid);
             const userDoc = await getDoc(userRef);
@@ -175,7 +179,6 @@ export const authConfig: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      console.log("session", token.email);
       session.user = {
         id: token.id,
         name: token.name,

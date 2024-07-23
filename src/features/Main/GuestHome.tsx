@@ -1,8 +1,42 @@
 import TextButton from "@/components/btnUi/TextButton";
 import GuestHeader from "./components/GuestHeder";
 import Link from "next/link";
-
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { TUserData, useAuthStore, useLoginStore } from "@/Store/store";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { firestore, auth } from "@/firebase/firebaseDB";
 export default function GuestHome() {
+  const { setLogin } = useLoginStore();
+
+  useEffect(() => {
+    const handleAutoLogin = async (email: string) => {
+      try {
+        const usersCollectionRef = collection(firestore, "users");
+        const q = query(usersCollectionRef, where("email", "==", email));
+        const userDocSnap = await getDocs(q);
+        if (!userDocSnap.empty) {
+          useAuthStore.getState().setUser(userDocSnap.docs[0].data() as TUserData);
+          setLogin();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      if (user) {
+        const email = user.email as string;
+        user && useAuthStore.getState().setProfile(user.photoURL as string);
+        handleAutoLogin(email);
+      } else {
+        console.log("unLogin");
+        return;
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
       <div className="relative h-screen w-screen">

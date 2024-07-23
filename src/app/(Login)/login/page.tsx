@@ -22,6 +22,7 @@ export default function Login() {
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
   const [regExpArr, setRegExpArr] = useState(true);
+  const [autoLogin, setAuto] = useState(false);
 
   const handleOnClick = async () => {
     try {
@@ -30,7 +31,7 @@ export default function Login() {
         setRegExpArr(false);
         return;
       }
-      const getData = await handleLogin(idText, pwText);
+      const getData = await handleLogin(idText, pwText, autoLogin);
 
       if (getData) {
         setLogin();
@@ -74,25 +75,6 @@ export default function Login() {
 
   const handleNextAuth = async (type: string) => {
     await signIn(type);
-
-    // if (session && session.user && !useAuthStore.getState().user?.phone && session.isNewUser) {
-    //   const signUpMember: { [key: string]: string } = {
-    //     id: session?.user.id ?? "",
-    //     name: session?.user.name ?? "",
-    //     email: session?.user.email ?? "",
-    //     nickname: session?.user.nickname ?? "",
-    //     phone: session?.user.phone ?? "",
-    //     birth: session?.user.birth ?? "",
-    //     logintype: session?.user.logintype ?? "",
-    //   };
-    //   const imgFile = session?.user.profile_image ?? "";
-    //   setLabelImg(imgFile);
-
-    //   for (let key in signUpMember) {
-    //     setInput(key, signUpMember[key]);
-    //   }
-    //   navi.push("/");
-    // }
   };
 
   useEffect(() => {
@@ -116,8 +98,6 @@ export default function Login() {
       setLogin();
       navi.push("/");
     }
-
-    console.log(session, useAuthStore.getState().user, status);
   }, [session, isLoggedIn]);
 
   return (
@@ -154,7 +134,10 @@ export default function Login() {
 
         <div className="w-full h-auto mb-4 flex justify-between items-center">
           <div className="flex gap-2 items-center">
-            <Checkbox /> <span>자동 로그인</span>
+            <Checkbox
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAuto(e.target.checked)}
+            />{" "}
+            <span>자동 로그인</span>
           </div>
           <div className="flex gap-2 items-center">
             <Link href="/idfind">아이디 찾기</Link>

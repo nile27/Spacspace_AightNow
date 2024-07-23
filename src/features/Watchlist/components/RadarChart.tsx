@@ -10,6 +10,7 @@ const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 type RadarProps = {
   stockName: string;
+  width?: number;
 };
 
 function transformAgentData(agentData: Record<string, string | number | undefined>) {
@@ -35,7 +36,7 @@ function calculateTotalScore(data: { name: string; value: number }[]): number {
   return Math.round(data.reduce((sum, item) => sum + item.value, 0) / data.length);
 }
 
-export default function RadarChart({ stockName }: RadarProps) {
+export default function RadarChart({ stockName, width = 350 }: RadarProps) {
   const [chartData, setChartData] = useState<any>(null);
   const [totalScore, setTotalScore] = useState<number | null>(null);
 
@@ -76,15 +77,15 @@ export default function RadarChart({ stockName }: RadarProps) {
   ];
 
   return (
-    <div className="w-[350px] h-[220px] flex justify-between items-center">
-      <ApexCharts options={options} series={series} type="radar" height="100%" width="90%" />
-      <div className="w-[40%] h-full flex flex-col justify-center items-start pl-4">
-        <div className="mb-4 w-full">
+    <div className=" h-[220px] flex justify-between items-center" style={{ width: `${width}px` }}>
+      <ApexCharts options={options} series={series} type="radar" height="100%" width="100%" />
+      <div className="w-[170px] bg-scaleGray-200 h-[210px] flex flex-col justify-center items-center p-2 rounded-2xl ">
+        <div className=" mb-4 w-full">
           <span className="font-bold text-lg">총점:</span>
           <span className="text-mainNavy-900 font-bold text-lg ml-2">{totalScore}점</span>
         </div>
         {chartData.map((item: { name: string; value: number }) => (
-          <div key={item.name} className="flex justify-between w-full mb-2">
+          <div key={item.name} className=" flex justify-between w-full mb-2">
             <span className="font-semibold">{item.name}:</span>
             <span className="text-mainNavy-900 font-bold">{item.value}점</span>
           </div>

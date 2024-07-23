@@ -1,6 +1,4 @@
 import TextButton from "@/components/btnUi/TextButton";
-import { useShow } from "@/Store/store";
-import { config } from "process";
 
 type TWatchListDeleteProps = {
   onDelete: () => void;

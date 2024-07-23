@@ -4,18 +4,19 @@ import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { ApexOptions } from "apexcharts";
 import { agentEvaluationTogether } from "@/lib/agentTogetherAI";
+import { SkeletonCard } from "./SkeletonCard";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 type RadarProps = {
   stockName: string;
+  width?: number;
 };
 
 function transformAgentData(agentData: Record<string, string | number | undefined>) {
   const categories = ["전반적 평가", "수익성", "관심도", "성장성", "주가"];
   const scores: Record<string, number> = {};
 
-  // 점수 추출
   for (const [key, value] of Object.entries(agentData)) {
     if (typeof value === "string" && value.includes("점")) {
       const score = parseInt(value.replace("점", ""));
@@ -31,8 +32,13 @@ function transformAgentData(agentData: Record<string, string | number | undefine
   }));
 }
 
-export default function RadarChart({ stockName }: RadarProps) {
+function calculateTotalScore(data: { name: string; value: number }[]): number {
+  return Math.round(data.reduce((sum, item) => sum + item.value, 0) / data.length);
+}
+
+export default function RadarChart({ stockName, width = 350 }: RadarProps) {
   const [chartData, setChartData] = useState<any>(null);
+  const [totalScore, setTotalScore] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -40,6 +46,7 @@ export default function RadarChart({ stockName }: RadarProps) {
         const agentData = await agentEvaluationTogether(stockName);
         const transformedData = transformAgentData(agentData);
         setChartData(transformedData);
+        setTotalScore(calculateTotalScore(transformedData));
       } catch (error) {
         console.error("Error fetching agent data:", error);
       }
@@ -47,7 +54,7 @@ export default function RadarChart({ stockName }: RadarProps) {
     fetchData();
   }, [stockName]);
 
-  if (!chartData) return <div>Loading...</div>;
+  if (!chartData) return <SkeletonCard />;
 
   const options: ApexOptions = {
     chart: {
@@ -70,8 +77,20 @@ export default function RadarChart({ stockName }: RadarProps) {
   ];
 
   return (
-    <div className="w-[350px] h-[220px] flex justify-center items-center">
+    <div className=" h-[220px] flex justify-between items-center" style={{ width: `${width}px` }}>
       <ApexCharts options={options} series={series} type="radar" height="100%" width="100%" />
+      <div className="w-[170px] bg-scaleGray-200 h-[210px] flex flex-col justify-center items-center p-2 rounded-2xl ">
+        <div className=" mb-4 w-full">
+          <span className="font-bold text-lg">총점:</span>
+          <span className="text-mainNavy-900 font-bold text-lg ml-2">{totalScore}점</span>
+        </div>
+        {chartData.map((item: { name: string; value: number }) => (
+          <div key={item.name} className=" flex justify-between w-full mb-2">
+            <span className="font-semibold">{item.name}:</span>
+            <span className="text-mainNavy-900 font-bold">{item.value}점</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

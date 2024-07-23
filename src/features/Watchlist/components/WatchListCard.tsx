@@ -1,9 +1,12 @@
+"use client";
+
 import Icon from "@/components/Stock/Icon";
 import TextButton from "@/components/btnUi/TextButton";
 import { stockTranslate } from "@/lib/stockTranslate";
-import Image from "next/image";
 import Link from "next/link";
 import RadarChart from "./RadarChart";
+import { useState } from "react";
+import WatchListDelete from "./WatchListDelete";
 
 export type TStockInfo = {
   stockName: string;
@@ -23,6 +26,7 @@ type TStockDetail = {
 };
 
 export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStockDetail) {
+  const [isDeleted, setIsDeleted] = useState(false);
   if (!stockPriceInfo) return null;
   const {
     reutersCode,
@@ -34,6 +38,10 @@ export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStock
 
   const handleDelete = () => {
     onDelete();
+  };
+
+  const handleCancel = () => {
+    setIsDeleted(!isDeleted);
   };
 
   const stockEn = stockTranslate(name);
@@ -72,7 +80,9 @@ export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStock
               color="grayScale"
               width={"160px"}
               height={"56px"}
-              onClick={handleDelete}
+              onClick={() => {
+                setIsDeleted(!isDeleted);
+              }}
             >
               삭제하기
             </TextButton>
@@ -84,6 +94,7 @@ export default function WatchListCard({ name, onDelete, stockPriceInfo }: TStock
           </Link>
         </div>
       </div>
+      {isDeleted && <WatchListDelete onDelete={handleDelete} onCancel={handleCancel} />}
     </>
   );
 }

@@ -3,6 +3,7 @@ import { collection, doc, setDoc } from "firebase/firestore";
 
 // 관심 종목 주식 db에 추가
 export async function stockSearchAdd(stocksToAdd: any[]) {
+  console.log("ho:", stocksToAdd);
   const stockList = collection(fireStore, "stockSearchList");
   for (const stock of stocksToAdd) {
     const stockRef = doc(stockList, stock.id);

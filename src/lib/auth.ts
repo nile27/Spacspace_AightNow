@@ -105,11 +105,11 @@ export const authConfig: NextAuthOptions = {
             return false;
           }
 
-          const uid = userDocSnap.docs[0].id;
-          const customToken = await adminAuth.createCustomToken(uid);
-          const userCredential = await signInWithCustomToken(auth, customToken);
-          const tokenUser = userCredential.user;
-          console.log("user", tokenUser);
+          // const uid = userDocSnap.docs[0].id;
+          // const customToken = await adminAuth.createCustomToken(uid);
+          // const userCredential = await signInWithCustomToken(auth, customToken);
+          // const tokenUser = userCredential.user;
+          // console.log("user", tokenUser);
           return true;
         }
       } catch (err: any) {
@@ -125,6 +125,7 @@ export const authConfig: NextAuthOptions = {
     },
     async jwt({ token, user }: { token: JWT; user: User }) {
       if (user) {
+        console.log("jwttuser", user);
         token.id = "";
         token.name = user.name;
         token.email = user.email;
@@ -137,13 +138,6 @@ export const authConfig: NextAuthOptions = {
         token.profile_image = user.profile_image;
         token.isNewUser = false;
 
-        const firebaseToken = await adminAuth.createCustomToken(user.id, {
-          name: user.name,
-          email: user.email,
-        });
-
-        token.firebaseToken = firebaseToken;
-
         try {
           const existUser = await adminAuth.getUserByEmail(user.email as string);
 
@@ -151,7 +145,8 @@ export const authConfig: NextAuthOptions = {
             const userRef = doc(firestore, "users", existUser.uid);
             const userDoc = await getDoc(userRef);
             const userData = userDoc.data();
-            console.log(userDoc.data());
+            const customToken = await adminAuth.createCustomToken(userDoc.id);
+            console.log(userDoc.id);
             if (userData) {
               token.id = userData.userId;
               token.name = userData.name;
@@ -165,7 +160,7 @@ export const authConfig: NextAuthOptions = {
               token.language = userData.language;
               token.profile_image = existUser.photoURL;
               token.isNewUser = false;
-
+              token.firebaseToken = customToken;
               return token;
             }
           }

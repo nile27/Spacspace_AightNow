@@ -6,8 +6,15 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
-import { signIn, useSession, signOut } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { loginRegExp, handleLogin } from "../utills/loginUtill";
+import {
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  signInWithCustomToken,
+} from "firebase/auth";
+import { auth } from "@/firebase/firebaseDB";
 import { useLoginStore, useSignUp, useAuthStore, TUserData } from "@/Store/store";
 import { useRouter } from "next/navigation";
 import { googleLogin } from "../utills/GoogleAuth";
@@ -41,6 +48,13 @@ export default function Login() {
       setRegExpArr(false);
       console.error("Login error:", error);
     }
+  };
+
+  const handleAutoLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setAuto(checked);
+    sessionStorage.setItem("autoLogin", JSON.stringify(checked));
+    console.log(typeof sessionStorage.getItem("autoLogin"));
   };
 
   const handleGoogle = async () => {
@@ -78,6 +92,15 @@ export default function Login() {
   };
 
   useEffect(() => {
+    const nextAuthLogin = async () => {
+      const getAutoLogin = sessionStorage.getItem("autoLogin") === "true" ? true : false;
+      const persistence = getAutoLogin ? browserLocalPersistence : browserSessionPersistence;
+      const userCredential = await signInWithCustomToken(
+        auth,
+        session?.user.firebaseToken as string,
+      );
+      await setPersistence(auth, persistence);
+    };
     if (status === "authenticated") {
       const signUpMember: TUserData = {
         id: session?.user.id ?? "",
@@ -90,15 +113,15 @@ export default function Login() {
         language: session?.user.language ?? "",
         logintype: session?.user.logintype ?? "",
       };
+
       const imgFile = session?.user.profile_image ?? "";
-
+      nextAuthLogin();
       useAuthStore.getState().setProfile(imgFile);
-
       useAuthStore.getState().setUser(signUpMember as TUserData);
       setLogin();
       navi.push("/");
     }
-  }, [session, isLoggedIn]);
+  }, [session, autoLogin, isLoggedIn]);
 
   return (
     <>
@@ -134,9 +157,7 @@ export default function Login() {
 
         <div className="w-full h-auto mb-4 flex justify-between items-center">
           <div className="flex gap-2 items-center">
-            <Checkbox
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAuto(e.target.checked)}
-            />{" "}
+            <Checkbox onChange={handleAutoLoginChange} />
             <span>자동 로그인</span>
           </div>
           <div className="flex gap-2 items-center">
@@ -173,7 +194,6 @@ export default function Login() {
         <div className="w-full  flex gap-4  justify-center items-center">
           <OauthBtn style={"kakao"} onClick={() => handleNextAuth("kakao")} />
           <OauthBtn style={"naver"} onClick={() => handleNextAuth("naver")} />
-
           <OauthBtn style={"google"} onClick={handleGoogle} />
         </div>
       </div>

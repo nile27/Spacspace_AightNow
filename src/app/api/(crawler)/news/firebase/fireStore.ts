@@ -48,7 +48,8 @@ async function handleTranslate(content: string, targetLang: string) {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.error);
+
+      throw new Error("error", error.error);
     }
 
     const result = await response.json();

@@ -97,6 +97,7 @@ export default function NewsDetail({ params }: TPageProps) {
   // 번역 요청
   const handleTranslate = (content: string, targetLang: string) => {
     if (targetLang === "KO") return;
+
     setIsTranslated(!isTranslated);
   };
 

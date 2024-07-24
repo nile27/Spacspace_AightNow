@@ -1,10 +1,13 @@
 import { agentChatTogether } from "@/lib/agentTogetherAI";
-import { agentChat } from "@/lib/Ollama";
-import { agentChatApi } from "@/lib/OllamaTest";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(res: NextResponse) {
-  const id = res.url.slice(32, undefined);
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  const url = new URL(request.url);
+  const id = url.pathname.split("/").pop();
+
+  if (!id) {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  }
 
   try {
     const result = await agentChatTogether(id);

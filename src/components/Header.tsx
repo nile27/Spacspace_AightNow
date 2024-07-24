@@ -5,6 +5,9 @@ import { useLoginStore, useAuthStore } from "@/Store/store";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { signOut as firebaseSignOut } from "firebase/auth";
+import { auth } from "@/firebase/firebaseDB";
+
 export default function Header({ background = "white" }: { background?: string }) {
   const headerItem = ["발견", "뉴스", "관심종목", "마이페이지"];
   const addressItem = ["/find", "/news", "/watchlist", "/mypage"];
@@ -16,7 +19,7 @@ export default function Header({ background = "white" }: { background?: string }
   const handleLogout = () => {
     clearUser();
     setLogout();
-
+    firebaseSignOut(auth);
     window.sessionStorage.clear();
     signOut({ callbackUrl: "/" });
 

@@ -11,11 +11,11 @@ import { useAuthStore } from "@/Store/store";
 import ChatBotPage from "@/features/chatbot/ChatBotPage";
 import { summaryAI } from "@/lib/summaryAI";
 import {
-  fetchTranslate,
   getNewsArticle,
   getStockNewsList,
   updateViews,
-  userStockAction,
+  allStockAction,
+  fetchTranslate,
 } from "@/lib/newsAction";
 import { TNewsList } from "@/app/api/(crawler)/type";
 
@@ -50,7 +50,7 @@ export default function NewsDetail({ params }: TPageProps) {
   const [summary, setSummary] = useState<string>("");
 
   const [article, setArticle] = useState<any>({});
-  const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[] | undefined>([]);
+  const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[]>([]);
   const [stockData, setStockData] = useState<any[]>([]);
   const [view, setView] = useState<number>(0);
 
@@ -62,7 +62,7 @@ export default function NewsDetail({ params }: TPageProps) {
       try {
         const [articleData, stockData, viewCount] = await Promise.all([
           getNewsArticle(id),
-          userStockAction(),
+          allStockAction(),
           updateViews(id),
         ]);
 
@@ -88,6 +88,7 @@ export default function NewsDetail({ params }: TPageProps) {
       if (article.relatedItems) {
         const stockNewsData = await getStockNewsList(article.relatedItems);
         setStockNews(stockNewsData as (TNewsList & { id: string })[]);
+
         const orderedStockData = article.relatedItems
           .map((item: string) => stockData.find(stock => stock.logo === item))
           .filter(Boolean); // undefined 요소 제거

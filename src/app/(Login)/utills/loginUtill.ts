@@ -1,7 +1,12 @@
 import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { firestore, auth } from "@/firebase/firebaseDB";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { useAuthStore, TUserData } from "@/Store/store";
 
 export function loginRegExp(id: string, pw: string) {
@@ -40,11 +45,16 @@ const getUserEmailByUserId = async (userId: string) => {
   }
 };
 
-export const handleLogin = async (email: string, pw: string): Promise<boolean> => {
+export const handleLogin = async (
+  email: string,
+  pw: string,
+  autoLogin: boolean,
+): Promise<boolean> => {
   try {
+    const persistence = autoLogin ? browserLocalPersistence : browserSessionPersistence;
     const userEmail = await getUserEmailByUserId(email);
-    console.log(userEmail);
     const userCredential = await signInWithEmailAndPassword(auth, userEmail, pw);
+    await setPersistence(auth, persistence);
     const user = userCredential.user;
 
     const userRef = doc(firestore, "users", user.uid);

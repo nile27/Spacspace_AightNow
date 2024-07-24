@@ -64,12 +64,12 @@ export default function Report({
           </div>
         </div>
         <div className="justify-start items-start gap-2.5 inline-flex">
-          <div className="justify-start items-center gap-6 flex">
-            <div className="w-32 h-32 relative">
-              <div className="w-32 h-32 left-0 top-0 absolute">
-                <RadarChart stockName={stockTranslate(name)} />
-              </div>
-            </div>
+          <div className="justify-start items-center gap-6 flex mb-[-16px]">
+            {/* <div className="w-32 h-32 relative"> */}
+            {/* <div className="w-32 h-32 left-0 top-0 absolute"> */}
+            <RadarChart stockName={stockTranslate(name)} />
+            {/* </div> */}
+            {/* </div> */}
             {/* <div className="px-6 py-4 bg-stone-50 rounded-3xl flex-col justify-start items-center gap-1 inline-flex">
               <div className="w-28 justify-between items-center inline-flex">
                 <div className="text-zinc-600 text-base font-medium">주가</div>

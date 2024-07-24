@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-
 import { JSDOM } from "jsdom";
 import { Translator, TargetLanguageCode } from "deepl-node";
 
@@ -55,5 +54,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
-export default POST;

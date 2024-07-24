@@ -100,9 +100,23 @@ export default function NewsDetail({ params }: TPageProps) {
   }, [article.relatedItems, stockData]);
 
   // 번역 요청
-  const handleTranslate = (content: string, targetLang: string) => {
-    setIsTranslated(!isTranslated);
-  };
+  async function handleTranslate(content: string, targetLang: string) {
+    if (targetLang === "KO") return;
+    if (!article.translations[targetLang]) {
+      try {
+        await fetchTranslate(content, targetLang, id);
+        const updatedArticle = await getNewsArticle(id);
+        setArticle(updatedArticle);
+      } catch (error) {
+        console.error("Error during translation:", error);
+      }
+    }
+
+    // 번역 상태 토글
+    setIsTranslated(prev => !prev);
+  }
+
+  console.log(userLanguage, article.translations);
 
   useEffect(() => {
     const fetchSummary = async () => {

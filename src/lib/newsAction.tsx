@@ -130,7 +130,7 @@ export const updateViews = async (id: string) => {
 
 export const fetchTranslate = async (html: string, targetLang: string, newsArticleId: string) => {
   try {
-    const response = await fetch("/api/translate", {
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/translate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

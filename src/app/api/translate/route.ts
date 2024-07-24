@@ -6,9 +6,7 @@ import { Translator, TargetLanguageCode } from "deepl-node";
 const deepLApiKey = process.env.DEEPL_API_KEY!;
 const translator = new Translator(deepLApiKey);
 
-export const config = {
-  runtime: "edge",
-};
+export const runtime = "edge";
 
 const extractTextNodes = (node: Node, texts: string[] = []): string[] => {
   if (node.nodeType === node.TEXT_NODE) {

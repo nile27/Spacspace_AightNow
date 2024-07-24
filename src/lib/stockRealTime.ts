@@ -1,3 +1,5 @@
+"use server";
+
 const STOCK_NAME: { [key: string]: string } = {
   tesla: "TSLA.O",
   google: "GOOGL.O",

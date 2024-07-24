@@ -10,12 +10,7 @@ import Link from "next/link";
 import { useAuthStore } from "@/Store/store";
 import ChatBotPage from "@/features/chatbot/ChatBotPage";
 import { summaryAI } from "@/lib/summaryAI";
-import {
-  getNewsArticle,
-  getStockNewsList,
-  updateViews,
-  allStockAction,
-} from "@/lib/newsAction";
+import { getNewsArticle, getStockNewsList, updateViews, allStockAction } from "@/lib/newsAction";
 import { TNewsList } from "@/app/api/(crawler)/type";
 
 type TPageProps = {
@@ -101,6 +96,7 @@ export default function NewsDetail({ params }: TPageProps) {
 
   // 번역 요청
   const handleTranslate = (content: string, targetLang: string) => {
+    if (targetLang === "KO") return;
     setIsTranslated(!isTranslated);
   };
 

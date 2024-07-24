@@ -40,7 +40,7 @@ export const getStockInfo = async (stock: string) => {
 // 전체 주식 리스트
 export const allStockAction = async () => {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}api/news/stock`);
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/news/stock`);
     if (!response.ok) {
       throw new Error("Failed to fetch stock data");
     }

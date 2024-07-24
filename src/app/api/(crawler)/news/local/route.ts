@@ -8,6 +8,8 @@ const relatedItem = ["애플", "테슬라", "마이크로소프트", "아마존"
 const stockNames = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
 const languages = ["en-US", "ZH", "JA", "FR"];
 
+export const dynamic = "force-dynamic";
+
 const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => {
   const url = `https://api.stock.naver.com/news/stock/${symbol}?pageSize=20&page=1`;
   const headers = {

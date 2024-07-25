@@ -45,15 +45,14 @@ const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
         translations: { "en-US": "", ZH: "", JA: "", FR: "" },
       };
 
-      for (const lang of languages) {
-        try {
-          console.log(lang);
-          const translatedContent = await handleTranslate(content.content, lang);
-          content.translations[lang] = translatedContent;
-        } catch (error) {
-          console.error(`Failed to translate content to second ${lang}`, error);
-        }
-      }
+      // for (const lang of languages) {
+      //   try {
+      //     const translatedContent = await handleTranslate(content.content, lang);
+      //     content.translations[lang] = translatedContent;
+      //   } catch (error) {
+      //     console.error(`Failed to translate content to ${lang}`, error);
+      //   }
+      // }
 
       content.translated = true;
 

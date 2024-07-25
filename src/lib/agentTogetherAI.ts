@@ -10,7 +10,7 @@ import { stockAction4 } from "./stockAction";
 // ai report
 export async function agentChatTogether(id: string) {
   const search = new TavilySearchResults({
-    maxResults: 2,
+    maxResults: 5,
   });
 
   const retriever = await search.invoke(`최신 ${id} 주식`);

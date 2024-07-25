@@ -6,8 +6,15 @@ import Checkbox from "@/components/Checkbox/Checkbox";
 import Link from "next/link";
 import TextButton from "@/components/btnUi/TextButton";
 import OauthBtn from "./components/OauthBtn";
-import { signIn, useSession, signOut } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { loginRegExp, handleLogin } from "../utills/loginUtill";
+import {
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  signInWithCustomToken,
+} from "firebase/auth";
+import { auth } from "@/firebase/firebaseDB";
 import { useLoginStore, useSignUp, useAuthStore, TUserData } from "@/Store/store";
 import { useRouter } from "next/navigation";
 import { googleLogin } from "../utills/GoogleAuth";
@@ -22,6 +29,7 @@ export default function Login() {
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
   const [regExpArr, setRegExpArr] = useState(true);
+  const [autoLogin, setAuto] = useState(false);
 
   const handleOnClick = async () => {
     try {
@@ -30,7 +38,7 @@ export default function Login() {
         setRegExpArr(false);
         return;
       }
-      const getData = await handleLogin(idText, pwText);
+      const getData = await handleLogin(idText, pwText, autoLogin);
 
       if (getData) {
         setLogin();
@@ -40,6 +48,12 @@ export default function Login() {
       setRegExpArr(false);
       console.error("Login error:", error);
     }
+  };
+
+  const handleAutoLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setAuto(checked);
+    sessionStorage.setItem("autoLogin", JSON.stringify(checked));
   };
 
   const handleGoogle = async () => {
@@ -74,28 +88,18 @@ export default function Login() {
 
   const handleNextAuth = async (type: string) => {
     await signIn(type);
-
-    // if (session && session.user && !useAuthStore.getState().user?.phone && session.isNewUser) {
-    //   const signUpMember: { [key: string]: string } = {
-    //     id: session?.user.id ?? "",
-    //     name: session?.user.name ?? "",
-    //     email: session?.user.email ?? "",
-    //     nickname: session?.user.nickname ?? "",
-    //     phone: session?.user.phone ?? "",
-    //     birth: session?.user.birth ?? "",
-    //     logintype: session?.user.logintype ?? "",
-    //   };
-    //   const imgFile = session?.user.profile_image ?? "";
-    //   setLabelImg(imgFile);
-
-    //   for (let key in signUpMember) {
-    //     setInput(key, signUpMember[key]);
-    //   }
-    //   navi.push("/");
-    // }
   };
 
   useEffect(() => {
+    const nextAuthLogin = async () => {
+      const getAutoLogin = sessionStorage.getItem("autoLogin") === "true" ? true : false;
+      const persistence = getAutoLogin ? browserLocalPersistence : browserSessionPersistence;
+      const userCredential = await signInWithCustomToken(
+        auth,
+        session?.user.firebaseToken as string,
+      );
+      await setPersistence(auth, persistence);
+    };
     if (status === "authenticated") {
       const signUpMember: TUserData = {
         id: session?.user.id ?? "",
@@ -108,17 +112,15 @@ export default function Login() {
         language: session?.user.language ?? "",
         logintype: session?.user.logintype ?? "",
       };
+      console.log(status);
       const imgFile = session?.user.profile_image ?? "";
-
+      nextAuthLogin();
       useAuthStore.getState().setProfile(imgFile);
-
       useAuthStore.getState().setUser(signUpMember as TUserData);
       setLogin();
       navi.push("/");
     }
-
-    console.log(session, useAuthStore.getState().user, status);
-  }, [session, isLoggedIn]);
+  }, [session, autoLogin, isLoggedIn]);
 
   return (
     <>
@@ -154,7 +156,8 @@ export default function Login() {
 
         <div className="w-full h-auto mb-4 flex justify-between items-center">
           <div className="flex gap-2 items-center">
-            <Checkbox /> <span>자동 로그인</span>
+            <Checkbox onChange={handleAutoLoginChange} />
+            <span>자동 로그인</span>
           </div>
           <div className="flex gap-2 items-center">
             <Link href="/idfind">아이디 찾기</Link>
@@ -190,7 +193,6 @@ export default function Login() {
         <div className="w-full  flex gap-4  justify-center items-center">
           <OauthBtn style={"kakao"} onClick={() => handleNextAuth("kakao")} />
           <OauthBtn style={"naver"} onClick={() => handleNextAuth("naver")} />
-
           <OauthBtn style={"google"} onClick={handleGoogle} />
         </div>
       </div>

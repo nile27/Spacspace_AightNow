@@ -9,6 +9,7 @@ import WatchListAdd from "./WatchListAdd";
 import { stockAction2 } from "@/lib/stockAction";
 import { updateDoc, arrayRemove, collection, query, where, getDocs } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
+import { SkeletonCard } from "./SkeletonCard";
 
 const STOCK_NAME_KO_TO_EN: { [key: string]: string } = {
   애플: "apple",
@@ -24,7 +25,7 @@ export default function WatchList() {
   const { isClose, setIsClose } = useClose();
   const [stockPriceInfoMap, setStockPriceInfoMap] = useState<Map<string, TStockInfo>>(new Map());
   const [watchList, setWatchList] = useState<string[]>([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   const user = useAuthStore(state => state.user);
   const userId = user?.userId || user?.id;
 
@@ -93,12 +94,15 @@ export default function WatchList() {
 
   useEffect(() => {
     if (userId) {
+      setIsLoading(true);
       fetchWatchList();
+      setIsLoading(false);
     }
   }, [userId]);
 
   useEffect(() => {
     async function fetchStockPrices() {
+      setIsLoading(true);
       for (const stockName of watchList) {
         if (!stockPriceInfoMap.has(stockName)) {
           try {
@@ -110,6 +114,7 @@ export default function WatchList() {
           }
         }
       }
+      setIsLoading(false);
     }
 
     fetchStockPrices();
@@ -127,15 +132,23 @@ export default function WatchList() {
                 관심종목 추가
               </TextButton>
             </div>
-            <div className={"my-6 grid grid-cols-3  gap-5"}>
-              {watchList.map(stockName => (
-                <WatchListCard
-                  key={stockName}
-                  name={stockName}
-                  onDelete={() => handleDelete(stockName)}
-                  stockPriceInfo={stockPriceInfoMap.get(stockName) || null}
-                />
-              ))}
+            <div className={"my-6 grid grid-cols-3 gap-5"}>
+              {isLoading ? (
+                Array(6)
+                  .fill(0)
+                  .map((_, index) => <SkeletonCard key={index} />)
+              ) : watchList.length > 0 ? (
+                watchList.map(stockName => (
+                  <WatchListCard
+                    key={stockName}
+                    name={stockName}
+                    onDelete={() => handleDelete(stockName)}
+                    stockPriceInfo={stockPriceInfoMap.get(stockName) || null}
+                  />
+                ))
+              ) : (
+                <div>관심 종목이 없습니다. 종목을 추가해 주세요.</div>
+              )}
             </div>
           </div>
         </div>

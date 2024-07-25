@@ -1,19 +1,10 @@
+import { StockData } from "@/app/api/(crawler)/news/stock/[stock]/route";
 import Icon from "./Icon";
 
 type TStock = {
   logo: string;
   gap?: string;
-  data: {
-    reutersCode: string;
-    stockName: string;
-    symbolCode: string;
-    closePrice: string | number;
-    compareToPreviousPrice: {
-      text: string;
-    };
-    compareToPreviousClosePrice: string | number;
-    fluctuationsRatio: string | number;
-  };
+  data: StockData | null;
 };
 
 export const STOCK_NAMES: { [key: string]: string } = {
@@ -35,6 +26,7 @@ export const STOCK_CODE: { [key: string]: string } = {
 };
 
 export default function Stock({ logo, gap, data }: TStock) {
+  if (!data) return null;
   const {
     reutersCode,
     closePrice,
@@ -42,6 +34,7 @@ export default function Stock({ logo, gap, data }: TStock) {
     compareToPreviousClosePrice,
     fluctuationsRatio,
   } = data;
+
   return (
     <>
       <button className="flex flex-col  justify-start items-start ">
@@ -56,7 +49,7 @@ export default function Stock({ logo, gap, data }: TStock) {
                   {STOCK_NAMES[logo]}
                 </div>
                 <div className="text-neutral-900 text-sm font-normal font-['Pretendard'] leading-tight">
-                  {STOCK_CODE[logo]}
+                  {reutersCode.slice(0, 4)}
                 </div>
               </div>
             </div>

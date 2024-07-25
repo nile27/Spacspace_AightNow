@@ -6,6 +6,8 @@ const relatedItem = ["애플", "테슬라", "마이크로소프트", "아마존"
 const stockNames = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
 const languages = ["en-US", "ZH", "JA", "FR"];
 
+export const dynamic = "force-dynamic";
+
 const fetchRankNews = async (page: Page) => {
   const url = `https://m.stock.naver.com/front-api/news/category?category=ranknews&pageSize=20&page=1`;
   const headers = {
@@ -86,14 +88,14 @@ const fetchRankNews = async (page: Page) => {
         translations: { "en-US": "", ZH: "", JA: "", FR: "" },
       };
 
-      for (const lang of languages) {
-        try {
-          const translatedContent = await handleTranslate(content.content, lang);
-          content.translations[lang] = translatedContent;
-        } catch (error) {
-          console.error(`Failed to translate content to ${lang}`, error);
-        }
-      }
+      // for (const lang of languages) {
+      //   try {
+      //     const translatedContent = await handleTranslate(content.content, lang);
+      //     content.translations[lang] = translatedContent;
+      //   } catch (error) {
+      //     console.error(`Failed to translate content to ${lang}`, error);
+      //   }
+      // }
 
       articles.push(content);
     }

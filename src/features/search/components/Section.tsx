@@ -19,10 +19,12 @@ export default function Section(props: TSectionProps) {
   const { user } = useAuthStore();
 
   const handleClick = (term: string, slug: string, isNews: boolean) => {
-    const userId = user?.userId ?? "";
+    const userId = (user?.userId as string) ? user?.userId : user?.id;
     const time = new Date().toISOString();
 
-    addSearchHistory(userId, term, time, isNews, slug);
+    if (userId) {
+      addSearchHistory(userId, term, time, isNews, slug);
+    }
   };
 
   console.log(items);

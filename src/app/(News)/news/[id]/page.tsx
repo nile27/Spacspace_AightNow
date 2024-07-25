@@ -11,11 +11,11 @@ import { useAuthStore } from "@/Store/store";
 import ChatBotPage from "@/features/chatbot/ChatBotPage";
 import { summaryAI } from "@/lib/summaryAI";
 import {
+  allStockAction,
   fetchTranslate,
   getNewsArticle,
   getStockNewsList,
   updateViews,
-  userStockAction,
 } from "@/lib/newsAction";
 import { TNewsList } from "@/app/api/(crawler)/type";
 
@@ -46,11 +46,12 @@ export default function NewsDetail({ params }: TPageProps) {
   const [loading, setLoading] = useState(false);
   const [stockDataList, setStockDataList] = useState<any[]>([]);
   const [isTranslated, setIsTranslated] = useState(false);
+  const [transLoading, setTransLoading] = useState(false);
   const { user } = useAuthStore();
   const [summary, setSummary] = useState<string>("");
 
   const [article, setArticle] = useState<any>({});
-  const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[] | undefined>([]);
+  const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[]>([]);
   const [stockData, setStockData] = useState<any[]>([]);
   const [view, setView] = useState<number>(0);
 
@@ -62,7 +63,7 @@ export default function NewsDetail({ params }: TPageProps) {
       try {
         const [articleData, stockData, viewCount] = await Promise.all([
           getNewsArticle(id),
-          userStockAction(),
+          allStockAction(),
           updateViews(id),
         ]);
 
@@ -100,9 +101,23 @@ export default function NewsDetail({ params }: TPageProps) {
   }, [article.relatedItems, stockData]);
 
   // 번역 요청
-  const handleTranslate = (content: string, targetLang: string) => {
-    setIsTranslated(!isTranslated);
-  };
+  async function handleTranslate(content: string, targetLang: string) {
+    if (targetLang === "KO") return;
+    if (!article.translations[targetLang]) {
+      try {
+        setTransLoading(true);
+        await fetchTranslate(content, targetLang, id);
+        const updatedArticle = await getNewsArticle(id);
+        setArticle(updatedArticle);
+        setTransLoading(false);
+      } catch (error) {
+        console.error("Error during translation:", error);
+      }
+    }
+
+    // 번역 상태 토글
+    setIsTranslated(prev => !prev);
+  }
 
   useEffect(() => {
     const fetchSummary = async () => {
@@ -172,7 +187,18 @@ export default function NewsDetail({ params }: TPageProps) {
               {article.image && (
                 <img src={article.image} alt="image" width={728} height={370} className="my-8" />
               )}
-              {isTranslated ? (
+              {transLoading ? (
+                <div className="bg-white rounded-xl m-0 p-0 flex justify-center items-center relative">
+                  <div className="flex gap-3 text-H text-black relative">
+                    <span className="animate-[blur_3s_infinite_0ms]">번</span>
+                    <span className="animate-[blur_3s_infinite_200ms]">역</span>
+                    <span className="animate-[blur_3s_infinite_400ms]">중</span>
+                    <span className="animate-[blur_3s_infinite_800ms]">.</span>
+                    <span className="animate-[blur_3s_infinite_1200ms]">.</span>
+                    <span className="animate-[blur_3s_infinite_1400ms]">.</span>
+                  </div>
+                </div>
+              ) : isTranslated && article.translations && article.translations[userLanguage] ? (
                 <div dangerouslySetInnerHTML={{ __html: article.translations[userLanguage] }}></div>
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: article.content }}></div>

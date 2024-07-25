@@ -3,6 +3,7 @@
 import { TStockData } from "@/app/api/(crawler)/type";
 import fireStore from "@/firebase/firestore";
 import {
+  addDoc,
   collection,
   doc,
   documentId,
@@ -10,47 +11,82 @@ import {
   getDocs,
   increment,
   limit,
+  orderBy,
   query,
+  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 
-export const userStockAction = async () => {
+// 주식별 정보 가져오기
+// AAPL.O 로 받음
+export const getStockInfo = async (stock: string) => {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}api/news/stock`);
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/news/stock/${stock}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data for ${stock}`);
+    }
+    const data = await response.json();
+
+    // revalidatePath("/");
+    return data;
+  } catch (error) {
+    console.error("Error fetching stock info:", error);
+    return null;
+  }
+};
+
+// 전체 주식 리스트
+export const allStockAction = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/news/stock`);
     if (!response.ok) {
       throw new Error("Failed to fetch stock data");
     }
 
     const data: TStockData[] = await response.json();
 
-    revalidatePath("/");
+    // revalidatePath("/");
     return data;
   } catch (error) {
     console.error("Failed to fetch stock data:", error);
   }
 };
 
-export const userStockHistoryAction = async (user: any) => {
+// 사용자별 조회 기록
+export const getSearchHistory = async (userId: string) => {
   try {
-    const userDataId = (user?.userId as string) ? user?.userId : user?.id;
-    const userRef = collection(fireStore, "users");
-    const q = query(userRef, where("userId", "==", userDataId));
+    const historyRef = collection(fireStore, "searchHistory");
+    const q = query(historyRef, where("userId", "==", userId), orderBy("time", "desc"), limit(10));
+
     const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map(doc => ({ ...doc.data() }));
 
-    if (!querySnapshot.empty) {
-      const userDocs = querySnapshot.docs[0];
-      const userData = userDocs.data();
-      // revalidatePath("/");
-
-      return userData.stock || [];
-    } else {
-      console.log("사용자를 찾을 수 없습니다");
-      return [];
-    }
+    return data;
   } catch (error) {
     console.error("Error fetching userStock:", error);
+  }
+};
+
+// 주식 조회
+export const getSearchStockHistory = async (userId: string) => {
+  try {
+    const historyRef = collection(fireStore, "searchHistory");
+    const q = query(
+      historyRef,
+      where("userId", "==", userId),
+      where("isNews", "==", false),
+      orderBy("time", "desc"),
+      limit(4),
+    );
+
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map(doc => ({ ...doc.data() }));
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching search stock history:", error);
   }
 };
 
@@ -92,6 +128,7 @@ export const getRankNewsList = async () => {
   }
 };
 
+// 뉴스 기사
 export const getNewsArticle = async (id: string) => {
   try {
     const newsRef = collection(fireStore, "news");
@@ -111,6 +148,7 @@ export const getNewsArticle = async (id: string) => {
   }
 };
 
+// 조회수 업데이트
 export const updateViews = async (id: string) => {
   try {
     const newsRef = doc(fireStore, "news", id);
@@ -128,9 +166,10 @@ export const updateViews = async (id: string) => {
   }
 };
 
+// 번역
 export const fetchTranslate = async (html: string, targetLang: string, newsArticleId: string) => {
   try {
-    const response = await fetch("/api/translate", {
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/translate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

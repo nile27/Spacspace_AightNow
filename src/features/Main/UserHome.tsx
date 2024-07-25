@@ -157,7 +157,7 @@ export default function UserHome() {
                               data={stockDataInfo.get(data.term) || null}
                               logo={data.slug}
                               gap={`${
-                                data.term.length < 3 && data.slug.length < 5
+                                data.term.length < 3 && STOCK_NAME_KO_TO_EN[data.term].length < 7
                                   ? "gap-[291px]"
                                   : data.term.length < 4
                                   ? "gap-[274px]"
@@ -182,8 +182,7 @@ export default function UserHome() {
                             data={stockPriceInfoMap.get(stockName) || null}
                             logo={STOCK_NAME_KO_TO_EN[stockName] as string}
                             gap={`${
-                              stockName.length < 3 &&
-                              STOCK_NAME_KO_TO_EN[stockName].toString().length! < 5
+                              stockName.length < 3 && STOCK_NAME_KO_TO_EN[stockName].length! < 7
                                 ? "gap-[291px]"
                                 : stockName.length < 4
                                 ? "gap-[274px]"

@@ -10,7 +10,7 @@ import { stockAction4 } from "./stockAction";
 // ai report
 export async function agentChatTogether(id: string) {
   const search = new TavilySearchResults({
-    maxResults: 5,
+    maxResults: 2,
   });
 
   const retriever = await search.invoke(`최신 ${id} 주식`);
@@ -20,7 +20,7 @@ export async function agentChatTogether(id: string) {
 
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
-    model: "meta-llama/Llama-3-70b-chat-hf",
+    model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     temperature: 0.2,
     topP: 0.7,
     apiKey: process.env.TOGETHER_API_KEY,
@@ -45,7 +45,7 @@ export async function agentChatTogether(id: string) {
 
   // 4. Agent 실행
   const result = await executor.invoke({
-    input: `${retriever}를 참고해서 ${id} 주식에 대해 ${stock} 도구를 참조해서 분석하고 애널리스트 보고서를 한글로 작성해주세요. \n
+    input: `${retriever}를 참고해서 ${id} 주식에 대해 ${stock} 도구를 참조해서 분석하고 애널리스트 보고서와 향후 전망을 한글로 작성해주세요. \n
     절대로 5줄 넘지마세요 제목이나 부가 설명 없이 바로 본문 내용만 작성해주세요.`,
   });
   const cleanOutput = result.output
@@ -71,7 +71,7 @@ export async function agentEvaluationTogether(id: string) {
 
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
-    model: "meta-llama/Llama-3-70b-chat-hf",
+    model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     temperature: 0.2,
     topP: 0.7,
     apiKey: process.env.TOGETHER_API_KEY,

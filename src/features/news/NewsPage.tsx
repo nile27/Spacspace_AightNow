@@ -13,6 +13,7 @@ import { getRandomImageNews } from "../Main/components/common";
 
 const nameMapping: { [key: string]: string } = {
   애플: "apple",
+  테슬라: "tesla",
   구글: "google",
   아마존: "amazon",
   마이크로소프트: "microsoft",

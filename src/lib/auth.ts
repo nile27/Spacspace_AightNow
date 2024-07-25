@@ -1,11 +1,9 @@
 import { NextAuthOptions, User, DefaultSession } from "next-auth";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
-import { signInWithCustomToken } from "firebase/auth";
 import { JWT } from "next-auth/jwt";
-import { adminAuth, db } from "@/firebase/firebaseAdmin";
-import { app, auth, firestore } from "@/firebase/firebaseDB";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { adminAuth } from "@/firebase/firebaseAdmin";
+import { firestore } from "@/firebase/firebaseDB";
 import { Timestamp } from "firebase-admin/firestore";
 import { collection, query, getDocs, getDoc, where, doc } from "firebase/firestore";
 
@@ -62,7 +60,6 @@ export const authConfig: NextAuthOptions = {
       clientId: process.env.NAVER_CLIENT_ID as string,
       clientSecret: process.env.NAVER_CLIENT_SECRET as string,
       profile(profile) {
-        // console.log("Naver profile data:", profile);
         return {
           id: profile.response.id,
           name: profile.response.name,
@@ -90,8 +87,8 @@ export const authConfig: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: "jwt", // 'jwt' 전략을 사용하여 세션 관리
-    maxAge: 60, // 1시간
+    strategy: "jwt",
+    maxAge: 1,
   },
   callbacks: {
     async signIn({ user }: { user: User }) {
@@ -99,9 +96,11 @@ export const authConfig: NextAuthOptions = {
         if (user && user.email) {
           const usersCollectionRef = collection(firestore, "users");
           const q = query(usersCollectionRef, where("email", "==", user.email));
-          console.log("query", q);
           const userDocSnap = await getDocs(q);
-          console.log("user:", userDocSnap.docs[0].data());
+
+          if (userDocSnap.empty) {
+            throw Error("no user");
+          }
 
           return true;
         }
@@ -111,14 +110,14 @@ export const authConfig: NextAuthOptions = {
         )}&name=${encodeURIComponent(user.name || "")}&email=${encodeURIComponent(
           user.email || "",
         )}&profile_image=${encodeURIComponent(user.profile_image || "")}`;
+
         return redirectPath;
       }
       return true;
     },
     async jwt({ token, user }: { token: JWT; user: User }) {
-      console.log("toekn", token);
-      console.log("tokenuser", user);
       if (user) {
+        console.log("jwttuser", user);
         token.id = "";
         token.name = user.name;
         token.email = user.email;
@@ -131,23 +130,15 @@ export const authConfig: NextAuthOptions = {
         token.profile_image = user.profile_image;
         token.isNewUser = false;
 
-        const firebaseToken = await adminAuth.createCustomToken(user.id, {
-          name: user.name,
-          email: user.email,
-        });
-
-        token.firebaseToken = firebaseToken;
-
         try {
-          console.log(user.email);
-          console.log(adminAuth);
           const existUser = await adminAuth.getUserByEmail(user.email as string);
-          console.log("exust", existUser);
+
           if (existUser) {
             const userRef = doc(firestore, "users", existUser.uid);
             const userDoc = await getDoc(userRef);
             const userData = userDoc.data();
-            console.log(userDoc.data());
+            const customToken = await adminAuth.createCustomToken(userDoc.id);
+            console.log(userDoc.id);
             if (userData) {
               token.id = userData.userId;
               token.name = userData.name;
@@ -161,7 +152,7 @@ export const authConfig: NextAuthOptions = {
               token.language = userData.language;
               token.profile_image = existUser.photoURL;
               token.isNewUser = false;
-
+              token.firebaseToken = customToken;
               return token;
             }
           }
@@ -175,7 +166,6 @@ export const authConfig: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      console.log("session", token.email);
       session.user = {
         id: token.id,
         name: token.name,

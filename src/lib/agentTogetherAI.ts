@@ -21,8 +21,8 @@ export async function agentChatTogether(id: string) {
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
     model: "meta-llama/Llama-3-70b-chat-hf",
-    temperature: 0.3,
-    topP: 0.3,
+    temperature: 0.2,
+    topP: 0.7,
     apiKey: process.env.TOGETHER_API_KEY,
   });
 
@@ -45,8 +45,8 @@ export async function agentChatTogether(id: string) {
 
   // 4. Agent 실행
   const result = await executor.invoke({
-    input: `${retriever}를 참고해서 ${id} 주식에 대해 ${stock} 도구를 참조해서 분석하고 애널리스트 보고서를 한글로 작성해줘. \n
-    절대로 5줄 넘지마 제목이나 부가 설명 없이 바로 본문 내용만 작성해.`,
+    input: `${retriever}를 참고해서 ${id} 주식에 대해 ${stock} 도구를 참조해서 분석하고 애널리스트 보고서를 한글로 작성해주세요. \n
+    절대로 5줄 넘지마세요 제목이나 부가 설명 없이 바로 본문 내용만 작성해주세요.`,
   });
   const cleanOutput = result.output
     .replace(/^Here is a 4-line analyst report in Korean:\s*/, "")
@@ -72,8 +72,8 @@ export async function agentEvaluationTogether(id: string) {
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
     model: "meta-llama/Llama-3-70b-chat-hf",
-    temperature: 0.3,
-    topP: 0.3,
+    temperature: 0.2,
+    topP: 0.7,
     apiKey: process.env.TOGETHER_API_KEY,
   });
 
@@ -99,13 +99,13 @@ export async function agentEvaluationTogether(id: string) {
     input: `${retriever}를 참고하여 ${id} 주식에 대해 ${stock} 도구를 사용하여 상세 데이터를 가져온 후, 다음 기준에 따라 분석 리포트를 작성해주세요:
 
     투자지수 평가 기준:
-
-    1. 전반적 평가: (긍정/중립/부정)
-    2. 수익성: (높음/중간/낮음)
-    3. 관심도: (상승/평균/하락)
-    4. 성장성: (상승/평균/하락)
-    5. 주가: (상승/일정/하락)
-    6. 총점: 각 평가 항목에 대해 100점 만점 중 점수로 평가하고, 총 평균 점수를 계산해주세요.
+    각 평가 항목에 대해 100점 만점 중 점수만 나타내고 평가는 달지마세요, 총점은 평균 점수를 계산해주세요.
+    1. 전반적 평가: 점
+    2. 수익성: 점
+    3. 관심도: 점
+    4. 성장성: 점
+    5. 주가: 점
+    6. 총점:  
 
     각 항목에 대해 평가를 제시하고 마지막에 총점을 제시해주세요.
     한글로 작성해주세요. 제목이나 부가 설명 없이 바로 본문 내용만 작성해주세요.`,

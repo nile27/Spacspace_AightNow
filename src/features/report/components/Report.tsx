@@ -1,28 +1,25 @@
 import Icon from "@/components/Stock/Icon";
-import TextButton from "@/components/btnUi/TextButton";
 import Summary from "./Summary";
 import Chart from "./Chart";
-
 import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
-
+import RadarChart from "@/features/Watchlist/components/RadarChart";
 import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";
-import { stockRealTime } from "@/app/api/stock/route";
-import AIReport from "./AIReport";
+import AddToWatchListButton from "./AddToWatchListButton";
+import StockAnalysis from "./StockAnalysis";
+import { stockRealTime } from "@/lib/stockRealTime";
 
 type TParams = {
   id: string;
 };
 
 export default async function Report({ id }: TParams) {
-  console.log(id);
+  // 주식데이터 가져오기
   const appleStock = await stockAction(id);
   const appleStock2 = await stockAction2(id);
   const { stockName, reutersCode } = appleStock2;
-  console.log(appleStock2);
   const stockCode = reutersCode.split(".")[0];
   const stockHistory = await stockRealTime(id);
-
   const exchange = await exchangeRate();
 
   return (
@@ -35,17 +32,23 @@ export default async function Report({ id }: TParams) {
               {stockName} · {stockCode}
             </span>
           </div>
-          <TextButton size="custom" width={"167px"} height={"56px"}>
-            관심종목 추가
-          </TextButton>
+          <AddToWatchListButton stockName={stockName} />
         </div>
         <div className="w-[1200px] flex gap-4">
           <Summary overview={appleStock} stockInfo={appleStock2} exchange={exchange} />
           <Chart stockData={stockHistory} />
         </div>
         <div className=" w-[1200px] flex gap-4 ">
-          <AIReport id={id} />
-          <Analysis stockName={stockName} stockInfo={appleStock2} id={id} />
+          <div className="w-[429px] h-[297px] bg-white rounded-2xl p-4">
+            <div className="font-['pretendard'] font-bold text-2xl">종목 AI 리포트 점수</div>
+            <RadarChart stockName={id} width={400} />
+          </div>
+          <StockAnalysis
+            stockName={stockName}
+            stockInfo={appleStock2}
+            id={id}
+            exchange={exchange}
+          />
         </div>
         <FavoriteNews />
       </div>

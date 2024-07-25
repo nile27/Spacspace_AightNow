@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-
 import { JSDOM } from "jsdom";
 import { Translator, TargetLanguageCode } from "deepl-node";
 
 const deepLApiKey = process.env.DEEPL_API_KEY!;
 const translator = new Translator(deepLApiKey);
-
-export const config = {
-  runtime: "edge",
-};
 
 const extractTextNodes = (node: Node, texts: string[] = []): string[] => {
   if (node.nodeType === node.TEXT_NODE) {
@@ -35,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const { html, targetLang } = await req.json();
-
+    console.log(html);
     if (!html || !targetLang) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }
@@ -57,5 +52,3 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
-export default POST;

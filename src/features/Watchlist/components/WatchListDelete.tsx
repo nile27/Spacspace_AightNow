@@ -1,14 +1,15 @@
 import TextButton from "@/components/btnUi/TextButton";
-import { useShow } from "@/Store/store";
 
-export default function WatchListDelete() {
-  const { isShow, setIsShow } = useShow();
+type TWatchListDeleteProps = {
+  onDelete: () => void;
+  onCancel: () => void;
+};
 
-  const testArr = ["apple", "google", "microsoft", "amazon", "unity", "tesla"];
-
+export default function WatchListDelete({ onDelete, onCancel }: TWatchListDeleteProps) {
   const handleDelete = () => {
-    testArr.filter((item, idx) => item === testArr[idx]);
+    onDelete();
   };
+
   return (
     <>
       <div className="fixed inset-0 bg-scaleGray-600 bg-opacity-50 flex justify-center items-center z-50">
@@ -23,12 +24,7 @@ export default function WatchListDelete() {
               </TextButton>
             </button>
 
-            <TextButton
-              size="custom"
-              width={"160px"}
-              height={"56px"}
-              onClick={() => setIsShow(!isShow)}
-            >
+            <TextButton size="custom" width={"160px"} height={"56px"} onClick={onCancel}>
               돌아가기
             </TextButton>
           </div>

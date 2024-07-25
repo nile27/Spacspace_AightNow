@@ -47,10 +47,11 @@ const fetchNaverNewsInfo = async (stockName: string, symbole: string) => {
 
       for (const lang of languages) {
         try {
+          console.log(lang);
           const translatedContent = await handleTranslate(content.content, lang);
           content.translations[lang] = translatedContent;
         } catch (error) {
-          console.error(`Failed to translate content to ${lang}`, error);
+          console.error(`Failed to translate content to second ${lang}`, error);
         }
       }
 

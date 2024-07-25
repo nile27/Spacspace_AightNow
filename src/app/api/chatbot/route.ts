@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   const { input, sessionId } = await req.json();
 
   const llm = new ChatTogetherAI({
-    model: "meta-llama/Llama-3-70b-chat-hf",
+    model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     apiKey: process.env.TOGETHER_API_KEY,
     temperature: 0.3,
     topP: 0.3,

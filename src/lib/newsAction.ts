@@ -47,7 +47,7 @@ export const allStockAction = async () => {
 
     const data: TStockData[] = await response.json();
 
-    // revalidatePath("/");
+    revalidatePath("/");
     return data;
   } catch (error) {
     console.error("Failed to fetch stock data:", error);
@@ -91,21 +91,25 @@ export const getSearchStockHistory = async (userId: string) => {
 };
 
 // 관심 종목 뉴스 리스트
-export const getStockNewsList = async (stockName: string[]) => {
+export const getStockNewsList = async (stockNames: string[]) => {
   try {
-    const listRef = collection(fireStore, "news");
-    const q = query(listRef, where("stockName", "in", stockName), limit(4));
+    const rankRef = collection(fireStore, "news");
+    const q = query(
+      rankRef,
+      where("stockName", "in", stockNames),
+      orderBy("dt", "desc"),
+      orderBy("stockName"),
+    );
     const querySnapshot = await getDocs(q);
 
-    const newsList = querySnapshot.docs.map(doc => ({
+    const data = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    // revalidatePath("/");
-    return newsList;
+    return data;
   } catch (error) {
-    console.error("Failed to fetch stock news list:", error);
+    console.error("Failed to fetch stock news:", error);
   }
 };
 
@@ -169,7 +173,7 @@ export const updateViews = async (id: string) => {
 // 번역
 export const fetchTranslate = async (html: string, targetLang: string, newsArticleId: string) => {
   try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/translate`, {
+    const response = await fetch("/api/translate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

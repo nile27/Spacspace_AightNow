@@ -88,14 +88,14 @@ const fetchRankNews = async (page: Page) => {
         translations: { "en-US": "", ZH: "", JA: "", FR: "" },
       };
 
-      for (const lang of languages) {
-        try {
-          const translatedContent = await handleTranslate(content.content, lang);
-          content.translations[lang] = translatedContent;
-        } catch (error) {
-          console.error(`Failed to translate content to ${lang}`, error);
-        }
-      }
+      // for (const lang of languages) {
+      //   try {
+      //     const translatedContent = await handleTranslate(content.content, lang);
+      //     content.translations[lang] = translatedContent;
+      //   } catch (error) {
+      //     console.error(`Failed to translate content to ${lang}`, error);
+      //   }
+      // }
 
       articles.push(content);
     }

@@ -11,47 +11,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
-// ------------
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAbx74joTkwMgG2Fc9e5dnmVwAM4F3IfaU",
-//   authDomain: "aightnow-fcc33.firebaseapp.com",
-//   projectId: "aightnow-fcc33",
-//   storageBucket: "aightnow-fcc33.appspot.com",
-//   messagingSenderId: "1065469610982",
-//   appId: "1:1065469610982:web:8a03a8c440a25ad7dfa427",
-//   measurementId: "G-082J3DB40G",
-// };
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCLxJ7uGBO3RsjuAxEaxWXDT44m9mrgCB8",
-//   authDomain: "iott-b4895.firebaseapp.com",
-//   databaseURL: "https://iott-b4895-default-rtdb.firebaseio.com",
-//   projectId: "iott-b4895",
-//   storageBucket: "iott-b4895.appspot.com",
-//   messagingSenderId: "498904939578",
-//   appId: "1:498904939578:web:74642e6263c30c862a8903",
-//   measurementId: "G-ZG73C4V7PK",
-// };
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCh93LSaD0oVyGiiWq9d6N6dVz1c7ikXjc",
-//   authDomain: "test-29402.firebaseapp.com",
-//   projectId: "test-29402",
-//   storageBucket: "test-29402.appspot.com",
-//   messagingSenderId: "934520066683",
-//   appId: "1:934520066683:web:2122f35e931df397c908de",
-//   measurementId: "G-GMBX9WMFYP",
-// };
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAP2FAj8Mp6wvH5k9mIJiHrMl_oWJw0qms",
-//   authDomain: "new-aight-now.firebaseapp.com",
-//   projectId: "new-aight-now",
-//   storageBucket: "new-aight-now.appspot.com",
-//   messagingSenderId: "869300930084",
-//   appId: "1:869300930084:web:26108287f1efcbee27fab1",
-//   measurementId: "G-E7SPD9JQC9",
-// };
 console.log(firebaseConfig.projectId);
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);

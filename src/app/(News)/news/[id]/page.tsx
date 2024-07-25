@@ -102,6 +102,7 @@ export default function NewsDetail({ params }: TPageProps) {
 
   // 번역 요청
   async function handleTranslate(content: string, targetLang: string) {
+    console.log("updatedArticle");
     if (targetLang === "KO") return;
     if (!article.translations[targetLang]) {
       try {
@@ -109,6 +110,7 @@ export default function NewsDetail({ params }: TPageProps) {
         await fetchTranslate(content, targetLang, id);
         const updatedArticle = await getNewsArticle(id);
         setArticle(updatedArticle);
+
         setTransLoading(false);
       } catch (error) {
         console.error("Error during translation:", error);

@@ -35,5 +35,3 @@ export function generatePassword(): string {
     }
   }
 }
-
-console.log(generatePassword());

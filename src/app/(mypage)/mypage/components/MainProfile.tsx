@@ -139,6 +139,12 @@ export default function MainProfile() {
                 <span>{user?.birth}</span>
               </div>
             </div>
+            <div className="w-full h-auto mb-5  flex ">
+              <span className="mr-[120px] w-[56px]">이메일</span>
+              <div className="flex justify-center items-center gap-[16px]">
+                <span>{user?.email}</span>
+              </div>
+            </div>
           </figure>
           {isModal && (
             <ModalContainer

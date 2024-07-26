@@ -8,6 +8,7 @@ import { firestore } from "@/firebase/firebaseDB";
 import { useSession, getSession } from "next-auth/react";
 
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { generatePassword } from "../lib/generatePassword";
 
 export default function SignUp() {
   const navigation = useRouter();
@@ -105,7 +106,11 @@ export default function SignUp() {
         setInput(i, searchParams.get(i) as string);
       }
     }
-
+    if (inputText.logintype !== "none") {
+      const newRandomPw = generatePassword();
+      setInput("pw", newRandomPw);
+      setInput("pwCheck", newRandomPw);
+    }
     console.log("inputText:", inputText);
     console.log("session:", session);
   }, []);
@@ -141,28 +146,32 @@ export default function SignUp() {
             </TextButton>
           )}
         </NewInput>
-        <NewInput
-          type="password"
-          placeholder="비밀번호를 입력해주세요"
-          autoComplete="current-password"
-          label="비밀번호 입력"
-          id="password"
-          caption="* 8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합"
-          value={inputText.pw}
-          style={!errArr[1] ? "error" : undefined}
-          onChange={handleInputValue("pw")}
-        />
-        <NewInput
-          type="password"
-          placeholder="비밀번호를 다시 입력해주세요"
-          autoComplete="current-password"
-          label="비밀번호 확인"
-          id="passwordCheck"
-          style={!errArr[2] ? "error" : undefined}
-          caption={!errArr[2] ? "비밀번호가 맞지 않습니다." : undefined}
-          value={inputText.pwCheck}
-          onChange={handleInputValue("pwCheck")}
-        />
+        {inputText.logintype === "none" && (
+          <>
+            <NewInput
+              type="password"
+              placeholder="비밀번호를 입력해주세요"
+              autoComplete="current-password"
+              label="비밀번호 입력"
+              id="password"
+              caption="* 8-20자 이내 숫자, 특수문자, 영문자 중 2가지 이상을 조합"
+              value={inputText.pw}
+              style={!errArr[1] ? "error" : undefined}
+              onChange={handleInputValue("pw")}
+            />
+            <NewInput
+              type="password"
+              placeholder="비밀번호를 다시 입력해주세요"
+              autoComplete="current-password"
+              label="비밀번호 확인"
+              id="passwordCheck"
+              style={!errArr[2] ? "error" : undefined}
+              caption={!errArr[2] ? "비밀번호가 맞지 않습니다." : undefined}
+              value={inputText.pwCheck}
+              onChange={handleInputValue("pwCheck")}
+            />
+          </>
+        )}
 
         <NewInput
           type="tel"

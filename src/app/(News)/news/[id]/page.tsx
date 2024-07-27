@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import TextButton from "@/components/btnUi/TextButton";
 import React, { useEffect, useState } from "react";
 import ArticleIcon from "@/features/news/components/ArticleIcon.svg";
-import Stock from "@/components/Stock/Stock";
+import Stock, { STOCK_CODE } from "@/components/Stock/Stock";
 import Link from "next/link";
 import { useAuthStore } from "@/Store/store";
 import ChatBotPage from "@/features/chatbot/ChatBotPage";
@@ -17,12 +17,23 @@ import {
   getStockNewsList,
   updateViews,
 } from "@/lib/newsAction";
-import { TNewsList } from "@/app/api/(crawler)/type";
+import { TNewsList, TStockData } from "@/app/api/(crawler)/type";
+import { stockAction2 } from "@/lib/stockAction";
+import { TStockInfo } from "@/features/Watchlist/components/WatchListCard";
 
 type TPageProps = {
   params: { id: string };
 };
 
+const Stock_Name_En_To_Ko: { [key: string]: string } = {
+  apple: "애플",
+  tesla: "테슬라",
+  amazon: "아마존",
+  google: "구글",
+  microsoft: "마이크로소프트",
+  unity: "유니티",
+};
+type TStockDataList = TStockData & { key: string };
 function formatDateTime(dateTimeStr: string) {
   if (!dateTimeStr || dateTimeStr.length !== 14) {
     console.error("Invalid dateTimeStr format");
@@ -44,7 +55,7 @@ function formatDateTime(dateTimeStr: string) {
 export default function NewsDetail({ params }: TPageProps) {
   const { id } = params;
   const [loading, setLoading] = useState(false);
-  const [stockDataList, setStockDataList] = useState<any[]>([]);
+  // const [stockDataList, setStockDataList] = useState<TStockInfo[]>([]);
   const [isTranslated, setIsTranslated] = useState(false);
   const [transLoading, setTransLoading] = useState(false);
   const { user } = useAuthStore();
@@ -52,7 +63,7 @@ export default function NewsDetail({ params }: TPageProps) {
 
   const [article, setArticle] = useState<any>({});
   const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[]>([]);
-  const [stockData, setStockData] = useState<any[]>([]);
+  const [stockDataList, setStockDataList] = useState<Map<string, TStockInfo>>(new Map());
   const [view, setView] = useState<number>(0);
 
   const userLanguage: string = user?.language ?? "KO";
@@ -61,17 +72,10 @@ export default function NewsDetail({ params }: TPageProps) {
     const fetchInitialData = async () => {
       setLoading(true);
       try {
-        const [articleData, stockData, viewCount] = await Promise.all([
-          getNewsArticle(id),
-          allStockAction(),
-          updateViews(id),
-        ]);
+        const [articleData, viewCount] = await Promise.all([getNewsArticle(id), updateViews(id)]);
 
         if (articleData) {
           setArticle(articleData);
-        }
-        if (stockData) {
-          setStockData(stockData);
         }
         setView(viewCount);
       } catch (error) {
@@ -87,18 +91,25 @@ export default function NewsDetail({ params }: TPageProps) {
   useEffect(() => {
     const fetchRelatedData = async () => {
       if (article.relatedItems) {
-        const stockNewsData = await getStockNewsList(article.relatedItems);
-        setStockNews(stockNewsData as (TNewsList & { id: string })[]);
-        const orderedStockData = article.relatedItems
-          .map((item: string) => stockData.find(stock => stock.logo === item))
-          .filter(Boolean); // undefined 요소 제거
-
-        setStockDataList(orderedStockData);
+        for (const item of article.relatedItems) {
+          const [stockNewsData, stockData] = await Promise.all([
+            getStockNewsList(article.relatedItems),
+            stockAction2(item),
+          ]);
+          setStockNews(stockNewsData as (TNewsList & { id: string })[]);
+          // setStockData(stockData);
+          // const orderedStockData = article.relatedItems
+          //   .map((item: string) => stockData.find(stock => stock.logo === item))
+          //   .filter(Boolean); // undefined 요소 제거
+          if (stockData) {
+            setStockDataList(prev => new Map(prev).set(item, stockData));
+          }
+        }
       }
     };
 
     fetchRelatedData();
-  }, [article.relatedItems, stockData]);
+  }, []);
 
   // 번역 요청
   async function handleTranslate(content: string, targetLang: string) {
@@ -135,8 +146,6 @@ export default function NewsDetail({ params }: TPageProps) {
       fetchSummary();
     }
   }, [article.content]);
-
-  const filteredStockData = stockDataList.filter(data => data.stockName !== "rank");
 
   return (
     <>
@@ -208,20 +217,20 @@ export default function NewsDetail({ params }: TPageProps) {
             </div>
           </div>
 
-          {filteredStockData.length > 0 && (
+          {stockDataList.size > 0 && (
             <div className="flex flex-col gap-y-4">
               <div className="w-[384px] bg-white rounded-2xl font-pretendard p-8">
                 <h2 className="text-xl mb-3">현재 뉴스와 관련된 주식</h2>
                 <div className="flex flex-col">
-                  {stockDataList.map((data, index) => (
-                    <Link href={`/report/${data.logo}`} key={index}>
+                  {article.relatedItems.map((data: string, index: number) => (
+                    <Link href={`/report/${data}`} key={index}>
                       <Stock
-                        data={data}
-                        logo={article.relatedItems[index]}
+                        data={stockDataList.get(data) as TStockInfo}
+                        logo={data}
                         gap={`${
-                          data.stockName.length < 3 && data.symbolCode.length < 5
+                          Stock_Name_En_To_Ko[data].length < 3 && STOCK_CODE[data].length < 5
                             ? "gap-32"
-                            : data.stockName.length < 4
+                            : Stock_Name_En_To_Ko[data].length < 4
                             ? "gap-[113px]"
                             : "gap-[49px]"
                         }`}

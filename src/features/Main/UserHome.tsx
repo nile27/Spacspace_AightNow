@@ -74,7 +74,7 @@ export default function UserHome() {
     const fetchData = async () => {
       try {
         const stockHistoryData = await getSearchStockHistory(userDataId as string);
-        console.log("stockHistoryData", stockHistoryData);
+        // console.log("stockHistoryData", stockHistoryData);
         setStockData(stockHistoryData as TFindHistory[]);
         if (stockHistoryData && stockHistoryData.length > 0) {
           // setStockHistory(stockHistoryData as TFindHistory[]);

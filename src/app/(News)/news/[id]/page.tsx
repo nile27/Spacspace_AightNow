@@ -113,7 +113,6 @@ export default function NewsDetail({ params }: TPageProps) {
 
   // 번역 요청
   async function handleTranslate(content: string, targetLang: string) {
-    console.log("updatedArticle");
     if (targetLang === "KO") return;
     if (!article.translations[targetLang]) {
       try {

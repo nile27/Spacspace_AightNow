@@ -7,7 +7,7 @@ type TFindNewsProps = {
 
 function FindNews(props: TFindNewsProps) {
   const { data, ...restProps } = props;
-  console.log("FindNews");
+  // console.log("FindNews");
   return (
     <>
       <button className="justify-start items-center gap-4 inline-flex" {...restProps}>

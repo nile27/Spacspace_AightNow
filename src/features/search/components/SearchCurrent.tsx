@@ -20,7 +20,7 @@ export default function SearchCurrent({
   const deleteSearchHistory = useFindStore(state => state.deleteSearchHistory);
   const handleClick = () => {
     deleteSearchHistory(data.id);
-    console.log("Delete search history");
+    // console.log("Delete search history");
   };
   return (
     <div className="w-full py-2 flex justify-between items-center">

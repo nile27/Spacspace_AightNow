@@ -109,7 +109,7 @@ export default function NewsDetail({ params }: TPageProps) {
     };
 
     fetchRelatedData();
-  }, []);
+  }, [article.relatedItems]);
 
   // 번역 요청
   async function handleTranslate(content: string, targetLang: string) {

@@ -27,7 +27,7 @@ export default function Section(props: TSectionProps) {
     }
   };
 
-  // console.log(items);
+  console.log(items);
 
   return (
     <div className="w-full flex-col justify-start items-center gap-2 flex">
@@ -63,7 +63,7 @@ export default function Section(props: TSectionProps) {
                         data={data}
                         logo={data.logo}
                         gap={`${
-                          data.stockName.length < 3 && data.symbolCode.length < 5
+                          data.stockName.length < 3 && data.symbolCode.length < 7
                             ? "gap-[81px]"
                             : data.stockName.length < 4
                             ? "gap-[64px]"

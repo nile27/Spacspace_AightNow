@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-const loading = () => {
+const Loading = () => {
   return (
     <div>
       <Header />
@@ -23,4 +23,4 @@ const loading = () => {
   );
 };
 
-export default loading;
+export default Loading;

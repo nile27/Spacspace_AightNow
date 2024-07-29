@@ -115,11 +115,11 @@ const ResetPasswordPage = () => {
 
           {true ? (
             <TextButton onClick={handleResetPassword} size="full">
-              임시 비밀번호 발급
+              비밀번호 변경
             </TextButton>
           ) : (
             <TextButton size="full" color="disable">
-              임시 비밀번호 발급
+              비밀번호 변경
             </TextButton>
           )}
         </form>

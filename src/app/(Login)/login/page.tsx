@@ -15,13 +15,14 @@ import {
   signInWithCustomToken,
 } from "firebase/auth";
 import { auth } from "@/firebase/firebaseDB";
-import { useLoginStore, useSignUp, useAuthStore, TUserData } from "@/Store/store";
+import { useLoginStore, useSignUp, useAuthStore, TUserData, useAutoLogin } from "@/Store/store";
 import { useRouter } from "next/navigation";
 import { googleLogin } from "../utills/GoogleAuth";
 
 export default function Login() {
   const { setLogin, isLoggedIn } = useLoginStore();
   const { setInput, setLabelImg } = useSignUp();
+  const { autoLogin, setAutoLogin } = useAutoLogin();
 
   const { data: session, status } = useSession();
   const navi = useRouter();
@@ -29,7 +30,6 @@ export default function Login() {
   const [idText, setId] = useState("");
   const [pwText, setPw] = useState("");
   const [regExpArr, setRegExpArr] = useState(true);
-  const [autoLogin, setAuto] = useState(false);
 
   const handleOnClick = async () => {
     try {
@@ -52,13 +52,14 @@ export default function Login() {
 
   const handleAutoLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked;
-    setAuto(checked);
-    sessionStorage.setItem("autoLogin", JSON.stringify(checked));
+    if (checked) setAutoLogin();
   };
 
   const handleGoogle = async () => {
     try {
       const userdata = await googleLogin();
+      const persistence = autoLogin ? browserLocalPersistence : browserSessionPersistence;
+      await setPersistence(auth, persistence);
       if (userdata?.isSign === false) {
         const { data } = userdata;
         console.log(userdata);
@@ -92,8 +93,7 @@ export default function Login() {
 
   useEffect(() => {
     const nextAuthLogin = async () => {
-      const getAutoLogin = sessionStorage.getItem("autoLogin") === "true" ? true : false;
-      const persistence = getAutoLogin ? browserLocalPersistence : browserSessionPersistence;
+      const persistence = autoLogin ? browserLocalPersistence : browserSessionPersistence;
       const userCredential = await signInWithCustomToken(
         auth,
         session?.user.firebaseToken as string,

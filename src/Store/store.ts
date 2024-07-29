@@ -14,6 +14,12 @@ type TLoginStore = {
   setLogout: () => void;
 };
 
+type TAutoLoginStore = {
+  autoLogin: boolean;
+  setAutoLogin: () => void;
+  setAutoLogout: () => void;
+};
+
 type TCloseStore = {
   isClose: boolean;
   setIsClose: (isClose: boolean) => void;
@@ -167,6 +173,20 @@ export const useAuthStore = create(
     }),
     {
       name: "auth-storage",
+      getStorage: () => sessionStorage,
+    },
+  ),
+);
+
+export const useAutoLogin = create<TAutoLoginStore>()(
+  persist(
+    set => ({
+      autoLogin: false,
+      setAutoLogin: () => set({ autoLogin: true }),
+      setAutoLogout: () => set({ autoLogin: false }),
+    }),
+    {
+      name: "AutoLogin-storage",
       getStorage: () => sessionStorage,
     },
   ),

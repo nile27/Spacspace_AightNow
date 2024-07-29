@@ -9,11 +9,13 @@ import { useSession, getSession } from "next-auth/react";
 
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { generatePassword } from "../lib/generatePassword";
+import Loading from "@/app/loading";
 
 export default function SignUp() {
   const navigation = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
+  const [isClient, setIsClient] = useState(false);
   const { inputText, setInput, setLabelImg } = useSignUp();
   const [idCheck, setIdCheck] = useState(false);
   const [errArr, setErrArr] = useState(Array.from({ length: 5 }, () => true));
@@ -89,6 +91,10 @@ export default function SignUp() {
   };
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
     const emailParam: string = searchParams.get("email") as string;
     const nameParam: string = searchParams.get("name") as string;
     const type: string = searchParams.get("type") as string;
@@ -114,6 +120,10 @@ export default function SignUp() {
     console.log("inputText:", inputText);
     console.log("session:", session);
   }, []);
+
+  if (!isClient) {
+    return <Loading />;
+  }
 
   return (
     <>

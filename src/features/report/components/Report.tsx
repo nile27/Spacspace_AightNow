@@ -22,8 +22,6 @@ export default async function Report({ id }: TParams) {
   const stockHistory = await stockRealTime(id);
   const exchange = await exchangeRate();
 
-  console.log(stockHistory);
-
   return (
     <>
       <div className="flex flex-col gap-4">

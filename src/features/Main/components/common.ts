@@ -10,7 +10,7 @@ const shuffleArray = (array: any[]) => {
   return shuffledArray;
 };
 
-const getRandomStocks = (stockList: string[], count: number) => {
+const getRandomStocks = (stockList: TNewsList[] | { id: string }[], count: number) => {
   const shuffled = shuffleArray(stockList);
   return shuffled.slice(0, count);
 };
@@ -22,7 +22,11 @@ const getRandomImageNews = (newsList: TNewsList[], count: number) => {
 };
 
 // 중복되지 않는 랜덤 주식 종목을 가져오는 함수
-const getUniqueRandomStocks = (stockList: string[], count1: number, count2: number) => {
+const getUniqueRandomStocks = (
+  stockList: TNewsList[] | { id: string }[],
+  count1: number,
+  count2: number,
+) => {
   const shuffled = shuffleArray(stockList);
   const list1 = shuffled.slice(0, count1);
   const list2 = shuffled.slice(count1, count1 + count2);

@@ -3,6 +3,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNewsStore, useStockStore } from "@/Store/newsStore";
 import Section from "./Section";
+import { allStockAction } from "@/lib/newsAction";
+import { TStockData } from "@/app/api/(crawler)/type";
 
 function SearchPanel(props: any) {
   const { searchTerm } = props;
@@ -10,20 +12,29 @@ function SearchPanel(props: any) {
   const [visibleNews, setVisibleNews] = useState(5);
   const [loading, setLoading] = useState(false);
   const fetchNewsList = useNewsStore(state => state.fetchNewsList);
-  const fetchStockList = useStockStore(state => state.fetchStockData);
-  const stockData = useStockStore(state => state.stockData);
+  // const fetchStockList = useStockStore(state => state.fetchStockData);
+  const [stockData, setStockData] = useState<TStockData[]>([]);
+  // const stockData = useStockStore(state => state.stockData);
   const newsList = useNewsStore(state => state.newsList);
   const term = searchTerm.toLowerCase().trim();
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       setLoading(true);
-      fetchStockList(); // 주식 데이터 가져오기
-      fetchNewsList(); // 뉴스 데이터 가져오기
-      setLoading(false);
+      try {
+        const [allStock, newsList] = await Promise.all([allStockAction(), fetchNewsList()]);
+        if (allStock) {
+          setStockData(allStock);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetchData();
-  }, [searchTerm, fetchStockList, fetchNewsList]);
+  }, [searchTerm]);
 
   // 더보기 버튼 클릭 시 호출되는 함수
   const handleLoadMoreItems = () => {
@@ -40,17 +51,15 @@ function SearchPanel(props: any) {
     return stockData.filter(
       item =>
         item.stockName.includes(searchTerm) || // "애플"
-        item.reutersCode.toLowerCase().includes(term) || // "AAPL.O"
+        (item.reutersCode?.toLowerCase().includes(term) ?? false) || // "AAPL.O"
         item.logo.toLowerCase().includes(term), // "apple"
     );
   }, [searchTerm, stockData]);
 
-  console.log(stockData);
-
   const filteredNews = useMemo(() => {
     if (!term || !newsList) return [];
     return newsList.filter(
-      item => item.tit.toLowerCase().includes(term) || item.content.includes(term),
+      item => item.tit.toLowerCase().includes(term) || item.content.toLowerCase().includes(term),
     );
   }, [searchTerm, newsList]);
 

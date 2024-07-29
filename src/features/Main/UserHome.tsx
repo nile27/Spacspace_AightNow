@@ -9,8 +9,19 @@ import { useAuthStore } from "@/Store/store";
 import Link from "next/link";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import fireStore from "@/firebase/firestore";
-import { getSearchStockHistory, getStockInfo } from "@/lib/newsAction";
-import { StockData } from "@/app/api/(crawler)/news/stock/[stock]/route";
+import { getSearchStockHistory } from "@/lib/newsAction";
+import { TStockInfo } from "../Watchlist/components/WatchListCard";
+import { stockAction2 } from "@/lib/stockAction";
+import { TFindHistory } from "../search/components/SearchEmpty";
+
+const STOCK_NAME_KO_TO_EN: { [key: string]: string } = {
+  애플: "apple",
+  테슬라: "tesla",
+  아마존: "amazon",
+  구글: "google",
+  마이크로소프트: "microsoft",
+  유니티: "unity",
+};
 
 const nameMapping: { [key: string]: string } = {
   애플: "AAPL.O",
@@ -22,15 +33,17 @@ const nameMapping: { [key: string]: string } = {
 };
 
 // 주식 종목 이름을 변환하는 함수
-const convertName = (name: string) => {
+export const convertName = (name: string) => {
   return nameMapping[name] || name;
 };
 
 export default function UserHome() {
   const { user } = useAuthStore();
   const [userStock, setUserStock] = useState<string[]>([]);
-  const [stockData, setStockData] = useState<StockData[]>([]); // 최근 조회 주식 정보
-  const [stockPriceInfoMap, setStockPriceInfoMap] = useState<Map<string, StockData>>(new Map()); // 리포트에서 사용할 주식 가격 정보
+  const [stockData, setStockData] = useState<TFindHistory[]>([]); // 최근 조회 주식 정보
+  // const [stockPriceInfoMap, setStockPriceInfoMap] = useState<Map<string, StockData>>(new Map()); // 리포트에서 사용할 주식 가격 정보
+  const [stockPriceInfoMap, setStockPriceInfoMap] = useState<Map<string, TStockInfo>>(new Map());
+  const [stockDataInfo, setStockDataInfo] = useState<Map<string, TStockInfo>>(new Map());
 
   const userDataId = (user?.userId as string) ? user?.userId : user?.id;
 
@@ -61,14 +74,18 @@ export default function UserHome() {
     const fetchData = async () => {
       try {
         const stockHistoryData = await getSearchStockHistory(userDataId as string);
+        // console.log("stockHistoryData", stockHistoryData);
+        setStockData(stockHistoryData as TFindHistory[]);
         if (stockHistoryData && stockHistoryData.length > 0) {
           // setStockHistory(stockHistoryData as TFindHistory[]);
-          const stockInfoPromises = stockHistoryData.map(stock =>
-            getStockInfo(convertName(stock.term)),
-          );
+          const stockInfoPromises = stockHistoryData.map(async stock => {
+            const stockInfoData = await stockAction2(stock.slug);
+            setStockDataInfo(prev => new Map(prev).set(stock.term, stockInfoData));
+            return stockInfoData;
+          });
 
           const stockInfoData = await Promise.all(stockInfoPromises);
-          setStockData(stockInfoData);
+          // setStockData(stockInfoData as TStockInfo[]);
         }
       } catch (error) {
         console.log(error);
@@ -78,16 +95,14 @@ export default function UserHome() {
     fetchData();
   }, [user]);
 
-  // console.log("stockData", stockData);
-
   // 사용자 관심 종목의 주식 가격 정보를 가져오는 함수
   useEffect(() => {
     async function fetchStockPrices() {
       for (const stockName of userStock) {
         if (!stockPriceInfoMap.has(stockName)) {
           try {
-            const stockEn = convertName(stockName);
-            const stockPriceInfo = await getStockInfo(stockEn);
+            const stockEn = STOCK_NAME_KO_TO_EN[stockName];
+            const stockPriceInfo = await stockAction2(stockEn);
             setStockPriceInfoMap(prev => new Map(prev).set(stockName, stockPriceInfo));
           } catch (error) {
             console.log(error);
@@ -98,7 +113,6 @@ export default function UserHome() {
 
     fetchStockPrices();
   }, [userStock]);
-
   return (
     <>
       <div className="flex justify-center items-start w-full mt-[139px]">
@@ -113,9 +127,9 @@ export default function UserHome() {
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              {userStock.map((stockName, index) => (
+              {userStock.slice(0, 3).map((stockName, index) => (
                 <div key={index} className="">
-                  <Link href={`/report/${stockPriceInfoMap.get(stockName)?.logo}`}>
+                  <Link href={`/report/${STOCK_NAME_KO_TO_EN[stockName]}`}>
                     <Report name={stockName} data={stockPriceInfoMap.get(stockName) || null} />
                   </Link>
                 </div>
@@ -138,14 +152,14 @@ export default function UserHome() {
                     ) : (
                       stockData.slice(0, 4).map((data, index) => (
                         <div key={index} className="flex justify-between items-center rounded-lg ">
-                          <Link href={`/report/${data.logo}`}>
+                          <Link href={`/report/${data.slug}`}>
                             <Stock
-                              data={data}
-                              logo={data.logo}
+                              data={stockDataInfo.get(data.term) || null}
+                              logo={data.slug}
                               gap={`${
-                                data.stockName.length < 3 && data.symbolCode.length < 5
+                                data.term.length < 3 && convertName(data.term).length < 7
                                   ? "gap-[291px]"
-                                  : data.stockName.length < 4
+                                  : data.term.length < 4
                                   ? "gap-[274px]"
                                   : "gap-[210px]"
                               }`}
@@ -163,13 +177,12 @@ export default function UserHome() {
                   <div className="w-full min-h-[300px] flex flex-col  items-center gap-4">
                     {userStock.slice(0, 4).map((stockName, index) => (
                       <div key={index} className="flex justify-between items-center rounded-lg">
-                        <Link href={`/report/${stockPriceInfoMap.get(stockName)?.logo}`}>
+                        <Link href={`/report/${STOCK_NAME_KO_TO_EN[stockName]}`}>
                           <Stock
                             data={stockPriceInfoMap.get(stockName) || null}
-                            logo={stockPriceInfoMap.get(stockName)?.logo as string}
+                            logo={STOCK_NAME_KO_TO_EN[stockName] as string}
                             gap={`${
-                              stockName.length < 3 &&
-                              stockPriceInfoMap.get(stockName)?.symbolCode.toString().length! < 5
+                              stockName.length < 3 && convertName(stockName).length < 7
                                 ? "gap-[291px]"
                                 : stockName.length < 4
                                 ? "gap-[274px]"

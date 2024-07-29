@@ -8,7 +8,7 @@ import { useNewsStore } from "@/Store/newsStore";
 import { extractTextFromHTML } from "@/features/news/components/common";
 import { useAuthStore } from "@/Store/store";
 import { TNewsList } from "@/app/api/(crawler)/type";
-import { getRandomStocks, getUniqueRandomStocks } from "./common";
+import { getRandomStocks, getUniqueRandomStocks, shuffleArray } from "./common";
 
 const nameMapping: { [key: string]: string } = {
   애플: "apple",
@@ -22,6 +22,8 @@ const convertName = (name: string) => {
   return nameMapping[name] || name;
 };
 
+const imageFiles = ["news1.jpg", "news2.jpg", "news3.jpg", "news4.jpg", "news5.jpg"];
+
 export default function News() {
   const [loading, setLoading] = useState(false);
   const fetchNewsList = useNewsStore(state => state.fetchNewsList);
@@ -30,6 +32,7 @@ export default function News() {
   const data = useNewsStore(state => state.newsList);
   const { user } = useAuthStore();
   const changeStockName = user?.stock.map(item => convertName(item));
+  const [randomImages, setRandomImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -39,6 +42,11 @@ export default function News() {
       setLoading(false);
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    // 이미지를 랜덤으로 섞어서 상태에 저장
+    setRandomImages(shuffleArray([...imageFiles]));
   }, []);
 
   const [interStockNewsList, stockNewsList] =
@@ -78,7 +86,19 @@ export default function News() {
                 key={data.id}
               >
                 <div className="flex flex-col sm:flex-row gap-5">
-                  <img className="w-full sm:w-80 h-60 rounded-3xl" src={data.thumbUrl} alt="News" />
+                  {data.image === null ? (
+                    <img
+                      className="w-full sm:w-80 h-60 rounded-3xl"
+                      src={`/news/${randomImages[index % randomImages.length]}`}
+                      alt="News"
+                    />
+                  ) : (
+                    <img
+                      className="w-full sm:w-80 h-60 rounded-3xl"
+                      src={data.thumbUrl}
+                      alt="News"
+                    />
+                  )}
                   <div className="flex flex-col justify-start items-start w-full ">
                     <div
                       className="self-stretch text-black text-2xl font-medium leading-loose"
@@ -101,7 +121,7 @@ export default function News() {
         <div className="w-full">
           <div className="text-mainNavy-900 text-2xl font-semibold leading-9 pb-4">최신 뉴스</div>
           <div className="border border-mainNavy-100 rounded-3xl">
-            {stockNewsList.map((news, index) => (
+            {stockList.slice(0, 3).map((news, index) => (
               <div key={news.id}>
                 <div className="flex rounded-lg pt-12 px-12">
                   <Link

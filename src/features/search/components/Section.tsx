@@ -44,7 +44,7 @@ export default function Section(props: TSectionProps) {
           ) : isNews ? (
             <div className="flex flex-col w-full">
               {items.slice(0, visibleItems).map(data => (
-                <div key={data.id} className="flex rounded-lg gap-4 pb-4">
+                <div key={data.id} className="flex rounded-lg gap-4 pb-4 truncate">
                   <Link href={`/news/${data.id}`} legacyBehavior>
                     <a onClick={() => handleClick(data.tit, data.id, true)}>
                       <FindNews data={data} />
@@ -63,7 +63,7 @@ export default function Section(props: TSectionProps) {
                         data={data}
                         logo={data.logo}
                         gap={`${
-                          data.stockName.length < 3 && data.symbolCode.length < 5
+                          data.stockName.length < 3 && data.symbolCode.length < 7
                             ? "gap-[81px]"
                             : data.stockName.length < 4
                             ? "gap-[64px]"

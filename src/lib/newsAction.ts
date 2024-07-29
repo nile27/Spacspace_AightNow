@@ -37,21 +37,69 @@ export const getStockInfo = async (stock: string) => {
   }
 };
 
-// 전체 주식 리스트
-export const allStockAction = async () => {
-  try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/news/stock`);
-    if (!response.ok) {
-      throw new Error("Failed to fetch stock data");
+// // 전체 주식 리스트
+// export const allStockAction = async () => {
+//   try {
+//     const response = await fetch(`${process.env.NEXTAUTH_URL}api/news/stock`);
+//     if (!response.ok) {
+//       throw new Error("Failed to fetch stock data");
+//     }
+
+//     const data: TStockData[] = await response.json();
+
+//     revalidatePath("/");
+//     return data;
+//   } catch (error) {
+//     console.error("Failed to fetch stock data:", error);
+//   }
+// };
+
+export const allStockAction = async (): Promise<TStockData[]> => {
+  const allStocks: TStockData[] = [];
+  const symbols = ["AAPL.O", "TSLA.O", "MSFT.O", "AMZN.O", "GOOGL.O", "U"];
+  const stockNames = ["애플", "테슬라", "마이크로소프트", "아마존", "구글", "유니티"];
+  const logos = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
+
+  const stockPromises = symbols.map(async (symbol, index) => {
+    try {
+      const res = await fetch(`https://api.stock.naver.com/stock/${symbol}/basic`);
+      const data = await res.json();
+
+      const {
+        compareToPreviousPrice,
+        closePrice,
+        compareToPreviousClosePrice,
+        fluctuationsRatio,
+        reutersCode,
+      } = data;
+
+      const stockData: TStockData = {
+        reutersCode,
+        stockName: stockNames[index],
+        symbolCode: symbol,
+        closePrice,
+        compareToPreviousPrice,
+        compareToPreviousClosePrice,
+        fluctuationsRatio,
+        logo: logos[index],
+      };
+
+      return stockData;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
+  });
 
-    const data: TStockData[] = await response.json();
+  const stockDataArray = await Promise.all(stockPromises);
 
-    // revalidatePath("/");
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch stock data:", error);
-  }
+  stockDataArray.forEach(stockData => {
+    if (stockData) {
+      allStocks.push(stockData);
+    }
+  });
+
+  return allStocks;
 };
 
 // 사용자별 조회 기록
@@ -91,21 +139,25 @@ export const getSearchStockHistory = async (userId: string) => {
 };
 
 // 관심 종목 뉴스 리스트
-export const getStockNewsList = async (stockName: string[]) => {
+export const getStockNewsList = async (stockNames: string[]) => {
   try {
-    const listRef = collection(fireStore, "news");
-    const q = query(listRef, where("stockName", "in", stockName), limit(4));
+    const rankRef = collection(fireStore, "news");
+    const q = query(
+      rankRef,
+      where("stockName", "in", stockNames),
+      orderBy("dt", "desc"),
+      orderBy("stockName"),
+    );
     const querySnapshot = await getDocs(q);
 
-    const newsList = querySnapshot.docs.map(doc => ({
+    const data = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    // revalidatePath("/");
-    return newsList;
+    return data;
   } catch (error) {
-    console.error("Failed to fetch stock news list:", error);
+    console.error("Failed to fetch stock news:", error);
   }
 };
 

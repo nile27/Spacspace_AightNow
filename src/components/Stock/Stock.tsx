@@ -1,10 +1,11 @@
 import { StockData } from "@/app/api/(crawler)/news/stock/[stock]/route";
 import Icon from "./Icon";
+import { TStockInfo } from "@/features/Watchlist/components/WatchListCard";
 
 type TStock = {
   logo: string;
   gap?: string;
-  data: StockData | null;
+  data: StockData | TStockInfo | null;
 };
 
 export const STOCK_NAMES: { [key: string]: string } = {
@@ -60,18 +61,18 @@ export default function Stock({ logo, gap, data }: TStock) {
               <div className="flex justify-end items-start gap-2">
                 <div
                   className={`text-right ${
-                    compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
+                    compareToPreviousPrice.code === "5" ? "text-secondBlue-500" : "text-warning"
                   } text-xs font-normal font-['Pretendard'] leading-none`}
                 >
-                  {compareToPreviousPrice.text === "하락" ? "▼" : "▲"}
+                  {compareToPreviousPrice.code === "5" ? "▼" : "▲"}
                   {compareToPreviousClosePrice.toString().replace("-", "")}
                 </div>
                 <div
                   className={`text-right ${
-                    compareToPreviousPrice.text === "하락" ? "text-secondBlue-500" : "text-warning"
+                    compareToPreviousPrice.code === "5" ? "text-secondBlue-500" : "text-warning"
                   } text-xs font-normal font-['Pretendard'] leading-none`}
                 >
-                  {compareToPreviousPrice.text === "하락" ? "" : "+"}
+                  {compareToPreviousPrice.code === "5" ? "" : "+"}
                   {fluctuationsRatio}%
                 </div>
               </div>

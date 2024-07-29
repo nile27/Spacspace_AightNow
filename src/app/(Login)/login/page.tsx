@@ -60,6 +60,7 @@ export default function Login() {
       const userdata = await googleLogin();
       const persistence = autoLogin ? browserLocalPersistence : browserSessionPersistence;
       await setPersistence(auth, persistence);
+
       if (userdata?.isSign === false) {
         const { data } = userdata;
         console.log(userdata);

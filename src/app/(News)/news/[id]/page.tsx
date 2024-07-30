@@ -12,20 +12,20 @@ export default async function NewsDetail({ params }: TPageProps) {
   const { id } = params;
 
   const [articleData, viewCount] = await Promise.all([getNewsArticle(id), updateViews(id)]);
-  // const article = articleData as TNewsList;
+  const article = articleData as TNewsList;
   // const summary = await summaryAI({ newsContent: article.content });
 
-  // const stockNewsData = article.relatedItems ? await getStockNewsList(article.relatedItems) : [];
-  // const stockDataList = new Map();
+  const stockNewsData = article.relatedItems ? await getStockNewsList(article.relatedItems) : [];
+  const stockDataList = new Map();
 
-  // if (article.relatedItems) {
-  //   await Promise.all(
-  //     article.relatedItems.map(async item => {
-  //       const stockData = await stockAction2(item);
-  //       stockDataList.set(item, stockData);
-  //     }),
-  //   );
-  // }
+  if (article.relatedItems) {
+    await Promise.all(
+      article.relatedItems.map(async item => {
+        const stockData = await stockAction2(item);
+        stockDataList.set(item, stockData);
+      }),
+    );
+  }
 
   return (
     <Article
@@ -33,8 +33,8 @@ export default async function NewsDetail({ params }: TPageProps) {
       articleData={articleData}
       view={viewCount}
       // summary={summary.toString() || JSON.stringify(summary)}
-      // stockNews={stockNewsData as (TNewsList & { id: string })[]}
-      // stockDataList={stockDataList}
+      stockNews={stockNewsData as (TNewsList & { id: string })[]}
+      stockDataList={stockDataList}
     />
   );
 }

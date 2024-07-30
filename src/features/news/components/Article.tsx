@@ -20,8 +20,8 @@ type TPageProps = {
   articleData: any;
   view: number;
   //   summary: string;
-  //   stockNews: TNewsList[];
-  //   stockDataList: Map<string, TStockInfo>;
+  stockNews: TNewsList[];
+  stockDataList: Map<string, TStockInfo>;
 };
 
 const Stock_Name_En_To_Ko: { [key: string]: string } = {
@@ -52,36 +52,36 @@ function formatDateTime(dateTimeStr: string) {
 }
 
 export default function Article(props: TPageProps) {
-  const { id, articleData, view } = props;
+  const { id, articleData, view, stockNews, stockDataList } = props;
   const [article, setArticle] = useState(articleData);
   const [isTranslated, setIsTranslated] = useState(false);
   const [transLoading, setTransLoading] = useState(false);
   const { user } = useAuthStore();
   const [summary, setSummary] = useState<string>("");
 
-  const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[]>([]);
-  const [stockDataList, setStockDataList] = useState<Map<string, TStockInfo>>(new Map());
+  //   const [stockNews, setStockNews] = useState<(TNewsList & { id: string })[]>([]);
+  //   const [stockDataList, setStockDataList] = useState<Map<string, TStockInfo>>(new Map());
 
   const userLanguage: string = user?.language ?? "KO";
 
-  useEffect(() => {
-    const fetchRelatedData = async () => {
-      if (article.relatedItems) {
-        for (const item of article.relatedItems) {
-          const [stockNewsData, stockData] = await Promise.all([
-            getStockNewsList(article.relatedItems),
-            stockAction2(item),
-          ]);
-          setStockNews(stockNewsData as (TNewsList & { id: string })[]);
-          if (stockData) {
-            setStockDataList(prev => new Map(prev).set(item, stockData));
-          }
-        }
-      }
-    };
+  //   useEffect(() => {
+  //     const fetchRelatedData = async () => {
+  //       if (article.relatedItems) {
+  //         for (const item of article.relatedItems) {
+  //           const [stockNewsData, stockData] = await Promise.all([
+  //             getStockNewsList(article.relatedItems),
+  //             stockAction2(item),
+  //           ]);
+  //           setStockNews(stockNewsData as (TNewsList & { id: string })[]);
+  //           if (stockData) {
+  //             setStockDataList(prev => new Map(prev).set(item, stockData));
+  //           }
+  //         }
+  //       }
+  //     };
 
-    fetchRelatedData();
-  }, [article.relatedItems]);
+  //     fetchRelatedData();
+  //   }, [article.relatedItems]);
 
   // 번역 요청
   async function handleTranslate(content: string, targetLang: string) {

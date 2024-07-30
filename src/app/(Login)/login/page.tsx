@@ -63,7 +63,7 @@ export default function Login() {
 
       if (userdata?.isSign === false) {
         const { data } = userdata;
-        console.log(userdata);
+
         for (let key in data) {
           if (data.hasOwnProperty(key)) {
             setInput(key, data[key] as string);
@@ -84,7 +84,7 @@ export default function Login() {
         navi.push("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -113,7 +113,7 @@ export default function Login() {
         language: session?.user.language ?? "",
         logintype: session?.user.logintype ?? "",
       };
-      console.log(status);
+
       const imgFile = session?.user.profile_image ?? "";
       nextAuthLogin();
       useAuthStore.getState().setProfile(imgFile);

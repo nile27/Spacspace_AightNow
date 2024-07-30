@@ -40,7 +40,6 @@ export const deleteUserOauth = async (email: string) => {
 
   const data = await response.json();
   if (data.success) {
-    console.log("User deleted successfully");
     return { success: true };
   } else {
     console.error("Failed to delete user:", data.error);

@@ -27,7 +27,7 @@ export default function ProfileModal({
 
     try {
       await reauthenticateWithCredential(user, credential);
-      console.log("성공");
+
       setIdx(2);
       return true; // 비밀번호 확인 성공
     } catch (error) {

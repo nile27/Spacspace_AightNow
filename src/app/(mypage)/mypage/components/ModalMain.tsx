@@ -79,7 +79,6 @@ export default function ModalMain({
 
       alert("프로필이 성공적으로 업데이트되었습니다.");
       setIsModal(false);
-      // 필요에 따라 추가 작업 수행
     } catch (error) {
       console.error("프로필 업데이트 중 오류가 발생했습니다:", error);
       alert("프로필 업데이트 중 오류가 발생했습니다. 다시 시도해 주세요.");

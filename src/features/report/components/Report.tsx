@@ -1,7 +1,6 @@
 import Icon from "@/components/Stock/Icon";
 import Summary from "./Summary";
 import Chart from "./Chart";
-import Analysis from "./Analysis";
 import FavoriteNews from "./FavoriteNews";
 import RadarChart from "@/features/Watchlist/components/RadarChart";
 import { exchangeRate, stockAction, stockAction2 } from "@/lib/stockAction";

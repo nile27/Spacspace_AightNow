@@ -28,9 +28,7 @@ export default function WatchInput({ onSearch }: WatchInputProps) {
     setIsShow(search !== "" && filteredStocks.length > 0);
   }, [search, filteredStocks]);
 
-  useEffect(() => {
-    console.log("RecentSearches", recentSearches);
-  }, [recentSearches]);
+  useEffect(() => {}, [recentSearches]);
 
   useEffect(() => {
     if (search === "") {

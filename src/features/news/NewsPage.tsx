@@ -58,8 +58,6 @@ export default function NewsPage() {
     }
   }, [inView, hasMore]);
 
-  // const randomStockNews = getRandomImageNews(stockNewsList, 3);
-
   return (
     <>
       <div className="w-[1200px] h-full font-pretendard mt-60">

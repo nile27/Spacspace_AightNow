@@ -55,7 +55,6 @@ function formatDateTime(dateTimeStr: string) {
 export default function NewsDetail({ params }: TPageProps) {
   const { id } = params;
   const [loading, setLoading] = useState(false);
-  // const [stockDataList, setStockDataList] = useState<TStockInfo[]>([]);
   const [isTranslated, setIsTranslated] = useState(false);
   const [transLoading, setTransLoading] = useState(false);
   const { user } = useAuthStore();
@@ -97,10 +96,6 @@ export default function NewsDetail({ params }: TPageProps) {
             stockAction2(item),
           ]);
           setStockNews(stockNewsData as (TNewsList & { id: string })[]);
-          // setStockData(stockData);
-          // const orderedStockData = article.relatedItems
-          //   .map((item: string) => stockData.find(stock => stock.logo === item))
-          //   .filter(Boolean); // undefined 요소 제거
           if (stockData) {
             setStockDataList(prev => new Map(prev).set(item, stockData));
           }

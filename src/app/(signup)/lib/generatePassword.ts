@@ -14,7 +14,6 @@ export function generatePassword(): string {
     let hasDigit = false;
     let hasSpecialChar = false;
 
-    // 길이 8에서 20 사이로 설정
     const passwordLength = Math.floor(Math.random() * 13) + 8;
 
     for (let i = 0; i < passwordLength; i++) {

@@ -33,7 +33,6 @@ export const updateUserProfile = async ({
     // 문서가 존재하지 않는 경우 새 문서를 생성
     userDocRef = doc(usersCollectionRef);
   }
-  console.log(userDocRef.id);
 
   const updates: any = {};
   if (nickname) updates.nickname = nickname;

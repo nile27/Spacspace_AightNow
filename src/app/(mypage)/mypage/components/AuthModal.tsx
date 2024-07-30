@@ -85,7 +85,7 @@ export default function AuthModal({
       errHandler(1);
       return;
     }
-    console.log(currentPw);
+
     if (currentPw && inputText.pw !== inputText.pwCheck) {
       errHandler(2);
       return;

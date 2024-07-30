@@ -16,7 +16,7 @@ export default function Auth() {
 
       setIsModal(!isModal);
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
     }
   };
 

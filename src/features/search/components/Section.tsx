@@ -27,8 +27,6 @@ export default function Section(props: TSectionProps) {
     }
   };
 
-  console.log(items);
-
   return (
     <div className="w-full flex-col justify-start items-center gap-2 flex">
       <div className="items-center gap-2 inline-flex w-full">

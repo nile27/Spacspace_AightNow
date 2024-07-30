@@ -29,10 +29,10 @@ export default function ProfileModal({
       await reauthenticateWithCredential(user, credential);
 
       setIdx(2);
-      return true; // 비밀번호 확인 성공
+      return true;
     } catch (error) {
       setErr("비밀번호가 잘못되었습니다.");
-      return false; // 비밀번호 확인 실패
+      return false;
     }
   };
 

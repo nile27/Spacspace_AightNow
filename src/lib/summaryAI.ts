@@ -18,6 +18,6 @@ export async function summaryAI({ newsContent }: { newsContent: any }) {
 
   const chain = prompt.pipe(llm);
   const result = await chain.invoke({ maxIterations: 1 });
-  console.log(result);
+
   return result.content;
 }

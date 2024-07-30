@@ -86,9 +86,7 @@ export async function POST(req: NextRequest) {
     historyMessagesKey: "chat_history",
   });
 
-  console.log("Invoking LLM with input:", input);
   const response = await withMessageHistory.invoke({ input }, { configurable: { sessionId } });
-  console.log("LLM response:", response.content);
 
   if (typeof response.content !== "string") {
     throw new Error("Unexpected response format from LLM");

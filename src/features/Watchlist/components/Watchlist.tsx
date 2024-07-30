@@ -41,9 +41,7 @@ export default function WatchList() {
         const userDocs = querySnapshot.docs[0];
         const userData = userDocs.data();
 
-        // console.log("Fetched user data:", userData); // 디버깅용 로그
         setWatchList(userData.stock || []); // 'stock' 필드에서 데이터를 가져옵니다
-        // console.log("watchList", watchList);
       } else {
         console.log("사용자를 찾을 수 없습니다");
         setWatchList([]);
@@ -60,7 +58,6 @@ export default function WatchList() {
   //id로 사용
   const handleAddStock = useCallback(
     (stock: string) => {
-      console.log("handleAddStock called in WatchList with:", stock);
       setWatchList(prevList => [...prevList, stock]);
     },
     [setWatchList],

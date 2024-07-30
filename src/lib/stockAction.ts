@@ -19,7 +19,6 @@ export const stockAction = async (stock: string) => {
 };
 // 기업 주식 가격 정보
 export const stockAction2 = async (stock: string) => {
-  console.log(stock, STOCK_NAME[stock]);
   const res = await fetch(`https://api.stock.naver.com/stock/${STOCK_NAME[stock]}/basic`);
   const data = await res.json();
 

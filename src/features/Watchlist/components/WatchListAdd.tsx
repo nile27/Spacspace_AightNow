@@ -60,10 +60,7 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
     setSearchResults(updatedResults);
   };
 
-  console.log(searchResults);
-
   const handleSelectStock = async (stock: TStockSearch) => {
-    console.log("handleSelectStock called with:", stock);
     await handleItemClick(stock);
     const userId = user?.userId || user?.id;
     if (!userId) return;
@@ -88,8 +85,6 @@ export default function WatchListAdd({ onAddStock }: TWatchListAddProps) {
       await updateDoc(userDoc.ref, {
         stock: arrayUnion(stock.name), // 또는 필요한 stock 정보
       });
-
-      console.log("Stock added successfully");
 
       if (onAddStock) {
         onAddStock(stock.name);

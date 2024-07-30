@@ -71,7 +71,7 @@ export async function agentChat(id: string) {
     .replace(/^Here is a 4-line analyst report in Korean:\s*/, "")
     .replace(/^.*본문:\s*/, "")
     .trim();
-  console.log(cleanOutput);
+
   return cleanOutput;
 }
 
@@ -165,6 +165,6 @@ export async function agentEvaluation(id: string) {
   };
 
   const parsedResult = parseResult(cleanOutput);
-  console.log(parsedResult);
+
   return parsedResult;
 }

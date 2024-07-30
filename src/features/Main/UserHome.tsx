@@ -41,7 +41,6 @@ export default function UserHome() {
   const { user } = useAuthStore();
   const [userStock, setUserStock] = useState<string[]>([]);
   const [stockData, setStockData] = useState<TFindHistory[]>([]); // 최근 조회 주식 정보
-  // const [stockPriceInfoMap, setStockPriceInfoMap] = useState<Map<string, StockData>>(new Map()); // 리포트에서 사용할 주식 가격 정보
   const [stockPriceInfoMap, setStockPriceInfoMap] = useState<Map<string, TStockInfo>>(new Map());
   const [stockDataInfo, setStockDataInfo] = useState<Map<string, TStockInfo>>(new Map());
 
@@ -74,10 +73,8 @@ export default function UserHome() {
     const fetchData = async () => {
       try {
         const stockHistoryData = await getSearchStockHistory(userDataId as string);
-        // console.log("stockHistoryData", stockHistoryData);
         setStockData(stockHistoryData as TFindHistory[]);
         if (stockHistoryData && stockHistoryData.length > 0) {
-          // setStockHistory(stockHistoryData as TFindHistory[]);
           const stockInfoPromises = stockHistoryData.map(async stock => {
             const stockInfoData = await stockAction2(stock.slug);
             setStockDataInfo(prev => new Map(prev).set(stock.term, stockInfoData));
@@ -85,7 +82,6 @@ export default function UserHome() {
           });
 
           const stockInfoData = await Promise.all(stockInfoPromises);
-          // setStockData(stockInfoData as TStockInfo[]);
         }
       } catch (error) {
         console.log(error);

@@ -104,18 +104,8 @@ const fetchLocalNews = async (stockName: string, symbol: string, page: Page) => 
         translations: { "en-US": "", ZH: "", JA: "", FR: "" },
       };
 
-      // for (const lang of languages) {
-      //   try {
-      //     const translatedContent = await handleTranslate(content.content, lang);
-      //     content.translations[lang] = translatedContent;
-      //   } catch (error) {
-      //     console.error(`Failed to translate content to ${lang}`, error);
-      //   }
-      // }
-
       articles.push(content);
     }
-    // console.log(articles);
 
     return articles;
   } catch (error) {

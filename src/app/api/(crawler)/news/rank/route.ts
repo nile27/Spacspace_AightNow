@@ -2,10 +2,6 @@ import { NextResponse } from "next/server";
 import puppeteer, { Page } from "puppeteer";
 import { addNewsToFirestore, handleTranslate } from "../firebase/fireStore";
 
-const relatedItem = ["애플", "테슬라", "마이크로소프트", "아마존", "구글", "유니티"];
-const stockNames = ["apple", "tesla", "microsoft", "amazon", "google", "unity"];
-const languages = ["en-US", "ZH", "JA", "FR"];
-
 export const dynamic = "force-dynamic";
 
 const fetchRankNews = async (page: Page) => {
@@ -30,7 +26,6 @@ const fetchRankNews = async (page: Page) => {
           ohnm: item.officeName,
           dt: item.datetime,
           thumbUrl: item.imageOriginLink,
-          // isVideo: item.isVideo,
           hasImage: item.hasImage,
         };
       });
@@ -44,7 +39,6 @@ const fetchRankNews = async (page: Page) => {
       const article = await page.$eval("#newsct", element => {
         const selectElement = (selector: string) => element.querySelector(selector) as HTMLElement;
         const titleElement = selectElement(".media_end_head_title");
-        const providerElement = selectElement(".media_end_head_top_logo_img").getAttribute("alt");
         const timeElement = selectElement(".media_end_head_info_datestamp_time._ARTICLE_DATE_TIME");
         const contentElement = selectElement("#dic_area");
         const imageElement = element.querySelector("#img1") as HTMLImageElement;
@@ -99,7 +93,6 @@ const fetchRankNews = async (page: Page) => {
 
       articles.push(content);
     }
-    console.log(articles);
 
     return articles;
   } catch (error) {

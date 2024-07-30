@@ -27,10 +27,8 @@ export const updateUserProfile = async ({
   let userDocRef;
 
   if (!querySnapshot.empty) {
-    // 문서가 존재하는 경우
     userDocRef = querySnapshot.docs[0].ref;
   } else {
-    // 문서가 존재하지 않는 경우 새 문서를 생성
     userDocRef = doc(usersCollectionRef);
   }
 
@@ -43,7 +41,7 @@ export const updateUserProfile = async ({
 
     await uploadBytes(imageRef, imageFile);
     const imageUrl = await getDownloadURL(imageRef);
-    // updates.profile_image = imageUrl;
+
     await updateProfile(user, { photoURL: imageUrl });
   }
   await setDoc(

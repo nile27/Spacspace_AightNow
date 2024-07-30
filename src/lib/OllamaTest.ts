@@ -33,7 +33,6 @@ export async function agentChatApi(id: string) {
   const accessToken = await token();
   const prompt = `${retriever}를 참고해서 ${id} 주식에 대해 ${stockAnalysisTool} 도구를 사용하여 상세 데이터를 가져온 후 분석해서 4줄짜리 애널리스트 보고서를 절대로 한글로 작성해줘. 절대로 제목이나 부가 설명 없이 바로 본문 내용만 한글로 작성해. 밑에 Note: 이런거 표시하지마세요 영어 절대로 표시하지마세요\n`;
   const result = await generate(accessToken, prompt);
-  console.log(result.text);
 
   return result.text.split("\n").slice(2, 6).join("\n");
 }
@@ -77,7 +76,6 @@ export async function agentEvaluationApi(id: string) {
   한글로 작성해주세요. 제목이나 부가 설명 없이 바로 본문 내용만 작성해주세요. 영어는 절대로 사용하지 마세요 그리고 url 표시하지마.
   \n`;
   const result = await generate(accessToken, prompt);
-  console.log(result.text);
 
   return parseEvaluationResult(result.text);
 }

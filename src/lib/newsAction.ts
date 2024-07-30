@@ -17,7 +17,6 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { revalidatePath } from "next/cache";
 
 // 주식별 정보 가져오기
 // AAPL.O 로 받음
@@ -29,30 +28,12 @@ export const getStockInfo = async (stock: string) => {
     }
     const data = await response.json();
 
-    // revalidatePath("/");
     return data;
   } catch (error) {
     console.error("Error fetching stock info:", error);
     return null;
   }
 };
-
-// // 전체 주식 리스트
-// export const allStockAction = async () => {
-//   try {
-//     const response = await fetch(`${process.env.NEXTAUTH_URL}api/news/stock`);
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch stock data");
-//     }
-
-//     const data: TStockData[] = await response.json();
-
-//     revalidatePath("/");
-//     return data;
-//   } catch (error) {
-//     console.error("Failed to fetch stock data:", error);
-//   }
-// };
 
 export const allStockAction = async (): Promise<TStockData[]> => {
   const allStocks: TStockData[] = [];
@@ -173,7 +154,6 @@ export const getRankNewsList = async () => {
       ...doc.data(),
     }));
 
-    // revalidatePath("/news");
     return newsList;
   } catch (error) {
     console.error("Failed to fetch rank news list:", error);
@@ -190,7 +170,7 @@ export const getNewsArticle = async (id: string) => {
     if (!querySnapshot.empty) {
       const docData = querySnapshot.docs[0].data();
       const data = { id: querySnapshot.docs[0].id, ...docData };
-      // revalidatePath("/news");
+
       return data;
     } else {
       console.error("No such document");

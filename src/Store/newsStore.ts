@@ -16,13 +16,11 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { StringFormat } from "firebase/storage";
 import { create } from "zustand";
 
 type TStockStore = {
   stockData: TStockData[];
   fetchStockData: () => Promise<void>;
-  // fetchStockData: (filterCondition?: (stock: TStockData) => boolean) => void;
 };
 
 export const useStockStore = create<TStockStore>(set => ({

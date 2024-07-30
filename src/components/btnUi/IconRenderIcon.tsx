@@ -1,4 +1,3 @@
-// renderIcon.tsx
 import {
   AI,
   Calender,

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import NewInput from "@/components/Input/NewInput";
 import TextButton from "@/components/btnUi/TextButton";
 import BasicIcon from "@/components/Icon/BasicIcons";
@@ -41,10 +41,6 @@ export default function Profile() {
       // 에러 처리 로직 추가
     }
   };
-
-  useEffect(() => {
-    console.log(labelImg);
-  });
 
   return (
     <>

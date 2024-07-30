@@ -23,7 +23,7 @@ export const googleLogin = async (): Promise<LoginResponse | undefined> => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    console.log("Logged in user:", user);
+
     if (user) {
       const userRef = doc(firestore, "users", user.uid);
       const userSnap = await getDoc(userRef);
@@ -34,10 +34,8 @@ export const googleLogin = async (): Promise<LoginResponse | undefined> => {
       };
       const userProfile = userSnap.data();
 
-      console.log(userSnap.data());
       if (!userSnap.exists()) {
         const imgFile = user.photoURL;
-        console.log(imgFile);
 
         return { isSign: false, data: userData, img: user.photoURL || "", imgFile: imgFile };
       } else {

@@ -117,8 +117,6 @@ export default function SignUp() {
       setInput("pw", newRandomPw);
       setInput("pwCheck", newRandomPw);
     }
-    console.log("inputText:", inputText);
-    console.log("session:", session);
   }, []);
 
   if (!isClient) {

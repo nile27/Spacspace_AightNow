@@ -20,7 +20,7 @@ export const handleNickNameCheck = async (
     const usersRef = collection(firestore, "users");
     const q = query(usersRef, where("nickname", "==", nickname));
     const querySnapshot = await getDocs(q);
-    console.log(querySnapshot.empty);
+
     if (!querySnapshot.empty) {
       setNickNameErr(false);
       setNickNameCheck(true);
@@ -66,7 +66,7 @@ export const handleSignUp = async (
     if (logintype === "none") {
       const authResult = await createUserWithEmailAndPassword(auth, email, pw);
       const user = authResult.user;
-      console.log("일반");
+
       let photoURL = "";
       if (imgFile) {
         const storageRef = ref(storage, `profile_images/${user.uid}/${imgFile.name}`);

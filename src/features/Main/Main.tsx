@@ -8,7 +8,6 @@ import useStore from "@/features/Main/components/useStore";
 import ChatBotPage from "../chatbot/ChatBotPage";
 
 export default function Main() {
-  // const isLoggedIn = useLoginStore(state => state.isLoggedIn);
   const isLoggedIn = useStore(useLoginStore, state => state.isLoggedIn);
 
   return (

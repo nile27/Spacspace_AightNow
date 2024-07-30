@@ -117,7 +117,6 @@ export const authConfig: NextAuthOptions = {
     },
     async jwt({ token, user }: { token: JWT; user: User }) {
       if (user) {
-        console.log("jwttuser", user);
         token.id = "";
         token.name = user.name;
         token.email = user.email;
@@ -138,7 +137,7 @@ export const authConfig: NextAuthOptions = {
             const userDoc = await getDoc(userRef);
             const userData = userDoc.data();
             const customToken = await adminAuth.createCustomToken(userDoc.id);
-            console.log(userDoc.id);
+
             if (userData) {
               token.id = userData.userId;
               token.name = userData.name;
@@ -157,7 +156,6 @@ export const authConfig: NextAuthOptions = {
             }
           }
         } catch (error: any) {
-          console.log("jwt", error);
           token.isNewUser = true;
         }
       }

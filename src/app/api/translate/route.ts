@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const { html, targetLang } = await req.json();
-    console.log(html);
+
     if (!html || !targetLang) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }

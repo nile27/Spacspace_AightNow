@@ -36,7 +36,6 @@ const getUserEmailByUserId = async (userId: string) => {
 
       return userDoc.data().email;
     } else {
-      console.log("사용자 문서가 존재하지 않습니다.");
       return null;
     }
   } catch (error) {

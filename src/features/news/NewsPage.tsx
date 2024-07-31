@@ -54,7 +54,6 @@ export default function NewsPage() {
       setTimeout(() => {
         setLoading(false);
       }, 300);
-      //   alert("View End");
     }
   }, [inView, hasMore]);
 

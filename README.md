@@ -73,7 +73,7 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/23811463-5724-42d0-8efb-caa98885f67b"  alt="main page" width = 100%  >
+      <img src="https://github.com/user-attachments/assets/bf3334a6-19a6-4918-b35e-94f34f25914a"  alt="main page" width = 100%  >
     </td>
    </tr> 
    <tr>
@@ -83,7 +83,7 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/6a8d6a0b-d831-4f9d-9cbf-e42bd622eaf1" alt="chatbot" width = 100%  >
+      <img src="https://github.com/user-attachments/assets/cae3cf9d-b764-45ad-9ece-71f01672148c" alt="chatbot" width = 100%  >
     </td>
    </tr> 
   <tr>
@@ -93,7 +93,7 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/d499244b-7154-4bf5-93ff-84756df7d657"  alt="mypage" width = 100% >
+      <img src="https://github.com/user-attachments/assets/d5556c28-d93b-4958-bdc2-d6e1663cd6d0"  alt="mypage" width = 100% >
     </td>
    </tr> 
    <tr>
@@ -103,7 +103,7 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/082d4353-1fe6-4dbf-8ffc-894f3071ff0c"  alt="search page"  width = 100% >
+      <img src="https://github.com/user-attachments/assets/9d7c3830-351e-4da8-ab07-0b5fdadd2d02"  alt="search page"  width = 100% >
     </td>
    </tr> 
   <tr>
@@ -113,8 +113,8 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/3e794fc4-e075-4fb7-988b-4a6d1175719e"  alt="news page" width = 100% >
-      <img src="https://github.com/user-attachments/assets/a532c653-cb34-47d8-b889-ce0730e32296"  alt="news page" width = 100% >
+      <img src="https://github.com/user-attachments/assets/00a527c8-9618-43e6-a189-4e37983058f0"  alt="news page" width = 100% >
+      <img src="https://github.com/user-attachments/assets/997243dc-0e6f-48f0-829a-81c75b194f32"  alt="news page" width = 100% >
     </td>
    </tr> 
    <tr>
@@ -124,7 +124,7 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/37b93949-e6ef-45f7-9b98-f52f3877f219"  alt="main page" width = 100% >
+      <img src="https://github.com/user-attachments/assets/d92951f8-22af-4d16-b98d-abd88c9ea981"  alt="main page" width = 100% >
     </td>
    </tr> 
    <tr>
@@ -134,7 +134,7 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/709048bd-2b72-48d1-ad96-cb41acdaa1d4"  alt="main page" width = 100% >
+      <img src="https://github.com/user-attachments/assets/4d4cff15-fe7d-4688-880f-7abc1d85cc45"  alt="report page" width = 100% >
     </td>
    </tr> 
 </table>		

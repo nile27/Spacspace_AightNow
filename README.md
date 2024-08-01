@@ -65,6 +65,80 @@
 </div>
 
 # 페이지 소개
+<table >	
+ <tr >
+    <th >
+      메인 페이지
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/23811463-5724-42d0-8efb-caa98885f67b"  alt="main page" width = 100%  >
+    </td>
+   </tr> 
+   <tr>
+    <th>
+      챗봇
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/6a8d6a0b-d831-4f9d-9cbf-e42bd622eaf1" alt="chatbot" width = 100%  >
+    </td>
+   </tr> 
+  <tr>
+    <th>
+      마이페이지
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/d499244b-7154-4bf5-93ff-84756df7d657"  alt="mypage" width = 100% >
+    </td>
+   </tr> 
+   <tr>
+    <th>
+      발견페이지
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/082d4353-1fe6-4dbf-8ffc-894f3071ff0c"  alt="search page"  width = 100% >
+    </td>
+   </tr> 
+  <tr>
+    <th>
+      뉴스페이지
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/3e794fc4-e075-4fb7-988b-4a6d1175719e"  alt="news page" width = 100% >
+      <img src="https://github.com/user-attachments/assets/a532c653-cb34-47d8-b889-ce0730e32296"  alt="news page" width = 100% >
+    </td>
+   </tr> 
+   <tr>
+    <th>
+      관심종목페이지
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/37b93949-e6ef-45f7-9b98-f52f3877f219"  alt="main page" width = 100% >
+    </td>
+   </tr> 
+   <tr>
+    <th>
+      리포트
+    </th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/709048bd-2b72-48d1-ad96-cb41acdaa1d4"  alt="main page" width = 100% >
+    </td>
+   </tr> 
+</table>		
+<br/>
 
 # 📚프로젝트 스택
 

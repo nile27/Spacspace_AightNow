@@ -1,3 +1,43 @@
+
+![header](https://capsule-render.vercel.app/api?type=waving&color=364F84&fontColor=ffffff&height=200&section=header&text=AightNow&fontSize=70&animation=fadeIn&fontAlignY=40&desc=&descSize=30&width=100)
+
+# 🐱 AightNow
+
+### 한줄 소개
+
+<br>
+
+대충 소개
+
+<br>
+
+- 프로젝트 기간: 2024.06.17 ~ 2023.08.02 (6주)
+- 프로젝트 인원: 3명
+
+# 팀 소개
+<table>
+    <tbody style="backgorund-color:#fff">
+        <tr>
+            <td width=33%><img src="https://media.discordapp.net/attachments/1101384266052550666/1110887306786770994/anicon_1.png" width="100%" alt="" /><br>
+                <h2>
+                    <b>임민규 <a href="https://github.com/nile27"><img src="https://img.shields.io/badge/github-181717??style=social&logo=github&logoColor=white" /></a></b>
+                </h2>
+            </td>
+            <td width=33%> <img src="https://media.discordapp.net/attachments/1101384266052550666/1110887135881470002/anicon_2.png" width="100%" alt="" /><br>
+                <h2>
+                    <b>진종환 <a href="https://github.com/MSbtff"><img src="https://img.shields.io/badge/github-181717??style=social&logo=github&logoColor=white" /></a></b>
+                </h2>
+            </td>
+            <td width=33%> <img src="https://media.discordapp.net/attachments/1101384266052550666/1110887443705634868/png.png" width="100%" alt="" /><br>
+                <h2>
+                    <b>전유림 <a href="https://github.com/Jyurim"><img src="https://img.shields.io/badge/github-181717??style=social&logo=github&logoColor=white" /></a></b>
+                </h2>
+            </td>
+    
+</table>
+
+
+
 # 컨벤션
 
 ## 🐱 Code Conventions

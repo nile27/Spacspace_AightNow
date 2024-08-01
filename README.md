@@ -1,5 +1,5 @@
 
-![header](https://capsule-render.vercel.app/api?type=waving&color=364F84&fontColor=ffffff&height=200&section=header&text=AightNow&fontSize=70&animation=fadeIn&fontAlignY=40&desc=&descSize=30&width=100)
+![header](https://capsule-render.vercel.app/api?type=waving&color=364F84&fontColor=ffffff&height=200&section=header&text=AightNow&fontSize=70&animation=fadeIn&fontAlignY=40&desc=&descSize=30)
 
 # 🐱 AightNow
 
@@ -18,21 +18,39 @@
 <table>
     <tbody style="backgorund-color:#fff">
         <tr>
-            <td width=33%><img src="https://private-user-images.githubusercontent.com/114140840/354054169-536cb8f5-888c-4225-a25e-1fa57e83e278.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjI0NzkzNjMsIm5iZiI6MTcyMjQ3OTA2MywicGF0aCI6Ii8xMTQxNDA4NDAvMzU0MDU0MTY5LTUzNmNiOGY1LTg4OGMtNDIyNS1hMjVlLTFmYTU3ZTgzZTI3OC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwODAxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDgwMVQwMjI0MjNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zMTFmY2ZmZWNhYWQyNmFjOWVjYWIwYWUyNThmMDk3YzI2MmZlMTZlNjkwYzQ2ZWRhYzNlOTFiOTQwZTFhYzA4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.ZdIS1e088NerZLlAxtFWEDlY8GbgE84AXPnWtSID3Gc" width="100%" alt="" /><br>
+            <td width=33%><img height=300px src="https://private-user-images.githubusercontent.com/114140840/354054169-536cb8f5-888c-4225-a25e-1fa57e83e278.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjI0NzkzNjMsIm5iZiI6MTcyMjQ3OTA2MywicGF0aCI6Ii8xMTQxNDA4NDAvMzU0MDU0MTY5LTUzNmNiOGY1LTg4OGMtNDIyNS1hMjVlLTFmYTU3ZTgzZTI3OC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwODAxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDgwMVQwMjI0MjNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zMTFmY2ZmZWNhYWQyNmFjOWVjYWIwYWUyNThmMDk3YzI2MmZlMTZlNjkwYzQ2ZWRhYzNlOTFiOTQwZTFhYzA4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.ZdIS1e088NerZLlAxtFWEDlY8GbgE84AXPnWtSID3Gc" width="100%" alt="" /><br>
                 <h2>
                     <b>임민규 <a href="https://github.com/nile27"><img src="https://img.shields.io/badge/github-181717??style=social&logo=github&logoColor=white" /></a></b>
                 </h2>
             </td>
-            <td width=33%> <img src="https://media.discordapp.net/attachments/1101384266052550666/1110887135881470002/anicon_2.png" width="100%" alt="" /><br>
+            <td width=33%> <img height=300px src="https://private-user-images.githubusercontent.com/114140840/354053208-5533e2c5-6333-47b8-b5c0-a4e9f83ef60b.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjI0Nzk0NDIsIm5iZiI6MTcyMjQ3OTE0MiwicGF0aCI6Ii8xMTQxNDA4NDAvMzU0MDUzMjA4LTU1MzNlMmM1LTYzMzMtNDdiOC1iNWMwLWE0ZTlmODNlZjYwYi5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwODAxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDgwMVQwMjI1NDJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wNDVhODA2MjQxNDNjNDQwZTNkZDNhNDZlZjA2ZjdkMTU5NWJiNDI3MTI0OGUwNWFmNzBkNDIzMDI1MTY4ZTQ5JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.vVoqZTzHOKr5oJc0JTd_baQzMnVxiguWuq2kgreYTuI" width="100%" alt="" /><br>
                 <h2>
                     <b>진종환 <a href="https://github.com/MSbtff"><img src="https://img.shields.io/badge/github-181717??style=social&logo=github&logoColor=white" /></a></b>
                 </h2>
             </td>
-            <td width=33%> <img src="https://media.discordapp.net/attachments/1101384266052550666/1110887443705634868/png.png" width="100%" alt="" /><br>
+            <td width=33% > <img height=300px src="https://private-user-images.githubusercontent.com/114140840/354053283-fc536ae8-4d05-4a7c-beda-f594801ece6c.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjI0Nzk0MzYsIm5iZiI6MTcyMjQ3OTEzNiwicGF0aCI6Ii8xMTQxNDA4NDAvMzU0MDUzMjgzLWZjNTM2YWU4LTRkMDUtNGE3Yy1iZWRhLWY1OTQ4MDFlY2U2Yy5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQwODAxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MDgwMVQwMjI1MzZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lNmRkMjIyYWJlMzljNWFjNWU3YjViYjVhOTk3NzNkNWFiMjNkNjk0NDk2MzUxNWRmOWViMzVlOWQ0Y2I0MTc4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.0Omicf4ZA3cGryoDAxX-EHrn8_M5xzL4jJupZUjiizk" width="100%" alt="" /><br>
                 <h2>
                     <b>전유림 <a href="https://github.com/Jyurim"><img src="https://img.shields.io/badge/github-181717??style=social&logo=github&logoColor=white" /></a></b>
                 </h2>
             </td>
+        <tr>
+            <td>
+                <li>팀장</li>
+                <li>로그인/회원가입</li>
+                <li>번역</li>
+            </td>
+            <td>
+                <li>리포트</li>
+                <li>챗봇 </li>
+                <li>관심 종목</li>
+            </td>
+            <td>
+                <li>팀 대표자</li>
+                <li>뉴스 기사 크롤링</li>
+                <li>Main Page</li>
+            </td>
+        </tr>
+            
     
 </table>
 

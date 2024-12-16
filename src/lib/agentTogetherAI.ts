@@ -20,7 +20,7 @@ export async function agentChatTogether(id: string) {
 
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
-    model: "meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
+    model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     temperature: 0.2,
     topP: 0.7,
     apiKey: process.env.TOGETHER_API_KEY,
@@ -71,7 +71,7 @@ export async function agentEvaluationTogether(id: string) {
 
   // 1. 모델 초기화
   const llm = new ChatTogetherAI({
-    model: "meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
+    model: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     temperature: 0.2,
     topP: 0.7,
     apiKey: process.env.TOGETHER_API_KEY,

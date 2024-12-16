@@ -2,7 +2,7 @@
 
 import TextButton from "@/components/btnUi/TextButton";
 import IconButton from "@/components/btnUi/IconButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Input from "@/components/Input/Input";
 import ChatMessage from "./ChatMessage";
 
@@ -14,13 +14,9 @@ export type Message = {
 export default function ChatBot({ onClose }: { onClose: () => void }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
-  const [sessionId, setSessionId] = useState("");
+  const [sessionId] = useState(() => Math.random().toString(36).substring(7));
 
-  useEffect(() => {
-    setSessionId(Math.random().toString(36).substring(7));
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const userMessage: Message = { role: "user", content: input };
@@ -43,7 +39,7 @@ export default function ChatBot({ onClose }: { onClose: () => void }) {
       const errorMessage: Message = { role: "bot", content: "오류가 발생했습니다." };
       setMessages(prev => [...prev, errorMessage]);
     }
-  };
+  }, [input, sessionId]);
 
   return (
     <>

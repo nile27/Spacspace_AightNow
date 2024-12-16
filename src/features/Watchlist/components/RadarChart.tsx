@@ -13,7 +13,9 @@ type RadarProps = {
   width?: number;
 };
 
-function transformAgentData(agentData: Record<string, string | number | undefined>) {
+function transformAgentData(agentData: Record<string, string | number | undefined> | null) {
+  if (!agentData) return [];
+
   const categories = ["전반적 평가", "수익성", "관심도", "성장성", "주가"];
   const scores: Record<string, number> = {};
 
@@ -37,31 +39,41 @@ function calculateTotalScore(data: { name: string; value: number }[]): number {
 }
 
 export default function RadarChart({ stockName, width = 350 }: RadarProps) {
-  const [chartData, setChartData] = useState<any>(null);
+  const [data, setData] = useState<{ name: string; value: number }[]>([]);
   const [totalScore, setTotalScore] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const agentData = await agentEvaluationTogether(stockName);
         const transformedData = transformAgentData(agentData);
-        setChartData(transformedData);
+        setData(transformedData);
         setTotalScore(calculateTotalScore(transformedData));
-      } catch (error) {
-        console.error("Error fetching agent data:", error);
+      } catch (err) {
+        console.error("Error fetching agent data:", err);
+        setError("데이터를 불러오는데 실패했습니다");
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+
     fetchData();
   }, [stockName]);
 
-  if (!chartData) return <SkeletonCard />;
+  if (loading) return <SkeletonCard />;
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (data.length === 0) return <div>데이터가 없습니다</div>;
 
   const options: ApexOptions = {
     chart: {
       type: "radar" as const,
     },
     xaxis: {
-      categories: chartData.map((data: any) => data.name),
+      categories: data.map((data: any) => data.name),
     },
     yaxis: {
       min: 0,
@@ -72,7 +84,7 @@ export default function RadarChart({ stockName, width = 350 }: RadarProps) {
   const series = [
     {
       name: "Stock Score",
-      data: chartData.map((data: any) => data.value),
+      data: data.map((data: any) => data.value),
     },
   ];
 
@@ -84,7 +96,7 @@ export default function RadarChart({ stockName, width = 350 }: RadarProps) {
           <span className="font-bold text-lg">총점:</span>
           <span className="text-mainNavy-900 font-bold text-lg ml-2">{totalScore}점</span>
         </div>
-        {chartData.map((item: { name: string; value: number }) => (
+        {data.map((item: { name: string; value: number }) => (
           <div key={item.name} className=" flex justify-between w-full mb-2">
             <span className="font-semibold">{item.name}:</span>
             <span className="text-mainNavy-900 font-bold">{item.value}점</span>

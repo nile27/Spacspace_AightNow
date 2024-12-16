@@ -193,7 +193,7 @@ export default function Login() {
         </div>
         <div className="w-full  flex gap-4  justify-center items-center">
           <OauthBtn style={"kakao"} onClick={() => handleNextAuth("kakao")} />
-          <OauthBtn style={"naver"} onClick={() => handleNextAuth("naver")} />
+          {/* <OauthBtn style={"naver"} onClick={() => handleNextAuth("naver")} /> */}
           <OauthBtn style={"google"} onClick={handleGoogle} />
         </div>
       </div>

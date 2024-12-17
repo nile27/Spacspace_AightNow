@@ -1,20 +1,8 @@
 import { agentEvaluationTogether } from "@/lib/agentTogetherAI";
 
 export default async function AIReport({ id }: { id: string }) {
-  let result;
+  const result = await agentEvaluationTogether(id);
 
-  try {
-    result = await agentEvaluationTogether(id);
-    console.log("Fetched result:", result); // 디버깅용 로그
-  } catch (error) {
-    console.error("Error fetching agentEvaluationTogether:", error);
-    return <div>데이터를 불러올 수 없습니다.</div>;
-  }
-
-  if (!result || typeof result !== "object") {
-    console.error("Invalid result object:", result);
-    return <div>데이터를 불러올 수 없습니다.</div>;
-  }
   // 점수를 추출하고 문자열로 변환하는 함수
   const extractScore = (text: string | number): string => {
     if (typeof text === "number") {
@@ -25,22 +13,13 @@ export default async function AIReport({ id }: { id: string }) {
   };
 
   // 각 항목의 점수 추출
-  // const scores = {
-  //   "전반적 평가": extractScore(result["1. 전반적 평가"]),
-  //   수익성: extractScore(result["2. 수익성"]),
-  //   관심도: extractScore(result["3. 관심도"]),
-  //   성장성: extractScore(result["4. 성장성"]),
-  //   주가: extractScore(result["5. 주가"]),
-  //   총점: extractScore(result["6. 총점"]),
-  // };
-
   const scores = {
-    "전반적 평가": extractScore(result["1. 전반적 평가"] || ""),
-    수익성: extractScore(result["2. 수익성"] || ""),
-    관심도: extractScore(result["3. 관심도"] || ""),
-    성장성: extractScore(result["4. 성장성"] || ""),
-    주가: extractScore(result["5. 주가"] || ""),
-    총점: extractScore(result["6. 총점"] || ""),
+    "전반적 평가": extractScore(result["1. 전반적 평가"]),
+    수익성: extractScore(result["2. 수익성"]),
+    관심도: extractScore(result["3. 관심도"]),
+    성장성: extractScore(result["4. 성장성"]),
+    주가: extractScore(result["5. 주가"]),
+    총점: extractScore(result["6. 총점"]),
   };
 
   return (

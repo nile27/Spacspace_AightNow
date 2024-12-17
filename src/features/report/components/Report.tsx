@@ -15,27 +15,12 @@ type TParams = {
 export default async function Report({ id }: TParams) {
   try {
     // 주식데이터 가져오기
-    // const appleStock = await stockAction(id);
-    // const appleStock2 = await stockAction2(id);
-    // const { stockName, reutersCode } = appleStock2;
-    // const stockCode = reutersCode.split(".")[0];
-    // const stockHistory = await stockRealTime(id);
-    // const exchange = await exchangeRate();
-
-    const appleStock = (await stockAction(id)) || {};
-    console.log("appleStock:", appleStock);
-
-    const appleStock2 = (await stockAction2(id)) || {};
-    console.log("appleStock2:", appleStock2);
-
-    const stockHistory = (await stockRealTime(id)) || [];
-    console.log("stockHistory:", stockHistory);
-
-    const exchange = (await exchangeRate()) || "0";
-    console.log("exchange:", exchange);
-
-    const { stockName, reutersCode } = appleStock2 || {};
-    const stockCode = reutersCode ? reutersCode.split(".")[0] : "N/A";
+    const appleStock = await stockAction(id);
+    const appleStock2 = await stockAction2(id);
+    const { stockName, reutersCode } = appleStock2;
+    const stockCode = reutersCode.split(".")[0];
+    const stockHistory = await stockRealTime(id);
+    const exchange = await exchangeRate();
 
     return (
       <>
@@ -50,11 +35,7 @@ export default async function Report({ id }: TParams) {
             <AddToWatchListButton stockName={stockName} />
           </div>
           <div className="w-[1200px] flex gap-4">
-            <Summary
-              overview={appleStock || "No data available"}
-              stockInfo={appleStock2 || {}}
-              exchange={exchange || 0}
-            />
+            <Summary overview={appleStock} stockInfo={appleStock2} exchange={exchange} />
             <Chart stockData={stockHistory} />
           </div>
           <div className=" w-[1200px] flex gap-4 ">

@@ -17,7 +17,7 @@ export default function AnalysisClient({
   stockInfo: TStockinfo;
   id: string;
   exchange: string;
-  report: string;
+  report: any;
 }) {
   const { closePrice, compareToPreviousClosePrice, fluctuationsRatio, compareToPreviousPrice } =
     stockInfo;
@@ -29,8 +29,13 @@ export default function AnalysisClient({
     const won = Number(exchange.replace(/,/g, ""));
     const dollar = Number(closePrice);
     const test = won * dollar;
+
     setResult(test.toLocaleString().slice(0, 7));
   }, [exchange, closePrice]);
+
+  useEffect(() => {
+    console.log(report);
+  }, []);
 
   return (
     <div className="w-[750px] h-[295px] p-8 bg-white font-['Pretendard'] rounded-2xl">
@@ -53,7 +58,7 @@ export default function AnalysisClient({
       </div>
       <div className="w-[686px] h-24 mt-4 inline-flex justify-start items-start gap-2.5 ">
         <div className="grow shrink basis-0   text-black  font-medium leading-normal line-clamp-5">
-          {report}
+          {`${report.result}`}
         </div>
       </div>
     </div>

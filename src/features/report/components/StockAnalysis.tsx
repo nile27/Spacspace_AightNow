@@ -22,7 +22,7 @@ export default async function StockAnalysis({
       stockInfo={stockInfo}
       id={id}
       exchange={exchange}
-      report={report}
+      report={report || "N/A"}
     />
   );
 }

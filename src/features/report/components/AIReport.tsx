@@ -3,6 +3,10 @@ import { agentEvaluationTogether } from "@/lib/agentTogetherAI";
 export default async function AIReport({ id }: { id: string }) {
   const result = await agentEvaluationTogether(id);
 
+  if (!result || typeof result !== "object") {
+    console.error("Invalid result object:", result);
+    return <div>데이터를 불러올 수 없습니다.</div>;
+  }
   // 점수를 추출하고 문자열로 변환하는 함수
   const extractScore = (text: string | number): string => {
     if (typeof text === "number") {

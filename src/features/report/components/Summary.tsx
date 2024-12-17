@@ -1,6 +1,7 @@
 "use client";
 import Toggle from "@/components/Toggle/Toggle";
 import { useExchange } from "@/Store/store";
+import { useEffect } from "react";
 
 export type TStockinfo = {
   stockName: string;
@@ -22,13 +23,19 @@ export type TSummary = {
 export default function Summary({ overview, stockInfo, exchange }: TSummary) {
   const { isChange } = useExchange();
   const {
-    closePrice,
-    compareToPreviousClosePrice,
-    fluctuationsRatio,
-    reutersCode,
-    compareToPreviousPrice,
+    closePrice = "0",
+    compareToPreviousClosePrice = "0",
+    fluctuationsRatio = "0",
+    reutersCode = "",
+    compareToPreviousPrice = { code: "0" },
   } = stockInfo || {};
-  const stockCode = typeof reutersCode === "string" ? reutersCode.split(".")[0] : "N/A";
+
+  useEffect(() => {
+    console.log("Debugging stockInfo:", stockInfo);
+  }, [stockInfo]);
+
+  const stockCode =
+    reutersCode && typeof reutersCode === "string" ? reutersCode.split(".")[0] : "N/A";
 
   const compareUpDown = compareToPreviousPrice.code;
   const won = Number(exchange.replace(/,/g, ""));
@@ -64,7 +71,7 @@ export default function Summary({ overview, stockInfo, exchange }: TSummary) {
         </div>
         <Toggle />
         <div className="w-[424px] h-24 line-clamp-5  text-neutral-900 text-base font-normal font-['Pretendard'] leading-normal">
-          {overview}
+          {overview || "No overview available"}
         </div>
       </div>
     </>

@@ -50,7 +50,11 @@ export default async function Report({ id }: TParams) {
             <AddToWatchListButton stockName={stockName} />
           </div>
           <div className="w-[1200px] flex gap-4">
-            <Summary overview={appleStock} stockInfo={appleStock2} exchange={exchange} />
+            <Summary
+              overview={appleStock || {}}
+              stockInfo={appleStock2 || {}}
+              exchange={exchange || 0}
+            />
             <Chart stockData={stockHistory} />
           </div>
           <div className=" w-[1200px] flex gap-4 ">

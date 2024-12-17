@@ -51,7 +51,7 @@ export default async function Report({ id }: TParams) {
           </div>
           <div className="w-[1200px] flex gap-4">
             <Summary
-              overview={appleStock || {}}
+              overview={appleStock || "No data available"}
               stockInfo={appleStock2 || {}}
               exchange={exchange || 0}
             />

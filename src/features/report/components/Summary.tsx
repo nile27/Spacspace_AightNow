@@ -27,8 +27,9 @@ export default function Summary({ overview, stockInfo, exchange }: TSummary) {
     fluctuationsRatio,
     reutersCode,
     compareToPreviousPrice,
-  } = stockInfo;
-  const stockCode = reutersCode.split(".")[0];
+  } = stockInfo || {};
+  const stockCode = typeof reutersCode === "string" ? reutersCode.split(".")[0] : "N/A";
+
   const compareUpDown = compareToPreviousPrice.code;
   const won = Number(exchange.replace(/,/g, ""));
   const dollar = Number(closePrice);

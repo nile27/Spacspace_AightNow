@@ -74,22 +74,23 @@ export default function UserHome() {
       try {
         const stockHistoryData = await getSearchStockHistory(userDataId as string);
         setStockData(stockHistoryData as TFindHistory[]);
-        if (stockHistoryData && stockHistoryData.length > 0) {
-          const stockInfoPromises = stockHistoryData.map(async stock => {
-            const stockInfoData = await stockAction2(stock.slug);
-            setStockDataInfo(prev => new Map(prev).set(stock.term, stockInfoData));
-            return stockInfoData;
-          });
 
+        if (stockHistoryData && stockHistoryData.length > 0) {
+          const stockInfoPromises = stockHistoryData.map(stock => stockAction2(stock.slug));
           const stockInfoData = await Promise.all(stockInfoPromises);
+
+          const newStockDataInfo = new Map(
+            stockHistoryData.map((stock, index) => [stock.term, stockInfoData[index]]),
+          );
+          setStockDataInfo(newStockDataInfo);
         }
       } catch (error) {
-        console.log(error);
+        console.error("주식 정보 조회 중 오류 발생:", error);
       }
     };
 
     fetchData();
-  }, [user]);
+  }, [userDataId]); // user 대신 userDataId를 의존성 배열에 추가
 
   // 사용자 관심 종목의 주식 가격 정보를 가져오는 함수
   useEffect(() => {
